@@ -1,7 +1,7 @@
 const {google} = require('googleapis');
 const fs = require('fs');
 
-export GOOGLE_APPLICATION_CREDENTIALS="/credentials.json";
+const GOOGLE_APPLICATION_CREDENTIALS="/credentials.json";
 
 
 // Specify the ID of the file you want to add permissions to
