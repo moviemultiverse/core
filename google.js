@@ -1,8 +1,8 @@
-const { google } = import('googleapis');
+const { google } = require('googleapis');
 
 // Load the service account credentials JSON file
 const serviceAccountFile = 'credentials.json';
-const serviceAccount = import(serviceAccountFile);
+const serviceAccount = require(serviceAccountFile);
 
 // Specify the ID of the file you want to add permissions to
 const fileId = '1Jhd5m4cwefWZjTv_aSm7_H509Y8YBFhs';
