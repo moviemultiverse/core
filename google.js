@@ -2,9 +2,6 @@ const {google} = require('googleapis');
 const fs = require('fs');
 
 
-// Load the service account credentials JSON file
-const serviceAccountFile = 'credentials.json';
-const {serviceAccount} = require(serviceAccountFile);
 
 // Specify the ID of the file you want to add permissions to
 const fileId = '1Jhd5m4cwefWZjTv_aSm7_H509Y8YBFhs';
@@ -18,7 +15,7 @@ const permission = {
 
 // Create a new JWT client using the service account credentials
 const auth = new google.auth.GoogleAuth({
-  credentials: serviceAccount,
+  credentials: '{"web":{"client_id":"1096318296267-a3l9r898cd6uc95n64at2q06k31duh45.apps.googleusercontent.com","project_id":"drive-download-389811","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"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","redirect_uris":["https://ss0809.github.io/driveapi/"],"javascript_origins":["https://ss0809.github.io"]}}',
   scopes: ['https://www.googleapis.com/auth/drive'],
 });
 
