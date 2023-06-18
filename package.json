@@ -2,6 +2,7 @@
   "name": "Googleservice",
   "version": "1.0.0",
   "description": "",
+  "type": "modules",
   "main": "google.js",
   "scripts": {
     "dev": "nodemon google.js",
