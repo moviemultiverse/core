@@ -1,4 +1,9 @@
-import { google } from 'googleapis';
+import {
+  google,   // The top level object used to access services
+  drive_v3, // For every service client, there is an exported namespace
+  Auth,     // Namespace for auth related types
+  Common,   // General types used throughout the library
+} from 'googleapis';
 
 
 // Load the service account credentials JSON file
