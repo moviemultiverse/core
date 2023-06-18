@@ -1,4 +1,4 @@
-const { google } = require('googleapis');
+const { google } = import('googleapis');
 
 // Load the service account credentials JSON file
 const serviceAccountFile = 'credentials.json';
