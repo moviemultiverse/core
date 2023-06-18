@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies":{
-    "googleapis": "^118.0.0"
+    "googleapis": "118.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
