@@ -5,13 +5,13 @@ const serviceAccountFile = 'credentials.json';
 const serviceAccount = require(serviceAccountFile);
 
 // Specify the ID of the file you want to add permissions to
-const fileId = 'your-file-id';
+const fileId = '1Jhd5m4cwefWZjTv_aSm7_H509Y8YBFhs';
 
 // Define the permission to be created
 const permission = {
-  role: 'reader', // Can be 'owner', 'writer', 'commenter', or 'reader'
+  role: 'writer', // Can be 'owner', 'writer', 'commenter', or 'reader'
   type: 'user', // Can be 'user', 'group', 'domain', or 'anyone'
-  emailAddress: 'example@gmail.com', // Email address of the user or group
+  emailAddress: 'saurabh45215@gmail.com', // Email address of the user or group
 };
 
 // Create a new JWT client using the service account credentials
