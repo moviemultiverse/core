@@ -1,7 +1,7 @@
 const {google} = require('googleapis');
 const fs = require('fs');
 
-const GOOGLE_APPLICATION_CREDENTIALS="/credentials.json";
+const GOOGLE_APPLICATION_CREDENTIALS="/drive-download-389811-1563f008c882.json";
 
 
 // Specify the ID of the file you want to add permissions to
