@@ -1,4 +1,4 @@
-const {google} = require('googleapis');
+/* const {google} = require('googleapis');
 const fs = require('fs');
 
 const GOOGLE_APPLICATION_CREDENTIALS="/drive-download-389811-1563f008c882.json";
@@ -38,5 +38,25 @@ async function createPermission() {
 }
 
 // Call the function to create the permission
-createPermission();
-
+createPermission();*/
+const { google } = require('googleapis');
+const credentials = require('./drive-download-389811-1563f008c882.json');
+const scopes = [
+  'https://www.googleapis.com/auth/drive'
+];
+const auth = new google.auth.JWT(
+  credentials.client_email, null,
+  credentials.private_key, scopes
+);
+const drive = google.drive({ version: "v3", auth });
+drive.files.list({}, (err, res) => {
+  if (err) throw err;
+  const files = res.data.files;
+  if (files.length) {
+  files.map((file) => {
+    console.log(file);
+  });
+  } else {
+    console.log('No files found');
+  }
+});
