@@ -27,8 +27,7 @@ const auth = new google.auth.GoogleAuth({
   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/drivedownload%40drive-download-389811.iam.gserviceaccount.com",
   "universe_domain": "googleapis.com"
-}
-',
+}',
   scopes: ['https://www.googleapis.com/auth/drive'],
 });
 
