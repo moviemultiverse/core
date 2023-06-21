@@ -40,7 +40,7 @@ async function createPermission() {
 // Call the function to create the permission
 createPermission();*/
 const { google } = require('googleapis');
-const credentials = require('./drive-download-389811-1563f008c882.json');
+const credentials = require('./drive-download-389811-b229f2e27ed8.json');
 const scopes = [
   'https://www.googleapis.com/auth/drive'
 ];
