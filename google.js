@@ -38,7 +38,7 @@ async function createPermission() {
 }
 
 // Call the function to create the permission
-createPermission();*/
+createPermission();
 const { google } = require('googleapis');
 const credentials = require('./drive-download-389811-b229f2e27ed8.json');
 const scopes = [
@@ -60,4 +60,27 @@ drive.files.list({}, (err, res) => {
     console.log('No files found');
 
   }
+});
+*/
+
+//drive-download@drive-download-389811.iam.gserviceaccount.com
+const { google } = require('googleapis');
+const credentials = require('./drive-download-389811-b229f2e27ed8.json');
+const scopes = [
+  'https://www.googleapis.com/auth/drive'
+];
+const auth = new google.auth.JWT(
+  credentials.client_email, null,
+  credentials.private_key, scopes
+);
+const d = new Date(Date.now() + (5 * 60 * 1000)).toISOString();
+const drive = google.drive({ version: "v3", auth });
+drive.files.permissions.update({}, (err, res) => {
+    "fileId": "1wW7M1fqTe6WvTHM9xo8q1Rxk3aw9GW1B",
+    "permissionId": "15077873222703838624",
+    "resource": {
+      "expirationTime": "2023-06-21T16:17:55.385Z",
+        "expirationTime" : d,
+  "role":"reader"
+    }
 });
