@@ -75,11 +75,13 @@ const auth = new google.auth.JWT(
 );
 const d = new Date(Date.now() + (5 * 60 * 1000)).toISOString();
 const drive = google.drive({ version: "v3", auth });
-drive.files.permissions.update({}, (err, res) => {
+drive.files.permissions.update({
     "fileId": "1wW7M1fqTe6WvTHM9xo8q1Rxk3aw9GW1B",
     "permissionId": "15077873222703838624",
     "resource": {
         "expirationTime" : d,
   "role":"reader"
     }
+}, (err, res) => {
+  console.log(res);
 });
