@@ -79,7 +79,6 @@ drive.files.permissions.update({}, (err, res) => {
     "fileId": "1wW7M1fqTe6WvTHM9xo8q1Rxk3aw9GW1B",
     "permissionId": "15077873222703838624",
     "resource": {
-      "expirationTime": "2023-06-21T16:17:55.385Z",
         "expirationTime" : d,
   "role":"reader"
     }
