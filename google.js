@@ -58,5 +58,6 @@ drive.files.list({}, (err, res) => {
   });
   } else {
     console.log('No files found');
+    console.log(err);
   }
 });
