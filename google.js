@@ -61,7 +61,7 @@ drive.files.list({}, (err, res) => {
 
   }
 });
-*/
+*
 
 //drive-download@drive-download-389811.iam.gserviceaccount.com
 const { google } = require('googleapis');
@@ -84,4 +84,57 @@ drive.files.permissions.update({
     }
 }, (err, res) => {
   console.log(res);
-});
+});*/
+const { google } = require('googleapis');
+const fs = require('fs');
+
+async function createFilePermission(authClient, fileId, emailAddress, role) {
+  try {
+    const drive = google.drive({ version: 'v3', auth: authClient });
+
+    const permission = {
+      role: role,
+      type: 'user',
+      emailAddress: emailAddress
+    };
+
+    const response = await drive.permissions.create({
+      fileId: fileId,
+      requestBody: permission,
+      fields: 'id'
+    });
+
+    console.log(`Permission created with ID: ${response.data.id}`);
+  } catch (error) {
+    console.error('Error creating permission:', error);
+  }
+}
+
+async function main() {
+  try {
+    // Load the service account credentials
+    const credentials = require('./drive-download-389811-b229f2e27ed8.json');
+
+    // Create an auth client using the service account credentials
+    const authClient = new google.auth.GoogleAuth({
+      credentials: credentials,
+      scopes: ['https://www.googleapis.com/auth/drive']
+    });
+
+    // Authorize the client
+    const auth = await authClient.getClient();
+
+    // Specify the file ID, email address, and role for the permission
+    const fileId = '1wW7M1fqTe6WvTHM9xo8q1Rxk3aw9GW1B';
+    const emailAddress = '0111cs211163.saurabh5@gmail.com';
+    const role = 'writer';
+
+    // Create the file permission
+    await createFilePermission(auth, fileId, emailAddress, role);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+main();
+
