@@ -51,16 +51,10 @@ async function deleteFilePermission(fileId, permissionId) {
   }
 }
         
-  
-app.listen(3000);
-app.get('/', (req, res) => {
-res.sendfile( 'index.html');
-});
-app.get('/api', function(req, res) {
-  const user_id = req.query.id; 
-  const file_id = req.query.fileid;
+  async function main(user_id,file_id)
+  {
 
-  try {
+    try {
     // Load the service account credentials
     const credentials = require('./drive-download-389811-b229f2e27ed8.json');
 
@@ -71,7 +65,7 @@ app.get('/api', function(req, res) {
     });
 
     // Authorize the client
-    const auth = authClient.getClient();
+    const auth = await authClient.getClient();
 
     // Specify the file ID, email address, and role for the permission
     const fileId = file_id;
@@ -91,8 +85,17 @@ app.get('/api', function(req, res) {
 
       } catch (error) {
     console.error('Error:', error);
+    }
   }
-
+app.listen(3000);
+app.get('/', (req, res) => {
+res.sendfile( 'index.html');
+});
+app.get('/api', function(req, res) {
+  const user_id = req.query.id; 
+  const file_id = req.query.fileid;
+main(user_id,file_id);
+  
 
   res.send({
     'user_id': user_id
