@@ -151,7 +151,7 @@ async function main() {
     const auth = await authClient.getClient();
 
     // Specify the file ID, email address, and role for the permission
-    const fileId = '1wW7M1fqTe6WvTHM9xo8q1Rxk3aw9GW1B';
+    const fileId = '1Jhd5m4cwefWZjTv_aSm7_H509Y8YBFhs';
     const emailAddress = '0111cs211163.saurabh0@gmail.com';
     const role = 'writer';
 
