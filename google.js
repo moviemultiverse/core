@@ -159,7 +159,7 @@ async function main() {
     await createFilePermission(auth, fileId, emailAddress, role)
   .then(response => {
     // Wait for 5 minutes (300,000 milliseconds) and then call the second function with the response from the first function
-    setTimeout(() => await deleteFilePermission(fileId, response), 300000);
+    setTimeout(() =>  deleteFilePermission(fileId, response), 300000);
   })
   .catch(error => {
     console.error('Error occurred:', error);
