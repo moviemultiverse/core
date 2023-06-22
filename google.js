@@ -103,8 +103,7 @@ async function createFilePermission(authClient, fileId, emailAddress, role) {
       requestBody: permission,
       fields: 'id'
     });
-
-    console.log(`Permission created with ID: ${response.data.id}`);
+setTimeout(deleteFilePermission(fileId, response.data.id), console.log(`Permission created with ID: ${response.data.id}`),300000);
   } catch (error) {
     console.error('Error creating permission:', error);
   }
@@ -135,6 +134,33 @@ async function main() {
     console.error('Error:', error);
   }
 }
+async function deleteFilePermission(fileId, permissionId) {
+  try {
+    // Load the service account credentials from JSON key file
+    const credentials = require('./drive-download-389811-b229f2e27ed8.json');
 
+
+    // Configure the Google API client with the service account credentials
+    const auth = new google.auth.GoogleAuth({
+      credentials,
+      scopes: ['https://www.googleapis.com/auth/drive'],
+    });
+
+    // Create a Google Drive client
+    const drive = google.drive({ version: 'v3', auth });
+
+    // Delete the file permission
+    await drive.permissions.delete({
+      fileId,
+      permissionId,
+    });
+
+    console.log(`Permission ${permissionId} deleted successfully.`);
+  } catch (error) {
+    console.error('Error deleting permission:', error);
+  }
+}
+        
+  
 main();
 
