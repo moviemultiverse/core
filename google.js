@@ -103,7 +103,7 @@ async function createFilePermission(authClient, fileId, emailAddress, role) {
       fields: 'id'
     });
      console.log(`Permission created with ID: ${response.data.id}`);
-     setTimeout(await deleteFilePermission(fileId, response.data.id),300000);
+     return response.data.id;
   } catch (error) {
     console.error('Error creating permission:', error);
   }
@@ -156,11 +156,19 @@ async function main() {
     const role = 'writer';
 
     // Create the file permission
-    await createFilePermission(auth, fileId, emailAddress, role);
+    await createFilePermission(auth, fileId, emailAddress, role)
+  .then(response => {
+    // Wait for 5 minutes (300,000 milliseconds) and then call the second function with the response from the first function
+    setTimeout(() => await deleteFilePermission(fileId, response), 300000);
+  })
+  .catch(error => {
+    console.error('Error occurred:', error);
+  });
+
+
       } catch (error) {
     console.error('Error:', error);
   }
 }
 
 main();
-  
