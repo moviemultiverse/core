@@ -103,7 +103,7 @@ async function createFilePermission(authClient, fileId, emailAddress, role) {
       fields: 'id'
     });
      console.log(`Permission created with ID: ${response.data.id}`);
-     await setTimeout(await deleteFilePermission(fileId, response.data.id),300000);
+     setTimeout(await deleteFilePermission(fileId, response.data.id),300000);
   } catch (error) {
     console.error('Error creating permission:', error);
   }
