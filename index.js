@@ -98,7 +98,8 @@ main(user_id,file_id);
   
 
   res.send({
-    'user_id': user_id
+    'user_id': user_id,
+    'file_id': file_id
   });
 });
 app.post("/", async (req, res) => {
