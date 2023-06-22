@@ -71,7 +71,7 @@ app.get('/api', function(req, res) {
     });
 
     // Authorize the client
-    const auth = await authClient.getClient();
+    const auth = authClient.getClient();
 
     // Specify the file ID, email address, and role for the permission
     const fileId = file_id;
