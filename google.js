@@ -87,7 +87,7 @@ drive.files.permissions.update({
 });*/
 const { google } = require('googleapis');
 const fs = require('fs');
-
+var permissionId
 async function createFilePermission(authClient, fileId, emailAddress, role) {
   try {
     const drive = google.drive({ version: 'v3', auth: authClient });
@@ -103,36 +103,10 @@ async function createFilePermission(authClient, fileId, emailAddress, role) {
       requestBody: permission,
       fields: 'id'
     });
-//setTimeout(deleteFilePermission(fileId, response.data.id),300000);
      console.log(`Permission created with ID: ${response.data.id}`);
+     permissionId = response.data.id;
   } catch (error) {
     console.error('Error creating permission:', error);
-  }
-}
-
-async function main() {
-  try {
-    // Load the service account credentials
-    const credentials = require('./drive-download-389811-b229f2e27ed8.json');
-
-    // Create an auth client using the service account credentials
-    const authClient = new google.auth.GoogleAuth({
-      credentials: credentials,
-      scopes: ['https://www.googleapis.com/auth/drive']
-    });
-
-    // Authorize the client
-    const auth = await authClient.getClient();
-
-    // Specify the file ID, email address, and role for the permission
-    const fileId = '1wW7M1fqTe6WvTHM9xo8q1Rxk3aw9GW1B';
-    const emailAddress = '0111cs211163.saurabh5@gmail.com';
-    const role = 'writer';
-
-    // Create the file permission
-    await createFilePermission(auth, fileId, emailAddress, role);
-  } catch (error) {
-    console.error('Error:', error);
   }
 }
 async function deleteFilePermission(fileId, permissionId) {
@@ -163,5 +137,32 @@ async function deleteFilePermission(fileId, permissionId) {
 }
         
   
-main();
+async function main() {
+  try {
+    // Load the service account credentials
+    const credentials = require('./drive-download-389811-b229f2e27ed8.json');
 
+    // Create an auth client using the service account credentials
+    const authClient = new google.auth.GoogleAuth({
+      credentials: credentials,
+      scopes: ['https://www.googleapis.com/auth/drive']
+    });
+
+    // Authorize the client
+    const auth = await authClient.getClient();
+
+    // Specify the file ID, email address, and role for the permission
+    const fileId = '1wW7M1fqTe6WvTHM9xo8q1Rxk3aw9GW1B';
+    const emailAddress = '0111cs211163.saurabh5@gmail.com';
+    const role = 'writer';
+
+    // Create the file permission
+    await createFilePermission(auth, fileId, emailAddress, role);
+    await setTimeout(deleteFilePermission(fileId, response.data.id),300000);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+main();
+  
