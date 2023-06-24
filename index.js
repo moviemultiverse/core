@@ -86,7 +86,7 @@ async function deleteFilePermission(fileId, permissionId) {
     console.error('Error:', error);
     }
   }
-  function getfiles(){ 
+async  function getfiles(){ 
 const scopes = [
   'https://www.googleapis.com/auth/drive'
 ];
@@ -117,7 +117,7 @@ res.sendfile( 'index.html');
 });
 app.get('/getfiles', async (req, res) => {
   try {
-    const files = await getFiles();
+    const files =  getFiles();
     res.json(files);
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
