@@ -87,9 +87,35 @@ async function deleteFilePermission(fileId, permissionId) {
     console.error('Error:', error);
     }
   }
+  function getfiles(){ 
+const scopes = [
+  'https://www.googleapis.com/auth/drive'
+];
+const auth = new google.auth.JWT(
+  credentials.client_email, null,
+  credentials.private_key, scopes
+);
+const drive = google.drive({ version: "v3", auth });
+drive.files.list({}, (err, res) => {
+  if (err) throw err;
+  const files = res.data.files;
+  if (files.length) {
+  files.map((file) => {
+    console.log(file);
+    return file;
+  });
+  } else {
+    console.log('No files found');
+
+  }
+});
+}
 app.listen(3000);
 app.get('/', (req, res) => {
 res.sendfile( 'index.html');
+});
+app.get('/getfiles', (req, res) => {
+ res.send(getfiles());
 });
 app.get('/api', function(req, res) {
   const user_id = req.query.id; 
@@ -110,3 +136,7 @@ console.log(req.body);
   res.json(req);
  alert(req);
 });
+
+
+
+  
