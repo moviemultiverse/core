@@ -3,6 +3,7 @@ const { google } = require('googleapis');
 const fs = require('fs');
 var express = require('express'); 
 var app = express();
+app.use(express.json());
 const credentials = require('./drive-download-389811-b229f2e27ed8.json');
 
 async function createFilePermission(authClient, fileId, emailAddress, role) {
