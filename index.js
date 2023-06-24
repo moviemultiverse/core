@@ -116,8 +116,12 @@ app.get('/', (req, res) => {
 res.sendfile( 'index.html');
 });
 app.get('/getfiles', async (req, res) => {
-  const files = await getfiles();
-  return res.json(files);
+  try {
+    const files = await getFiles();
+    res.json(files);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 app.get('/api', function(req, res) {
