@@ -114,7 +114,7 @@ app.listen(3000);
 app.get('/', (req, res) => {
 res.sendfile( 'index.html');
 });
-app.get('/getfiles', function(req, res)  {
+app.get('/getfiles', async(req, res) => {
     return res.json(getfiles());
 });
 app.get('/api', function(req, res) {
