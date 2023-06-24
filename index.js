@@ -117,7 +117,7 @@ res.sendfile( 'index.html');
 });
 app.get('/getfiles', async (req, res) => {
   try {
-    const files = await getFiles();
+    const files = await getfiles();
     res.json(files);
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
