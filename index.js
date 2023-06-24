@@ -86,31 +86,32 @@ async function deleteFilePermission(fileId, permissionId) {
     console.error('Error:', error);
     }
   }
-async  function getfiles(){ 
-const scopes = [
-  'https://www.googleapis.com/auth/drive'
-];
-const auth = new google.auth.JWT(
-  credentials.client_email, null,
-  credentials.private_key, scopes
-);
-    var returndata= "{}";
-const drive = google.drive({ version: "v3", auth });
-drive.files.list({}, (err, res) => {
-  if (err) throw err;
-  const files = res.data.files;
-  if (files.length) {
-  files.map((file) => {
-    console.log(file);
-    returndata = file;
-  });
-    return returndata;
-  } else {
-    console.log('No files found');
+async function getfiles() {
+  try {
+    const auth = new google.auth.JWT(
+      credentials.client_email,
+      null,
+      credentials.private_key,
+      ['https://www.googleapis.com/auth/drive']
+    );
 
+    const drive = google.drive({ version: 'v3', auth });
+    const response = await drive.files.list({});
+    const files = response.data.files;
+
+    if (files.length) {
+      console.log(files);
+      return files;
+    } else {
+      console.log('No files found');
+      return [];
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    return [];
   }
-});
 }
+
 app.listen(3000);
 app.get('/', (req, res) => {
 res.sendfile( 'index.html');
