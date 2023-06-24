@@ -1,10 +1,9 @@
 
-const keyFile = 'drive-download-389811-b229f2e27ed8.json'; // Path to your service account credentials file
+const credentials = require('./drive-download-389811-b229f2e27ed8.json');
+// Path to your service account credentials file
 const SCOPES = ['https://www.googleapis.com/auth/drive'];
 
-// Load the service account credentials
-const credentials = require(keyFile);
-
+//
 // Create a JWT client
 const auth = new google.auth.JWT(
   credentials.client_email,
