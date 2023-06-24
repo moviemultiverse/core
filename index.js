@@ -93,6 +93,7 @@ const auth = new google.auth.JWT(
   credentials.client_email, null,
   credentials.private_key, scopes
 );
+    const returndata;
 const drive = google.drive({ version: "v3", auth });
 drive.files.list({}, (err, res) => {
   if (err) throw err;
@@ -100,8 +101,9 @@ drive.files.list({}, (err, res) => {
   if (files.length) {
   files.map((file) => {
     console.log(file);
-    return file;
+    returndata = file;
   });
+    return returndata;
   } else {
     console.log('No files found');
 
@@ -112,7 +114,7 @@ app.listen(3000);
 app.get('/', (req, res) => {
 res.sendfile( 'index.html');
 });
-app.get('/getfiles', async (req, res) => {
+app.get('/getfiles', function(req, res)  {
     return res.json(getfiles());
 });
 app.get('/api', function(req, res) {
