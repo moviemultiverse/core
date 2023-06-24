@@ -1,3 +1,5 @@
+const { google } = require('googleapis');
+const fs = require('fs');
 
 const credentials = require('./drive-download-389811-b229f2e27ed8.json');
 // Path to your service account credentials file
