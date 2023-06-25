@@ -8,7 +8,7 @@
   const url = new URL(window.location.href);
   const searchParams = new URLSearchParams(url.search);
   return searchParams.get('fileid');
-    setCookie('fileid',searchParams.get('fileid'),1);
+    setCookie('fileid',searchParams.get('fileid'),10);
 }
 // Function to set a cookie
 function setCookie(name, value, days) {
@@ -267,7 +267,7 @@ console.log(xhr.response+"fold");
 
     var params = {'client_id': '1096318296267-a3l9r898cd6uc95n64at2q06k31duh45.apps.googleusercontent.com',
 
-                  'redirect_uri':'https://ss0809.github.io/Googleservice/',
+                  'redirect_uri':'https://ss0809.github.io/Googleservice/,
 
                   'scope': 'https://www.googleapis.com/auth/drive',
 
