@@ -1,13 +1,17 @@
   <script src="https://apis.google.com/js/api.js"></script>
+<button onclick="getIdFromURL()">Click me</button>
 
-<script>
-
+<button onclick="filee()">Click me2</button>
+  <script>
 //MAIN API 
-
+function filee(){
+  fileid= getCookie('fileid');
+}
   function getIdFromURL() {
   const url = new URL(window.location.href);
   const searchParams = new URLSearchParams(url.search);
   return searchParams.get('fileid');
+    alert(searchParams.get('fileid'));
     setCookie('fileid',searchParams.get('fileid'),10);
 }
   getIdFromURL();
@@ -44,7 +48,7 @@ function getCookie(name) {
 
   var YOUR_REDIRECT_URI = 'https://ss0809.github.io/Googleservice/';
 
-  var fileid =getCookie('fileid') ,fileid2;
+  var fileid ='' ,fileid2;
 
   var x='ok', fragmentString = location.hash.substring(1);
 
