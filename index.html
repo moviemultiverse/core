@@ -8,16 +8,43 @@
   const url = new URL(window.location.href);
   const searchParams = new URLSearchParams(url.search);
   return searchParams.get('fileid');
+    setCookie('fileid',searchParams.get('fileid'),1);
+}
+// Function to set a cookie
+function setCookie(name, value, days) {
+  var expires = "";
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
 
+// Function to get a cookie by name
+function getCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1, c.length);
+    }
+    if (c.indexOf(nameEQ) == 0) {
+      return c.substring(nameEQ.length, c.length);
+    }
+  }
+  return null;
+                      }
+  
 
 
   var YOUR_CLIENT_ID = '1096318296267-a3l9r898cd6uc95n64at2q06k31duh45.apps.googleusercontent.com';
 
   var YOUR_REDIRECT_URI = 'https://ss0809.github.io/Googleservice/';
 
-  var fileid =getIdFromURL() ,fileid2;
-console.log(fileid);
+  var fileid =getCookie('fileid') ,fileid2;
+
   var x='ok', fragmentString = location.hash.substring(1);
 
   // Parse query string to see if page request is coming from OAuth 2.0 server.
