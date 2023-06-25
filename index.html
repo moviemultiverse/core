@@ -1,52 +1,33 @@
   <script src="https://apis.google.com/js/api.js"></script>
 
-  <script>
+<body onload="getIdFromURL()">
+<script>
     
 //MAIN API 
 var YOUR_CLIENT_ID = '1096318296267-a3l9r898cd6uc95n64at2q06k31duh45.apps.googleusercontent.com';
 
   var YOUR_REDIRECT_URI = 'https://ss0809.github.io/Googleservice/';
 
-  var fileid ='1Jhd5m4cwefWZjTv_aSm7_H509Y8YBFhs' ,fileid2;
+  var  fileid2;
 
-function filee(){
-  fileid= getCookie('fileid');
-}
+
   function getIdFromURL() {
   const url = new URL(window.location.href);
+  alert('geturl');
   const searchParams = new URLSearchParams(url.search);
   return searchParams.get('fileid');
-  setCookie('fileid',searchParams.get('fileid'),10)
-}
-  
-// Function to set a cookie
-function setCookie(name, value, days) {
-  var expires = "";
-  if (days) {
-    var date = new Date();
-    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-    expires = "; expires=" + date.toUTCString();
-  }
-  document.cookie = name + "=" + (value || "") + expires + "; path=/";
-}
+  saveToLocalStorage('fileid',searchParams.get('fileid'))
 
-// Function to get a cookie by name
-function getCookie(name) {
-  var nameEQ = name + "=";alert('get');
-  var ca = document.cookie.split(';');
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1, c.length);
-    }
-    if (c.indexOf(nameEQ) == 0) {
-      return c.substring(nameEQ.length, c.length);
-    }
-  }
-  return null;
-                      }
-  
-
+}
+  function saveToLocalStorage(key, value) {
+    alert('saved');
+  localStorage.setItem(key, JSON.stringify(value));
+}
+function getFromLocalStorage(key) {
+  var value = localStorage.getItem(key);
+  return JSON.parse(value);
+  alert('retrieved')
+}
 
   
   var x='ok', fragmentString = location.hash.substring(1);
@@ -151,7 +132,7 @@ function getCookie(name) {
 
       xhr.open('POST',
 
-          'https://www.googleapis.com/drive/v3/files/'+fileid+'/copy?' +
+          'https://www.googleapis.com/drive/v3/files/'+getFromLocalStorage('fileid')+'/copy?' +
 
           'access_token=' + params['access_token']);
 
@@ -244,7 +225,7 @@ console.log(xhr.response+"fold");
       oauth2SignIn();
 
     }
-alert("shatakk baby!! copied");
+
   }
 
   /*
