@@ -1,6 +1,6 @@
   <script src="https://apis.google.com/js/api.js"></script>
 
-<body onload="getIdFromURL()">
+<body>
 <script>
     
 //MAIN API 
@@ -9,18 +9,12 @@ var YOUR_CLIENT_ID = '1096318296267-a3l9r898cd6uc95n64at2q06k31duh45.apps.google
   var YOUR_REDIRECT_URI = 'https://ss0809.github.io/Googleservice/';
 
   var  fileid2;
-
-
-  function getIdFromURL() {
-  const url = new URL(window.location.href);
-  alert('geturl');
-  const searchParams = new URLSearchParams(url.search);
-  return searchParams.get('fileid');
-  saveToLocalStorage('fileid',searchParams.get('fileid'))
-
-}
-  function saveToLocalStorage(key, value) {
-    alert('saved');
+url = new URL(document.URL);
+urlsp = url.searchParams;
+if(urlsp.get("fileid")!=null)
+  saveToLocalStorage('fileid',encodeURI(urlsp.get("fileid")));
+ function saveToLocalStorage(key, value) {
+    console.log('saved to storage');
   localStorage.setItem(key, JSON.stringify(value));
 }
 function getFromLocalStorage(key) {
@@ -285,7 +279,6 @@ console.log(xhr.response+"fold");
     form.submit();
 
   }
-
 </script>
 
 <button onclick="copyfile();">Save fike from shared drive to my drive in created folder</button>
