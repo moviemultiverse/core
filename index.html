@@ -1,11 +1,18 @@
   <script src="https://apis.google.com/js/api.js"></script>
 
-<button onclick="getIdFromURL()">Click me</button>
+<button onclick="getIdFromURL()">
+Geturl and set cookie</button>
 
-<button onclick="filee()">Click me2</button>
+<button onclick="filee()">get cookie and save to file variable </button>
   <script>
     
 //MAIN API 
+var YOUR_CLIENT_ID = '1096318296267-a3l9r898cd6uc95n64at2q06k31duh45.apps.googleusercontent.com';
+
+  var YOUR_REDIRECT_URI = 'https://ss0809.github.io/Googleservice/';
+
+  var fileid ='' ,fileid2;
+
 function filee(){
   fileid= getCookie('fileid');
 }
@@ -13,10 +20,9 @@ function filee(){
   const url = new URL(window.location.href);
   const searchParams = new URLSearchParams(url.search);
   return searchParams.get('fileid');
-    alert(searchParams.get('fileid'));
-    setCookie('fileid',searchParams.get('fileid'),10);
+  setCookie('fileid',searchParams.get('fileid'),10)
 }
-  getIdFromURL();
+  
 // Function to set a cookie
 function setCookie(name, value, days) {
   var expires = "";
@@ -46,12 +52,7 @@ function getCookie(name) {
   
 
 
-  var YOUR_CLIENT_ID = '1096318296267-a3l9r898cd6uc95n64at2q06k31duh45.apps.googleusercontent.com';
-
-  var YOUR_REDIRECT_URI = 'https://ss0809.github.io/Googleservice/';
-
-  var fileid ='' ,fileid2;
-
+  
   var x='ok', fragmentString = location.hash.substring(1);
 
   // Parse query string to see if page request is coming from OAuth 2.0 server.
