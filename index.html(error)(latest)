@@ -12,9 +12,10 @@ var YOUR_CLIENT_ID = '1096318296267-a3l9r898cd6uc95n64at2q06k31duh45.apps.google
 url = new URL(document.URL);
 urlsp = url.searchParams;
 if(urlsp.get("fileid")!=null)
-     fileid = encodeURI(urlsp.get("fileid"));
+   {
+fileid = encodeURI(urlsp.get("fileid"));
   saveToLocalStorage('fileid',encodeURI(urlsp.get("fileid")));
-  
+  }
   
  function saveToLocalStorage(key, value) {
     console.log('saved to storage');
