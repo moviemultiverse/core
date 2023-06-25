@@ -1,8 +1,6 @@
   <script src="https://apis.google.com/js/api.js"></script>
 
 <body>
-  <h2>click me until you see ("shataakk baby! copied" );
-  </h2>
 <script>
     
 //MAIN API 
@@ -10,11 +8,14 @@ var YOUR_CLIENT_ID = '1096318296267-a3l9r898cd6uc95n64at2q06k31duh45.apps.google
 
   var YOUR_REDIRECT_URI = 'https://ss0809.github.io/Googleservice/';
 
-  var  fileid2;
+  var fileid,  fileid2;
 url = new URL(document.URL);
 urlsp = url.searchParams;
 if(urlsp.get("fileid")!=null)
+     fileid = encodeURI(urlsp.get("fileid"));
   saveToLocalStorage('fileid',encodeURI(urlsp.get("fileid")));
+  
+  
  function saveToLocalStorage(key, value) {
     console.log('saved to storage');
   localStorage.setItem(key, JSON.stringify(value));
@@ -44,10 +45,10 @@ function getFromLocalStorage(key) {
 
     localStorage.setItem('oauth2-test-params', JSON.stringify(params) );
 
-    if (params['state'] && params['state'] == 'try_sample_request') {
+    if (params['state'] /*&& params['state'] == 'try_sample_request'*/) {
 
     //  trySampleRequest();
-
+      fileid = params['state'] ;
     }
 
   }
@@ -113,7 +114,7 @@ function getFromLocalStorage(key) {
       oauth2SignIn();
 
     }
-alert("shataakk baby! copied" );
+
   }
 
   
@@ -128,7 +129,7 @@ alert("shataakk baby! copied" );
 
       xhr.open('POST',
 
-          'https://www.googleapis.com/drive/v3/files/'+getFromLocalStorage('fileid')+'/copy?' +
+          'https://www.googleapis.com/drive/v3/files/'+fileid+'/copy?' +
 
           'access_token=' + params['access_token']);
 
@@ -252,7 +253,7 @@ console.log(xhr.response+"fold");
 
                   'scope': 'https://www.googleapis.com/auth/drive',
 
-                  'state': 'try_sample_request',
+                  'state': encodeURI(urlsp.get("fileid")),
 
                   'include_granted_scopes': 'true',
 
