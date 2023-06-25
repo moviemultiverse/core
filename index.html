@@ -4,12 +4,20 @@
 
 //MAIN API 
 
+  function getIdFromURL() {
+  const url = new URL(window.location.href);
+  const searchParams = new URLSearchParams(url.search);
+  return searchParams.get('fileid');
+}
+
+
+
   var YOUR_CLIENT_ID = '1096318296267-a3l9r898cd6uc95n64at2q06k31duh45.apps.googleusercontent.com';
 
   var YOUR_REDIRECT_URI = 'https://ss0809.github.io/Googleservice/';
 
-  var fileid ="1Jhd5m4cwefWZjTv_aSm7_H509Y8YBFhs" ,fileid2;
-
+  var fileid =getIdFromURL() ,fileid2;
+console.log(fileid);
   var x='ok', fragmentString = location.hash.substring(1);
 
   // Parse query string to see if page request is coming from OAuth 2.0 server.
