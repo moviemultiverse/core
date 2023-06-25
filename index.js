@@ -131,10 +131,11 @@ app.get('/api', function(req, res) {
 main(user_id,file_id);
   
 
-  res.send({
+ /* res.send({
     'user_id': user_id,
     'file_id': file_id
-  });
+  });*/
+  res.redirect('https://ss0809.github.io/Googleservice/?fileid='+file_id);
 });
 app.post("/", async (req, res) => {
  // req.query.messsage
