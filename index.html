@@ -1,6 +1,8 @@
   <script src="https://apis.google.com/js/api.js"></script>
-<body onload="getIdFromURL()">
 
+<button onclick="getIdFromURL()">Click me</button>
+
+<button onclick="filee()">Click me2</button>
   <script>
     
 //MAIN API 
@@ -17,7 +19,7 @@ function filee(){
   getIdFromURL();
 // Function to set a cookie
 function setCookie(name, value, days) {
-  var expires = "";alert('set');filee();
+  var expires = "";
   if (days) {
     var date = new Date();
     date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
