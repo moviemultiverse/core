@@ -141,7 +141,7 @@ app.listen(3000);
 app.get('/', (req, res) => {
 res.sendfile( 'index.html');
 });
-app.get('sharefile', function(req, res) {
+app.get('/sharefile', function(req, res) {
   const file_id = req.query.file_id; 
   fetchResponses(file_id)
   .then(responses => {
