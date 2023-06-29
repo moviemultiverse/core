@@ -126,7 +126,7 @@ async function fetchResponses(file) {
   ];
 
   for (const url of urls) {
-    try {
+
       const fullUrl = url.concat(file);
       const xhr = new XMLHttpRequest();
       let response = await new Promise(resolve => {
@@ -141,10 +141,7 @@ async function fetchResponses(file) {
         console.log(`Error fetching ${url}:`, xhr.statusText);
         responses.push(null);
       }
-    } catch (error) {
-      console.log(`Error fetching ${url}:`, error);
-      responses.push(null);
-    }
+     
   }
 
   return responses;
