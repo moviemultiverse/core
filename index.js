@@ -1,4 +1,4 @@
-
+const fetch = require('node-fetch');
 const { google } = require('googleapis');
 const fs = require('fs');
 var express = require('express'); 
@@ -112,10 +112,48 @@ async function getfiles() {
   }
 }
 
+
+const fetchResponses(file) = async () => {
+  const responses = [];
+  const urls = [
+  'https://api.streamsb.com/api/upload/url?key=46443yy1674fu5ych9iq0&url=',
+  'https://doodapi.com/api/upload/url?key=49943w31dwl3crvaz1tui&url=',
+  'https://upstream.to/api/upload/url?key=55196gnvzsjuwpss4ea1y&url=',
+  'https://api.streamtape.com/remotedl/add?login=f65b540c475b9b7d4da8&key=268XaKDBLqTZ2kg&url='
+];
+  for (const url of urls) {
+    try {
+      const fullUrl = url.concat(file);
+      const response = await fetch(fullUrl);
+      const data = await response.json();
+      responses.push(data);
+    } catch (error) {
+      console.log(`Error fetching ${url}:`, error);
+      responses.push(null);
+    }
+  }
+  
+  return responses;
+};
+
+
 app.listen(3000);
 app.get('/', (req, res) => {
 res.sendfile( 'index.html');
 });
+app.get('sharefile', function(req, res) {
+  const file_id = req.query.file_id; 
+  fetchResponses(file_id)
+  .then(responses => {
+    console.log('Responses:', responses);
+   res.json(responses);
+    // Do something with the responses
+  })
+  .catch(error => {
+    console.log('Error:', error);
+  });
+});
+
 app.get('/getfiles', async (req, res) => {
   try {
     const files = await getfiles();
@@ -130,6 +168,7 @@ app.get('/api', function(req, res) {
   const file_id = req.query.fileid;
 main(user_id,file_id);
   
+
 
  /* res.send({
     'user_id': user_id,
