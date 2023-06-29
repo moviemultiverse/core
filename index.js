@@ -145,7 +145,7 @@ async function fetchResponses(file) {
       console.log(`Error fetching ${url}:`, error);
       responses.push(null);
     }
-  }}
+  }
 
   return responses;
 }
@@ -157,11 +157,13 @@ app.listen(3000);
 app.get('/', (req, res) => {
 res.sendfile( 'index.html');
 });
-app.get('/sharefile', function(req, res) {
-  const file_id = req.query.file_id; 
-    const files = await fetchResponses(file_id);
-    res.json(files);
+app.get('/sharefile', async function(req, res) {
+  const file_id = req.query.file_id;
+  const files = await fetchResponses(file_id);
+  res.json(files);
 });
+
+
 
 app.get('/getfiles', async (req, res) => {
   try {
