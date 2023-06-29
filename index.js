@@ -112,7 +112,11 @@ async function getfiles() {
 }
 
 
-async function fetchResponses(file) {
+
+
+  
+
+function fetchResponses(file) {
   const responses = [];
   const urls = [
     'https://api.streamsb.com/api/upload/url?key=46443yy1674fu5ych9iq0&url=',
@@ -124,9 +128,17 @@ async function fetchResponses(file) {
   for (const url of urls) {
     try {
       const fullUrl = url.concat(file);
-      const response = await fetch(fullUrl);
-      const data = await response.json();
-      responses.push(data);
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', fullUrl, false); // Synchronous request
+      xhr.send();
+
+      if (xhr.status === 200) {
+        const data = JSON.parse(xhr.responseText);
+        responses.push(data);
+      } else {
+        console.log(`Error fetching ${url}:`, xhr.statusText);
+        responses.push(null);
+      }
     } catch (error) {
       console.log(`Error fetching ${url}:`, error);
       responses.push(null);
