@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-
+const fs = require('fs');
 const file = "https://drive.google.com/file/d/1wW7M1fqTe6WvTHM9xo8q1Rxk3aw9GW1B/view";
 const urls = [
   'https://api.streamsb.com/api/upload/url?key=46443yy1674fu5ych9iq0&url=',
