@@ -1,7 +1,8 @@
-const ejs = require('ejs');
-const fetch = require('node-fetch');
-const { google } = require('googleapis');
-const fs = require('fs');
+import ejs from 'ejs';
+import fetch from 'node-fetch';
+import { google } from 'googleapis';
+import fs from 'fs';
+import express from 'express';
 var express = require('express'); 
 var app = express();
 app.use(express.json());
