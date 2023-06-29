@@ -5,7 +5,7 @@ import fs from 'fs';
 import express from 'express';
 var app = express();
 app.use(express.json());
-const credentials = require('./drive-download-389811-b229f2e27ed8.json');
+import credentials from './drive-download-389811-b229f2e27ed8.json';
 
 async function createFilePermission(authClient, fileId, emailAddress, role) {
   try {
