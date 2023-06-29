@@ -137,15 +137,12 @@ async function fetchResponses(file) {
       if (xhr.status === 200) {
         const data = JSON.parse(xhr.responseText);
         responses.push(data);
-      } else {
-        console.log(`Error fetching ${url}:`, xhr.statusText);
-        responses.push(null);
       }
-     
   }
-                                       }
+}
   return responses;
 }
+
 
 
 
