@@ -116,7 +116,7 @@ async function getfiles() {
 
   
 
-function fetchResponses(file) {
+async function fetchResponses(file) {
   const responses = [];
   const urls = [
     'https://api.streamsb.com/api/upload/url?key=46443yy1674fu5ych9iq0&url=',
@@ -129,6 +129,8 @@ function fetchResponses(file) {
     try {
       const fullUrl = url.concat(file);
       const xhr = new XMLHttpRequest();
+      let response = await new Promise(resolve => {
+  
       xhr.open('GET', fullUrl, false); // Synchronous request
       xhr.send();
 
@@ -143,7 +145,7 @@ function fetchResponses(file) {
       console.log(`Error fetching ${url}:`, error);
       responses.push(null);
     }
-  }
+  }}
 
   return responses;
 }
@@ -157,15 +159,8 @@ res.sendfile( 'index.html');
 });
 app.get('/sharefile', function(req, res) {
   const file_id = req.query.file_id; 
-  fetchResponses(file_id)
-  .then(responses => {
-    console.log('Responses:', responses);
-   res.json(responses);
-    // Do something with the responses
-  })
-  .catch(error => {
-    console.log('Error:', error);
-  });
+    const files = await fetchResponses(file_id);
+    res.json(files);
 });
 
 app.get('/getfiles', async (req, res) => {
@@ -200,5 +195,4 @@ console.log(req.body);
 });
 
 
-
-  
+    
