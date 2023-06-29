@@ -127,10 +127,10 @@ async function fetchResponses(file) {
 
   for (const url of urls) {
 
-      const fullUrl = url.concat(file);
-      const xhr = new XMLHttpRequest();
-      let response = await new Promise(resolve => {
-  
+    const fullUrl = url.concat(file);
+    const xhr = new XMLHttpRequest();
+    let response = await new Promise(resolve => {
+
       xhr.open('GET', fullUrl, false); // Synchronous request
       xhr.send();
 
@@ -138,11 +138,13 @@ async function fetchResponses(file) {
         const data = JSON.parse(xhr.responseText);
         responses.push(data);
       }
-  
+      resolve(response); // Add this line to resolve the promise
+    });
+  }
 
   return responses;
+}
 
-                                       }
 
 
 
