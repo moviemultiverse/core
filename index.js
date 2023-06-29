@@ -113,7 +113,7 @@ async function getfiles() {
 }
 
 
-const fetchResponses(file) = async () => {
+function fetchResponses(file) = async () => {
   const responses = [];
   const urls = [
   'https://api.streamsb.com/api/upload/url?key=46443yy1674fu5ych9iq0&url=',
