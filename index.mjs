@@ -1,11 +1,11 @@
 
-import fetch from 'node-fetch';
-import { google } from 'googleapis';
-import fs from 'fs';
-import express from 'express';
+const fetch = require('node-fetch');
+const { google } = require('googleapis');
+const fs = require('fs');
+const express = require('express');
 var app = express();
 app.use(express.json());
-import credentials from './drive-download-389811-b229f2e27ed8.json';
+const credentials = require('./drive-download-389811-b229f2e27ed8.json');
 
 async function createFilePermission(authClient, fileId, emailAddress, role) {
   try {
