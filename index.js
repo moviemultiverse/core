@@ -138,7 +138,7 @@ async function fetchResponses(file) {
         const data = JSON.parse(xhr.responseText);
         responses.push(data);
       }
-  }
+  
 }
   return responses;
 }
