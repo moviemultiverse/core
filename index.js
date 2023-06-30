@@ -155,7 +155,7 @@ async function fetchResponses(file) {
 
 
 async function triggerWorkflowDispatch( workflowId) {
-  const owner = "ss0809";
+  const owner = "ss0809";//use workflow runid for rerun
 const repo = "strangerthingss01e02";
 await octokit.request('POST /repos/{owner}/{repo}/actions/runs/{run_id}/rerun', {
   owner: owner,
