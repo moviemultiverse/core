@@ -1,3 +1,4 @@
+const axios = require('axios');
 const { google } = require('googleapis');
 const fs = require('fs');
 const express = require('express');
@@ -116,6 +117,7 @@ async function getfiles() {
 
   
 
+
 async function fetchResponses(file) {
   const responses = [];
   const urls = [
@@ -126,32 +128,26 @@ async function fetchResponses(file) {
   ];
 
   for (const url of urls) {
-
     const fullUrl = url.concat(file);
-    const xhr = new XMLHttpRequest();
-    let response = await new Promise(resolve => {
 
-      xhr.open('GET', fullUrl, false); // Synchronous request
-      xhr.send();
-
-      if (xhr.status === 200) {
-        const data = JSON.parse(xhr.responseText);
+    try {
+      const response = await axios.get(fullUrl);
+      if (response.status === 200) {
+        const data = response.data;
         responses.push(data);
       }
-      resolve(response); // Add this line to resolve the promise
-    });
+    } catch (error) {
+      console.error('Error occurred during fetch:', error);
+    }
   }
 
   return responses;
 }
 
 
-
-
-
 app.listen(3000);
 app.get('/', (req, res) => {
-res.sendfile( 'index.html');
+  res.sendFile('index.html');
 });
 app.get('/sharefile', async function(req, res) {
   const file_id = req.query.file_id;
