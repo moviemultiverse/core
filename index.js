@@ -152,58 +152,16 @@ async function fetchResponses(file) {
 
   return responses;
 }
-async function rerunWorkflow(workflowid) {
-  try {
-    // Get the latest workflow run
-    const { data: runs } = await octokit.actions.listWorkflowRuns({
-      owner,
-      repo,
-      workflow_id: workflowid,
-      per_page: 1, // Fetch only the latest run
-    });
-
-    // Rerun the latest workflow run
-    const latestRunId = runs[0].id;
-    await octokit.actions.reRunWorkflow({
-      owner,
-      repo,
-      run_id: latestRunId,
-    });
-     return "successful";
-    console.log("Workflow rerun initiated successfully.");
-  } catch (error) {
-    console.error("Error occurred while rerunning the workflow:", error);
-  }
-}
-
 
 
 async function triggerWorkflowDispatch( workflowId) {
   const owner = "ss0809";
 const repo = "strangerthingss01e02";
-const accessToken = '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';
-  const url = `https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflowId}/dispatches`;
-const headers = {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${accessToken}`
-  };
-
-  const payload = {
-    ref: 'main' // The branch or tag name on which the workflow should be triggered
-    // You can include additional inputs if your workflow requires them
-    // inputs: {
-    //   input1: 'value1',
-    //   input2: 'value2'
-    // }
-  };
-
-  try {
-    const response = await axios.post(url, payload, { headers });
-    console.log('Workflow dispatch triggered successfully!');
-    return ( response.data);
-  } catch (error) {
-    console.error('Error triggering workflow dispatch:', error.response.data);
-  }
+await octokit.request('POST /repos/{owner}/{repo}/actions/runs/{run_id}/rerun', {
+  owner: owner,
+  repo: repo,
+  run_id: workflowId
+})
 }
 
 // Usage example
