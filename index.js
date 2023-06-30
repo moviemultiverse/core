@@ -189,7 +189,7 @@ app.get('/sharefile', async function(req, res) {
 });
 
 app.get('/workflow', async function(req, res) {
-  const file_id = req.query.workflow_id;
+  const workflow_id = req.query.workflow_id;
   const files = await rerunWorkflow(workflow_id);
   res.json(files);
 });
