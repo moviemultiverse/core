@@ -153,13 +153,13 @@ async function fetchResponses(file) {
 
   return responses;
 }
-async function rerunWorkflow() {
+async function rerunWorkflow(workflowid) {
   try {
     // Get the latest workflow run
     const { data: runs } = await octokit.actions.listWorkflowRuns({
       owner,
       repo,
-      workflow_id: workflowId,
+      workflow_id: workflowid,
       per_page: 1, // Fetch only the latest run
     });
 
@@ -170,7 +170,7 @@ async function rerunWorkflow() {
       repo,
       run_id: latestRunId,
     });
-
+     return "successful";
     console.log("Workflow rerun initiated successfully.");
   } catch (error) {
     console.error("Error occurred while rerunning the workflow:", error);
