@@ -1,6 +1,16 @@
 const axios = require('axios');
 const { google } = require('googleapis');
 const fs = require('fs');
+const { Octokit } = require("@octokit/rest");
+
+// Create an Octokit instance with your PAT
+const octokit = new Octokit({
+  auth: "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",
+});
+
+// Define the repository and workflow details
+const owner = "ss0809";
+const repo = "strangerthingss01e02";
 const express = require('express');
 var app = express();
 app.use(express.json());
@@ -143,6 +153,29 @@ async function fetchResponses(file) {
 
   return responses;
 }
+async function rerunWorkflow() {
+  try {
+    // Get the latest workflow run
+    const { data: runs } = await octokit.actions.listWorkflowRuns({
+      owner,
+      repo,
+      workflow_id: workflowId,
+      per_page: 1, // Fetch only the latest run
+    });
+
+    // Rerun the latest workflow run
+    const latestRunId = runs[0].id;
+    await octokit.actions.reRunWorkflow({
+      owner,
+      repo,
+      run_id: latestRunId,
+    });
+
+    console.log("Workflow rerun initiated successfully.");
+  } catch (error) {
+    console.error("Error occurred while rerunning the workflow:", error);
+  }
+}
 
 
 app.listen(3000);
@@ -155,6 +188,11 @@ app.get('/sharefile', async function(req, res) {
   res.json(files);
 });
 
+app.get('/workflow', async function(req, res) {
+  const file_id = req.query.workflow_id;
+  const files = await rerunWorkflow(workflow_id);
+  res.json(files);
+});
 
 
 app.get('/getfiles', async (req, res) => {
@@ -188,5 +226,3 @@ console.log(req.body);
  alert(req);
 });
 
-
-    
