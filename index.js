@@ -9,8 +9,7 @@ const octokit = new Octokit({
 });
 
 // Define the repository and workflow details
-const owner = "ss0809";
-const repo = "strangerthingss01e02";
+
 const express = require('express');
 var app = express();
 app.use(express.json());
@@ -178,6 +177,39 @@ async function rerunWorkflow(workflowid) {
 }
 
 
+
+async function triggerWorkflowDispatch( workflowId) {
+  const owner = "ss0809";
+const repo = "strangerthingss01e02";
+const accessToken = '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';
+  const url = `https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflowId}/dispatches`;
+const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${accessToken}`
+  };
+
+  const payload = {
+    ref: 'main' // The branch or tag name on which the workflow should be triggered
+    // You can include additional inputs if your workflow requires them
+    // inputs: {
+    //   input1: 'value1',
+    //   input2: 'value2'
+    // }
+  };
+
+  try {
+    const response = await axios.post(url, payload, { headers });
+    console.log('Workflow dispatch triggered successfully!');
+    return ( response.data);
+  } catch (error) {
+    console.error('Error triggering workflow dispatch:', error.response.data);
+  }
+}
+
+// Usage example
+
+
+
 app.listen(3000);
 app.get('/', (req, res) => {
   res.sendFile('index.html');
@@ -190,7 +222,7 @@ app.get('/sharefile', async function(req, res) {
 
 app.get('/workflow', async function(req, res) {
   const workflowid = req.query.workflowid;
-  const files = await rerunWorkflow(workflowid);
+  const files = await triggerWorkflowDispatch(workflowid);
   res.json(files);
 });
 
