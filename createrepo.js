@@ -1,23 +1,22 @@
 const axios = require('axios');
 const fs = require('fs');
-function getpublickey(){
+function getPublicKey() {
   const owner = "ss0809";
-const repo = "my-new-repo";
-const token = "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";
-fetch(`https://api.github.com/repos/${owner}/${repo}/actions/secrets/public-key`, {
-  headers: {
-    Authorization: `Bearer ${token}`
-  }
-})
-  .then(response => response.json())
-  .then(data => {
-    const publicKey = data.key_id;
+  const repo = "my-new-repo";
+  const token = "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";
+  
+  axios.get(`https://api.github.com/repos/${owner}/${repo}/actions/secrets/public-key`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  .then(response => {
+    const publicKey = response.data.key_id;
     console.log(publicKey);
   })
   .catch(error => {
     console.error("Error retrieving environment public key:", error);
   });
-
 }
 function replacer(filePath,searchWord,replacement){
 // Read the file contents
