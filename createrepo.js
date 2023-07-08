@@ -5,16 +5,22 @@ const octokit = new Octokit({
   auth: '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'
 })
 async function getPublicKey() {
-const response = await octokit.request('GET /repos/SS0809/my-new-repo/actions/secrets/public-key', {
-  owner: 'SS0809',
-  repo: 'my-new-repo',
-  headers: {
-    'X-GitHub-Api-Version': '2022-11-28'
+  try {
+    const response = await octokit.request('GET /repos/SS0809/my-new-repo/actions/secrets/public-key', {
+      owner: 'SS0809',
+      repo: 'my-new-repo',
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
+    });
+
+    console.log(response.data.key_id);
+    console.log(response.data.key);
+  } catch (error) {
+    console.error('Error:', error.message);
   }
-})
-  console.log(response.key_id);
-  console.log(response.key);
 }
+
 
 function replacer(filePath,searchWord,replacement){
 // Read the file contents
