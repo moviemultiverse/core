@@ -48,7 +48,7 @@ jobs:
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ss0809/your_name
+          repository: ${{github.event.repository.name}}
           event-type: trigger-workflow-1
 
 
