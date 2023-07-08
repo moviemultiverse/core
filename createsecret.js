@@ -1,7 +1,7 @@
 const { Octokit } = require('@octokit/rest');
 const sodium = require('libsodium-wrappers');
 
-let key, key_id, output;
+var key, key_id, output;
 
 async function getRepoPublicKey() {
   const octokit = new Octokit({
@@ -23,8 +23,8 @@ async function getRepoPublicKey() {
     const { key_id, key } = response.data;
     console.log('Key ID:', key_id);
     console.log('Public Key:', key);
-    key_id = key_id;
-    key = key;
+    key_id1 = key_id;
+    key1 = key;
   } catch (error) {
     console.error('Error retrieving repo public key:', error);
   }
