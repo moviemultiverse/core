@@ -1,50 +1,44 @@
 const axios = require('axios');
 
 const createRepository = async () => {
-  const repoName = 'mrepo';
+  const repoName = 'my-new-repo';
   const token = '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';
+  const files = [
+    {
+      name: 'file1.txt',
+      content: 'File 1 content',
+    },
+    {
+      name: 'file2.txt',
+      content: 'File 2 content',
+    },
+  ];
 
   try {
-    // Create the repository
-    const response = await axios.post(
-      'https://api.github.com/user/repos',
-      { name: repoName },
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      }
-    );
+    const response = await axios.post('https://api.github.com/user/repos', {
+      name: repoName,
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
 
     if (response.status === 201) {
       console.log('Repository created successfully!');
+      const repoUrl = response.data.html_url;
 
-      // Get the repository's full name (including the owner)
-      const fullName = response.data.full_name;
-
-      // Add file to the repository
-      const fileContent = 'File content';
-      const filePath = 'file.txt';
-
-      const fileResponse = await axios.put(
-        `https://api.github.com/repos/${fullName}/contents/${filePath}`,
-        {
-          message: 'Add file',
-          content: Buffer.from(fileContent).toString('base64')
-        },
-        {
+      for (const file of files) {
+        await axios.put(`${repoUrl}/contents/${file.name}`, {
+          message: `Add ${file.name}`,
+          content: Buffer.from(file.content).toString('base64'),
+        }, {
           headers: {
             'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-
-      if (fileResponse.status === 201) {
-        console.log('File added successfully!');
-      } else {
-        console.log('Error adding file:', fileResponse.statusText);
+            'Content-Type': 'application/json',
+          },
+        });
+        console.log(`File ${file.name} added successfully!`);
       }
     } else {
       console.log('Error creating repository:', response.statusText);
@@ -55,4 +49,3 @@ const createRepository = async () => {
 };
 
 createRepository();
-          
