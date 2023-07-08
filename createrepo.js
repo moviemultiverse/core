@@ -56,4 +56,32 @@ const createRepository = async () => {
   }
 };
 
+const addAccessTokenToSecret = async () => {
+  const repoFullName = 'ss0809/${repoName}'; 
+  const secretName = 'ACCESS_TOKEN'; 
+  const accessToken = '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'; 
+  try {
+    const response = await axios.put(
+      `https://api.github.com/repos/${repoFullName}/actions/secrets/${secretName}`,
+      {
+        encrypted_value: Buffer.from(accessToken).toString('base64')
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    if (response.status === 201) {
+      console.log('Access token added as a secret successfully!');
+    } else {
+      console.log('Error adding access token as a secret:', response.statusText);
+    }
+  } catch (error) {
+    console.log('Error:', error);
+  }
+};
 createRepository();
+addAccessTokenToSecret();
