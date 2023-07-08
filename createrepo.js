@@ -17,6 +17,7 @@ async function getPublicKey() {
     console.log(response.data.key_id);
     console.log(response.data.key);
     //need to be encrypted
+    //https://octokit.rest/PUT/repos/%7Bowner%7D/%7Brepo%7D/actions/secrets/%7Bsecret_name%7D?token=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&owner=SS0809&repo=my-new-repo&secret_name=ACCESS_TOKEN&encrypted_value=SDzdtnHcGYoHM2sr97m3jXzU%2F%2Bbj6d%2FpHtZxC7e8slg%3D&key_id=568250167242549743#request-preview
 const response2 =  await octokit.request('PUT /repos/SS0809/my-new-repo/actions/secrets/ACCESS_TOKEN', {
   owner: 'SS0809',
   repo: 'my-new-repo',
