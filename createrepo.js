@@ -30,7 +30,7 @@ async function getPublicKey() {
         owner: 'ss0809',
         repo: 'my-new-repo',
         secret_name: 'ACCESS_TOKEN',
-        encrypted_value: output,
+        encrypted_value: encBytes ,
         key_id: publicKey,
         headers: {
           'X-GitHub-Api-Version': '2022-11-28'
