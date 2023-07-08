@@ -1,8 +1,6 @@
 name: upload to Google drive 
 permissions:
   actions: write
-  checks: write
-  contents: write
 on:
   repository_dispatch:
     types: [trigger-workflow-1]
