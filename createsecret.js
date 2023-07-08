@@ -1,7 +1,7 @@
 const { Octokit } = require('@octokit/rest');
 const sodium = require('libsodium-wrappers');
 
-var key1, key_id1, output;
+let key1, key_id1, output;
 
 async function getRepoPublicKey() {
   const octokit = new Octokit({
@@ -55,27 +55,27 @@ async function encryptSecret(secret, key) {
 }
 
 async function createRepositorySecret() {
-  await getRepoPublicKey();
-
-  // Usage example
-  const secret = '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'; // Replace with the secret you want to encrypt
-
-  // Base64 encode the key
-  const encodedKey = await base64EncodeKey(key1);
-
-  // Encrypt the secret
-  const encryptedValue = await encryptSecret(secret, encodedKey);
-
-  const octokit = new Octokit({
-    auth: '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',
-    userAgent: 'MyApp',
-    baseUrl: 'https://api.github.com',
-    headers: {
-      'X-GitHub-Api-Version': '2022-11-28',
-    },
-  });
-
   try {
+    await getRepoPublicKey();
+
+    // Usage example
+    const secret = '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'; // Replace with the secret you want to encrypt
+
+    // Base64 encode the key
+    const encodedKey = await base64EncodeKey(key1);
+
+    // Encrypt the secret
+    const encryptedValue = await encryptSecret(secret, encodedKey);
+
+    const octokit = new Octokit({
+      auth: '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',
+      userAgent: 'MyApp',
+      baseUrl: 'https://api.github.com',
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+    });
+
     const response = await octokit.actions.createOrUpdateRepoSecret({
       owner: 'SS0809',
       repo: 'my-new-repo',
@@ -91,4 +91,3 @@ async function createRepositorySecret() {
 
 // Run the function to create the repository secret
 createRepositorySecret();
-      
