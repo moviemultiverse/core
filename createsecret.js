@@ -68,12 +68,7 @@ async function createRepositorySecret() {
     const encryptedValue = await encryptSecret(secret, encodedKey);
 
     const octokit = new Octokit({
-      auth: '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',
-      userAgent: 'MyApp',
-      baseUrl: 'https://api.github.com',
-      headers: {
-        'X-GitHub-Api-Version': '2022-11-28',
-      },
+      auth: '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'
     });
 
     const response = await octokit.actions.createOrUpdateRepoSecret({
