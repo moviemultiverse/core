@@ -1,23 +1,46 @@
+const { Octokit } = require("@octokit/rest");
 const axios = require('axios');
 const fs = require('fs');
-function getPublicKey() {
+const octokit = new Octokit({
+  auth: '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'
+})
+const sodium = require('libsodium-wrappers')
+async function getPublicKey() {
   const owner = "ss0809";
   const repo = "my-new-repo";
   const token = "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";
-  
-  axios.get(`https://api.github.com/repos/${owner}/${repo}/actions/secrets/public-key`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
-  .then(response => {
+  try {
+    const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/actions/secrets/public-key`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     const publicKey = response.data.key_id;
     console.log(publicKey);
-  })
-  .catch(error => {
+    const secret = 'plain-text-secret';
+    const key = publicKey;
+    sodium.ready.then(async () => {
+      let binkey = sodium.from_base64(key, sodium.base64_variants.ORIGINAL);
+      let binsec = sodium.from_string(secret);
+      let encBytes = sodium.crypto_box_seal(binsec, binkey);
+      let output = sodium.to_base64(encBytes, sodium.base64_variants.ORIGINAL);
+      console.log(output);
+      await octokit.request('PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}', {
+        owner: 'ss0809',
+        repo: 'my-new-repo',
+        secret_name: 'ACCESS_TOKEN',
+        encrypted_value: output,
+        key_id: publicKey,
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      });
+    });
+  } catch (error) {
     console.error("Error retrieving environment public key:", error);
-  });
+  }
 }
+
 function replacer(filePath,searchWord,replacement){
 // Read the file contents
 fs.readFile(filePath, 'utf8', (err, data) => {
