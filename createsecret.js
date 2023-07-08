@@ -6,9 +6,9 @@ async function getRepoPublicKey() {
   });
 
   try {
-    const response = await octokit.request('GET /repos/{owner}/{repo}/actions/secrets/public-key', {
-      owner: 'OWNER',
-      repo: 'REPO',
+    const response = await octokit.request('GET /repos/SS0809/my-new-repo/actions/secrets/public-key', {
+      owner: 'SS0809',
+      repo: 'my_new_repo',
       headers: {
         'Accept': 'application/vnd.github.v3+json',
         'X-GitHub-Api-Version': '2022-11-28',
@@ -24,4 +24,3 @@ async function getRepoPublicKey() {
 }
 
 getRepoPublicKey();
-
