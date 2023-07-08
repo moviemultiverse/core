@@ -20,7 +20,14 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 const createRepository = async () => {
   const repoName = 'my-new-repo';
   const token = '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';
-  const filePaths = ['dtog.py','gtod.py','gtod.sh','dtog.sh']; // Paths of the existing files
+  const filePaths = [
+    'dtog.py',
+    'gtod.py',
+    'gtod.sh',
+    'dtog.sh',
+    '.github/workflows/gtod.yml' ,
+    '.github/workflows/dtog.yml'
+  ];
 
   try {
     // Create the repository
@@ -42,28 +49,54 @@ const createRepository = async () => {
       const fullName = response.data.full_name;
 
       for (const filePath of filePaths) {
-        // Read the file content from the existing file
-        const fileContent = fs.readFileSync(filePath, 'utf-8');
+        // Check if the current path is a folder
+        const isFolder = filePath.endsWith('/');
 
-        // Add file to the repository
-        const fileResponse = await axios.put(
-          `https://api.github.com/repos/${fullName}/contents/${filePath}`,
-          {
-            message: 'Add file',
-            content: Buffer.from(fileContent).toString('base64')
-          },
-          {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json'
+        if (isFolder) {
+          // Create the folder by adding a file with an empty content
+          const folderResponse = await axios.put(
+            `https://api.github.com/repos/${fullName}/contents/${filePath}`,
+            {
+              message: 'Add folder',
+              content: Buffer.from('').toString('base64') // Empty content for folders
+            },
+            {
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              }
             }
-          }
-        );
+          );
 
-        if (fileResponse.status === 201) {
-          console.log(`File '${filePath}' added successfully!`);
+          if (folderResponse.status === 201) {
+            console.log(`Folder '${filePath}' added successfully!`);
+          } else {
+            console.log(`Error adding folder '${filePath}':`, folderResponse.statusText);
+          }
         } else {
-          console.log(`Error adding file '${filePath}':`, fileResponse.statusText);
+          // Read the file content from the existing file
+          const fileContent = fs.readFileSync(filePath, 'utf-8');
+
+          // Add file to the repository
+          const fileResponse = await axios.put(
+            `https://api.github.com/repos/${fullName}/contents/${filePath}`,
+            {
+              message: 'Add file',
+              content: Buffer.from(fileContent).toString('base64')
+            },
+            {
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              }
+            }
+          );
+
+          if (fileResponse.status === 201) {
+            console.log(`File '${filePath}' added successfully!`);
+          } else {
+            console.log(`Error adding file '${filePath}':`, fileResponse.statusText);
+          }
         }
       }
     } else {
