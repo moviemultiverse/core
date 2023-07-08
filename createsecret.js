@@ -61,7 +61,7 @@ async function createRepositorySecret() {
   const secret = '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'; // Replace with the secret you want to encrypt
 
   // Base64 encode the key
-  const encodedKey = await base64EncodeKey(key);
+  const encodedKey = await base64EncodeKey(key1);
 
   // Encrypt the secret
   const encryptedValue = await encryptSecret(secret, encodedKey);
@@ -91,4 +91,4 @@ async function createRepositorySecret() {
 
 // Run the function to create the repository secret
 createRepositorySecret();
-
+      
