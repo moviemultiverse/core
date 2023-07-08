@@ -1,50 +1,57 @@
-const { Octokit } = require('@octokit/rest');
+const axios = require('axios');
 const fs = require('fs');
 
-const octokit = new Octokit({
-  auth: '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' // Your personal access token
-});
-
 const createRepository = async () => {
-  const repoName = 'my-new-repo';
+  const repoName = 'myrepo';
+  const token = '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';
   const filePath = 'file.txt'; // Path of the existing file
 
   try {
     // Create the repository
-    const repoResponse = await octokit.repos.createForAuthenticatedUser({
-      name: repoName,
-      private: true
-    });
+    const response = await axios.post(
+      'https://api.github.com/user/repos',
+     { name: repoName, private: true }, 
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
 
-    if (repoResponse.status === 201) {
+    if (response.status === 201) {
       console.log('Repository created successfully!');
 
       // Get the repository's full name (including the owner)
-      const fullName = repoResponse.data.full_name;
+      const fullName = response.data.full_name;
 
       // Read the file content from the existing file
       const fileContent = fs.readFileSync(filePath, 'utf-8');
 
       // Add file to the repository
-      const fileResponse = await octokit.repos.createOrUpdateFileContents({
-        owner: octokit.auth.username,
-        repo: fullName,
-        path: filePath,
-        message: 'Add file',
-        content: Buffer.from(fileContent).toString('base64')
-      });
+      const fileResponse = await axios.put(
+        `https://api.github.com/repos/${fullName}/contents/${filePath}`,
+        {
+          message: 'Add file',
+          content: Buffer.from(fileContent).toString('base64')
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
 
       if (fileResponse.status === 201) {
         console.log('File added successfully!');
       } else {
-        console.log('Error adding file:', fileResponse.message);
+        console.log('Error adding file:', fileResponse.statusText);
       }
     } else {
-      console.log('Error creating repository:', repoResponse.message);
+      console.log('Error creating repository:', response.statusText);
     }
   } catch (error) {
-    console.log('Error:', error.message);
+    console.log('Error:', error);
   }
 };
-
-createRepository();
