@@ -2,7 +2,7 @@ const axios = require('axios');
 const fs = require('fs');
 
 const createRepository = async () => {
-  const repoName = 'myrepo';
+  const repoName = 'my-new-repo';
   const token = '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';
   const filePath = 'file.txt'; // Path of the existing file
 
@@ -55,3 +55,5 @@ const createRepository = async () => {
     console.log('Error:', error);
   }
 };
+
+createRepository();
