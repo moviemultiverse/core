@@ -20,7 +20,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 const createRepository = async () => {
   const repoName = 'my-new-repo';
   const token = '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';
-  const filePaths = ['file.txt']; // Paths of the existing files
+  const filePaths = ['dtog.py','gtod.py','gtod.sh','dtog.sh']; // Paths of the existing files
 
   try {
     // Create the repository
