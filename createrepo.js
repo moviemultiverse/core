@@ -5,32 +5,60 @@ const octokit = new Octokit({
   auth: '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'
 })
 async function getPublicKey() {
+  const sodium = require('sodium').api;
+const { Octokit } = require('@octokit/rest');
+
+async function createRepoSecret() {
+  const owner = 'SS0809';
+  const repo = 'my-new-repo';
+  const secretName = 'ACCESS_TOKEN';
+  const valueToEncrypt = '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';
+  const keyId = '568250167242549743'; // Replace with your key ID
+
+  // Generate a random encryption key
+  const key = sodium.crypto_secretbox_keygen();
+
+  // Encrypt the secret value
+  const nonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
+  const encryptedValue = sodium.crypto_secretbox_easy(
+    Buffer.from(valueToEncrypt),
+    nonce,
+    key
+  );
+
+  // Convert the encrypted value and nonce to hexadecimal strings
+  const encryptedValueHex = encryptedValue.toString('hex');
+  const nonceHex = nonce.toString('hex');
+
+  const octokit = new Octokit({
+    auth: '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',
+    baseUrl: 'https://api.github.com',
+    headers: {
+      'X-GitHub-Api-Version': '2022-11-28'
+    }
+  });
+
   try {
-    const response = await octokit.request('GET /repos/SS0809/my-new-repo/actions/secrets/public-key', {
-      owner: 'SS0809',
-      repo: 'my-new-repo',
-      headers: {
-        'X-GitHub-Api-Version': '2022-11-28'
-      }
+    // Create the repository secret
+    const response = await octokit.actions.createOrUpdateRepoSecret({
+      owner,
+      repo,
+      secret_name: secretName,
+      encrypted_value: encryptedValueHex,
+      key_id: keyId,
+      key: key.toString('hex'),
+      nonce: nonceHex
     });
 
-    console.log(response.data.key_id);
-    console.log(response.data.key);
-    //need to be encrypted
-    //https://octokit.rest/PUT/repos/%7Bowner%7D/%7Brepo%7D/actions/secrets/%7Bsecret_name%7D?token=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&owner=SS0809&repo=my-new-repo&secret_name=ACCESS_TOKEN&encrypted_value=SDzdtnHcGYoHM2sr97m3jXzU%2F%2Bbj6d%2FpHtZxC7e8slg%3D&key_id=568250167242549743#request-preview
-const response2 =  await octokit.request('PUT /repos/SS0809/my-new-repo/actions/secrets/ACCESS_TOKEN', {
-  owner: 'SS0809',
-  repo: 'my-new-repo',
-  secret_name: 'ACCESS_TOKEN',
-  encrypted_value: ,
-  key_id: response.data.key_id,
-  headers: {
-    'X-GitHub-Api-Version': '2022-11-28'
+    console.log('Repository secret created:', response.data);
+  } catch (error) {
+    console.error('Error creating repository secret:', error);
   }
-})
-    } catch (error) {
-    console.error('Error:', error.message);
-  }
+}
+
+// Call the function
+createRepoSecret();
+
 }
 
 
