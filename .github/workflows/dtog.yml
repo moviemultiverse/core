@@ -1,6 +1,9 @@
-name: Commit changes
+name: commit changes
 
 on:
+  create:
+    branches:
+      - main
   push:
     branches:
       - main
