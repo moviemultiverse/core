@@ -16,7 +16,18 @@ async function getPublicKey() {
 
     console.log(response.data.key_id);
     console.log(response.data.key);
-  } catch (error) {
+    //need to be encrypted
+const response2 =  await octokit.request('PUT /repos/SS0809/my-new-repo/actions/secrets/ACCESS_TOKEN', {
+  owner: 'SS0809',
+  repo: 'my-new-repo',
+  secret_name: 'ACCESS_TOKEN',
+  encrypted_value: ,
+  key_id: response.data.key_id,
+  headers: {
+    'X-GitHub-Api-Version': '2022-11-28'
+  }
+})
+    } catch (error) {
     console.error('Error:', error.message);
   }
 }
