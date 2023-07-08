@@ -1,9 +1,7 @@
 const { Octokit } = require("@octokit/rest");
 const axios = require('axios');
 const fs = require('fs');
-import _sodium from 'libsodium-wrappers';
-const { Octokit } = require("@octokit/core");
-const sodium = require("tweetsodium");
+const sodium = require("libsodium-wrappers");
 
 // Function to create a GitHub repository secret
 async function createRepositorySecret(owner, repo, secretName, encryptedValue, keyId) {
