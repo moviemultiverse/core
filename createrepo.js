@@ -57,7 +57,7 @@ const createRepository = async () => {
 };
 
 const addAccessTokenToSecret = async () => {
-  const repoFullName = 'ss0809/${repoName}'; 
+  const repoFullName = 'ss0809/my-new-repo'; 
   const secretName = 'ACCESS_TOKEN'; 
   const accessToken = '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'; 
   try {
