@@ -1,50 +1,28 @@
 const axios = require('axios');
 
-// Replace <TOKEN> with your personal access token
-const token = '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';
-const repoName = 'myrepo';
-const files = [
-  {
-    name: 'file1.txt',
-    content: 'File 1 content',
-  },
-  {
-    name: 'file2.txt',
-    content: 'File 2 content',
-  },
-];
 
-async function createRepo() {
+const createRepository = async () => {
+  const repoName = 'my-new-repo';
+  const token = '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';
+
   try {
-    // Create a new repository
-    const repoResponse = await axios.post('https://api.github.com/user/repos', {
-      name: repoName,
-      private: false,
+    const response = await axios.post('https://api.github.com/user/repos', {
+      name: repoName
     }, {
       headers: {
-        Authorization: `Bearer ${token}`,
-      },
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
     });
 
-    // Get the newly created repository's URL
-    const repoUrl = repoResponse.data.html_url;
-
-    // Add files to the repository
-    for (const file of files) {
-      await axios.put(`${repoUrl}/contents/${file.name}`, {
-        message: `Add ${file.name}`,
-        content: Buffer.from(file.content).toString('base64'),
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+    if (response.status === 201) {
+      console.log('Repository created successfully!');
+    } else {
+      console.log('Error creating repository:', response.statusText);
     }
-
-    console.log('Repository and files created successfully!');
   } catch (error) {
-    console.error('An error occurred:', error.response.data.message);
+    console.log('Error:', error);
   }
-}
+};
 
-createRepo();
+createRepository();
