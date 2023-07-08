@@ -1,56 +1,6 @@
 const { Octokit } = require("@octokit/rest");
 const axios = require('axios');
 const fs = require('fs');
-const sodium = require("libsodium-wrappers");
-
-// Function to create a GitHub repository secret
-async function createRepositorySecret(owner, repo, secretName, encryptedValue, keyId) {
-  const octokit = new Octokit({
-    auth: "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",
-    userAgent: "MyApp v1.0.0",
-    baseUrl: "https://api.github.com",
-    previews: ["symmetra-preview"], // Required for using secrets API
-    timeZone: "Europe/London",
-    timeZoneOffset: 0,
-  });
-
-  const publicKeyResponse = await octokit.request(
-    "GET /repos/{owner}/{repo}/actions/secrets/public-key",
-    {
-      owner,
-      repo,
-    }
-  );
-
-  const publicKey = publicKeyResponse.data.key;
-
-  // Encrypt the secret value using libSodium
-  const valueBytes = Buffer.from(encryptedValue);
-  const keyBytes = Buffer.from(publicKey, "base64");
-  const encryptedBytes = sodium.seal(valueBytes, keyBytes);
-  const encryptedValueBase64 = Buffer.from(encryptedBytes).toString("base64");
-
-  // Create or update the repository secret
-  await octokit.request(
-    "PUT /repos/ss0809/my-new-repo/actions/secrets/ACCESS_TOKEN",
-    {
-      owner,
-      repo,
-      secret_name: secretName,
-      encrypted_value: encryptedValueBase64,
-      key_id: keyId,
-      headers: {
-        "X-GitHub-Api-Version": "2022-11-28",
-      },
-    }
-  );
-
-  console.log("Repository secret created successfully.");
-}
-
-// Usage example
-createRepositorySecret("SS0809", "my-new-repo", "ACCESS_TOKEN", "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", "5682501672425497");
-                               
 
 function replacer(filePath,searchWord,replacement){
 // Read the file contents
