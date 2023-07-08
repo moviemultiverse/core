@@ -1,6 +1,22 @@
 const axios = require('axios');
 const fs = require('fs');
-
+function replacer(filePath,searchWord,replacement){
+// Read the file contents
+fs.readFile(filePath, 'utf8', (err, data) => {
+  if (err) {
+    console.error('Error reading file:', err);
+    return;
+  }
+  const modifiedData = data.replace(new RegExp(searchWord, 'g'), replacement);
+  fs.writeFile(filePath, modifiedData, 'utf8', (err) => {
+    if (err) {
+      console.error('Error writing file:', err);
+      return;
+    }
+    console.log('Word replaced successfully!');
+  });
+});
+}
 const createRepository = async () => {
   const repoName = 'my-new-repo';
   const token = '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';
