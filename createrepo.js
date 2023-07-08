@@ -20,6 +20,7 @@ async function getPublicKey() {
     const secret = 'plain-text-secret';
     const key = publicKey;
     sodium.ready.then(async () => {
+     try {
       let binkey = sodium.from_base64(key, sodium.base64_variants.ORIGINAL);
       let binsec = sodium.from_string(secret);
       let encBytes = sodium.crypto_box_seal(binsec, binkey);
@@ -35,6 +36,9 @@ async function getPublicKey() {
           'X-GitHub-Api-Version': '2022-11-28'
         }
       });
+        } catch (error) {
+    console.error("Error retrieving environment public key:", error);
+  }
     });
   } catch (error) {
     console.error("Error retrieving environment public key:", error);
