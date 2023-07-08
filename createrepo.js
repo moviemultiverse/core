@@ -19,7 +19,7 @@ async function createRepo() {
     // Create a new repository
     const repoResponse = await axios.post('https://api.github.com/user/repos', {
       name: repoName,
-      private: true,
+      private: false,
     }, {
       headers: {
         Authorization: `Bearer ${token}`,
