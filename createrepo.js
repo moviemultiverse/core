@@ -25,6 +25,7 @@ const createRepository = async () => {
     'gtod.py',
     'gtod.sh',
     'dtog.sh',
+    'client_secrets.json',
     '.github/workflows/gtod.yml' ,
     '.github/workflows/dtog.yml'
   ];
