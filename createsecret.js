@@ -1,7 +1,7 @@
 const { Octokit } = require('@octokit/rest');
 const sodium = require('libsodium-wrappers');
 
-var key, key_id, output;
+var key1, key_id1, output;
 
 async function getRepoPublicKey() {
   const octokit = new Octokit({
@@ -23,8 +23,8 @@ async function getRepoPublicKey() {
     const { key_id, key } = response.data;
     console.log('Key ID:', key_id);
     console.log('Public Key:', key);
-    key_id = key_id;
-    key = key;
+    key_id1 = key_id;
+    key1 = key;
   } catch (error) {
     console.error('Error retrieving repo public key:', error);
   }
@@ -81,7 +81,7 @@ async function createRepositorySecret() {
       repo: 'my-new-repo',
       secret_name: 'ACCESS_TOKEN',
       encrypted_value: encryptedValue,
-      key_id: key_id,
+      key_id: key_id1,
     });
     console.log('Repository secret created:', response.data);
   } catch (error) {
