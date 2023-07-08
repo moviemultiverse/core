@@ -164,7 +164,44 @@ await octokit.request('POST /repos/{owner}/{repo}/actions/runs/{run_id}/rerun', 
 })
 }
 
-// Usage example
+async function deleteMP4File(fileId) {
+  try {
+    // Authenticate using the service account credentials
+   
+
+const SCOPES = ['https://www.googleapis.com/auth/drive'];
+
+// Load the service account credentials
+const credentials = require('./drive-download-389811-b229f2e27ed8.json');
+
+// Create a JWT client
+const authh = new google.auth.JWT(
+  credentials.client_email,
+  null,
+  credentials.private_key,
+  SCOPES
+);
+authh.authorize((err, tokens) => {
+  if (err) {
+    console.error('Authentication failed:', err);
+    return;
+  }
+
+  console.log('Authentication successful!');
+  
+});
+const drive = google.drive({ version: 'v3', auth: authh });
+
+    // Delete the file
+    await drive.files.delete({
+      fileId: fileId,
+    });
+
+    console.log('File deleted successfully.');
+  } catch (error) {
+    console.error('Error deleting file:', error);
+  }
+}
 
 
 
@@ -172,12 +209,16 @@ app.listen(3000);
 app.get('/', (req, res) => {
   res.sendFile('index.html');
 });
+app.get('/deletefile', async function(req, res) {
+  const file_id = req.query.file_id;
+  const files = await deleteMP4File(file_id);
+  res.json(files);
+});
 app.get('/sharefile', async function(req, res) {
   const file_id = req.query.file_id;
   const files = await fetchResponses(file_id);
   res.json(files);
 });
-
 app.get('/workflow', async function(req, res) {
   const workflowid = req.query.workflowid;
   const files = await triggerWorkflowDispatch(workflowid);
