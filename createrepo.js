@@ -2,7 +2,7 @@ const axios = require('axios');
 
 // Replace <TOKEN> with your personal access token
 const token = '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';
-const repoName = 'my-new-repo';
+const repoName = 'myrepo';
 const files = [
   {
     name: 'file1.txt',
