@@ -1,22 +1,51 @@
 const axios = require('axios');
 
-
 const createRepository = async () => {
-  const repoName = 'my-new-repo';
+  const repoName = 'mrepo';
   const token = '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';
 
   try {
-    const response = await axios.post('https://api.github.com/user/repos', {
-      name: repoName
-    }, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
+    // Create the repository
+    const response = await axios.post(
+      'https://api.github.com/user/repos',
+      { name: repoName },
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
       }
-    });
+    );
 
     if (response.status === 201) {
       console.log('Repository created successfully!');
+
+      // Get the repository's full name (including the owner)
+      const fullName = response.data.full_name;
+
+      // Add file to the repository
+      const fileContent = 'File content';
+      const filePath = 'file.txt';
+
+      const fileResponse = await axios.put(
+        `https://api.github.com/repos/${fullName}/contents/${filePath}`,
+        {
+          message: 'Add file',
+          content: Buffer.from(fileContent).toString('base64')
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      if (fileResponse.status === 201) {
+        console.log('File added successfully!');
+      } else {
+        console.log('Error adding file:', fileResponse.statusText);
+      }
     } else {
       console.log('Error creating repository:', response.statusText);
     }
@@ -26,3 +55,4 @@ const createRepository = async () => {
 };
 
 createRepository();
+          
