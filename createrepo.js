@@ -17,7 +17,7 @@ const files = [
 async function createRepo() {
   try {
     // Create a new repository
-    const repoResponse = await axios.post('https://api.github.com/user/repos', {
+    const repoResponse = await axios.post('https://api.github.com/ss0809/repos', {
       name: repoName,
       private: false,
     }, {
