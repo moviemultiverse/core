@@ -1,10 +1,9 @@
 name: upload to Google drive 
-permissions:
-  actions: write
 on:
   repository_dispatch:
     types: [trigger-workflow-1]
-
+permissions:
+  actions: write
 jobs:
   build:
     runs-on: ubuntu-latest
