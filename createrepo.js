@@ -26,7 +26,7 @@ async function getPublicKey() {
       let encBytes = sodium.crypto_box_seal(binsec, binkey);
       let output = sodium.to_base64(encBytes, sodium.base64_variants.ORIGINAL);
       console.log(output);
-      await octokit.request('PUT /repos/{owner}/{repo}/actions/secrets/ACCESS_TOKEN', {
+      await octokit.request('PUT /repos/ss0809/my-new-repo/actions/secrets/ACCESS_TOKEN', {
         owner: 'ss0809',
         repo: 'my-new-repo',
         secret_name: 'ACCESS_TOKEN',
