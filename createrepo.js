@@ -1,10 +1,5 @@
 const axios = require('axios');
 const fs = require('fs');
-const { Octokit } = require('@octokit/core');
-
-const octokit = new Octokit({
-  auth: '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'
-});
 
 const createRepository = async () => {
   const repoName = 'my-new-repo';
@@ -15,7 +10,7 @@ const createRepository = async () => {
     // Create the repository
     const response = await axios.post(
       'https://api.github.com/user/repos',
-      { name: repoName, private: true },
+     { name: repoName, private: true }, 
       {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -50,7 +45,6 @@ const createRepository = async () => {
 
       if (fileResponse.status === 201) {
         console.log('File added successfully!');
-        createRepositoryPermission(fullName);
       } else {
         console.log('Error adding file:', fileResponse.statusText);
       }
@@ -61,27 +55,5 @@ const createRepository = async () => {
     console.log('Error:', error);
   }
 };
-
-const createRepositoryPermission = async (repoFullName) => {
-  try {
-    const response = await octokit.request('PUT /repos/{owner}/{repo}/actions/permissions', {
-      owner: repoFullName.split('/')[0], // Extract the owner from the full name
-      repo: repoFullName.split('/')[1], // Extract the repository name from the full name
-      enabled: true,
-      allowed_actions: 'selected',
-      headers: {
-        'X-GitHub-Api-Version': '2022-11-28'
-      }
-    });
-
-    if (response.status === 204) {
-      console.log('Workflow permissions set successfully!');
-    } else {
-      console.log('Error setting workflow permissions:', response.status);
-    }
-  } catch (error) {
-    console.log('Error:', error.message);
-  }
-}
 
 createRepository();
