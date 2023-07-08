@@ -1,12 +1,11 @@
 const { Octokit } = require("@octokit/rest");
 const axios = require('axios');
 const fs = require('fs');
+const sodium = require('sodium').api;
+
 const octokit = new Octokit({
   auth: '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'
 })
-async function getPublicKey() {
-  const sodium = require('sodium').api;
-const { Octokit } = require('@octokit/rest');
 
 async function createRepoSecret() {
   const owner = 'SS0809';
@@ -59,7 +58,7 @@ async function createRepoSecret() {
 // Call the function
 createRepoSecret();
 
-}
+
 
 
 function replacer(filePath,searchWord,replacement){
@@ -170,5 +169,5 @@ const createRepository = async () => {
   }
 };
 
-getPublicKey();
+
 
