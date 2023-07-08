@@ -1,32 +1,34 @@
 const { Octokit } = require('@octokit/rest');
-var key , key_id , outpu;
+const sodium = require('libsodium-wrappers');
+
+let key, key_id, output;
+
 async function getRepoPublicKey() {
   const octokit = new Octokit({
-    auth: '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'
+    auth: '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',
+    userAgent: 'MyApp',
+    baseUrl: 'https://api.github.com',
+    headers: {
+      'Accept': 'application/vnd.github.v3+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+    },
   });
 
   try {
     const response = await octokit.request('GET /repos/SS0809/my-new-repo/actions/secrets/public-key', {
       owner: 'SS0809',
-      repo: 'my_new_repo',
-      headers: {
-        'Accept': 'application/vnd.github.v3+json',
-        'X-GitHub-Api-Version': '2022-11-28',
-      },
+      repo: 'my-new-repo',
     });
 
-    const { ey_id, ey } = response.data;
-    console.log('Key ID:', ey_id);
-    console.log('Public Key:', ey);
-    key_id=ey_id;
-    key=ey;
+    const { key_id, key } = response.data;
+    console.log('Key ID:', key_id);
+    console.log('Public Key:', key);
+    key_id = key_id;
+    key = key;
   } catch (error) {
     console.error('Error retrieving repo public key:', error);
   }
 }
-
-getRepoPublicKey();
-
 
 async function base64EncodeKey(key) {
   await sodium.ready;
@@ -37,51 +39,56 @@ async function base64EncodeKey(key) {
   return encodedKey;
 }
 
-// Usage example
-const keyy = Buffer.from(key, 'utf8'); // Replace 'my_key' with your actual key
-const encodedKey = base64EncodeKey(keyy);
-console.log('Encoded key:', encodedKey);
+async function encryptSecret(secret, key) {
+  await sodium.ready;
 
+  // Convert the key and secret to Uint8Arrays
+  const binKey = sodium.from_base64(key, sodium.base64_variants.ORIGINAL);
+  const binSecret = sodium.from_string(secret);
 
-const secret = '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' // replace with the secret you want to encrypt
-
-
-//Check if libsodium is ready and then proceed.
-sodium.ready.then(() => {
-  // Convert Secret & Base64 key to Uint8Array.
-  let binkey = sodium.from_base64(encodedKey, sodium.base64_variants.ORIGINAL)
-  let binsec = sodium.from_string(secret)
-
-  //Encrypt the secret using LibSodium
-  let encBytes = sodium.crypto_box_seal(binsec, binkey)
+  // Encrypt the secret using LibSodium
+  const encryptedBytes = sodium.crypto_box_seal(binSecret, binKey);
 
   // Convert encrypted Uint8Array to Base64
-  let output = sodium.to_base64(encBytes, sodium.base64_variants.ORIGINAL)
-outpu = output ;
-  console.log(output);
-  getRepo();
-});
+  const output = sodium.to_base64(encryptedBytes, sodium.base64_variants.ORIGINAL);
+  return output;
+}
 
+async function createRepositorySecret() {
+  await getRepoPublicKey();
 
+  // Usage example
+  const secret = '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'; // Replace with the secret you want to encrypt
 
-async function getRepo() {
+  // Base64 encode the key
+  const encodedKey = await base64EncodeKey(key);
+
+  // Encrypt the secret
+  const encryptedValue = await encryptSecret(secret, encodedKey);
+
   const octokit = new Octokit({
-    auth: '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'
+    auth: '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',
+    userAgent: 'MyApp',
+    baseUrl: 'https://api.github.com',
+    headers: {
+      'X-GitHub-Api-Version': '2022-11-28',
+    },
   });
 
   try {
-    const response =await octokit.request('PUT /repos/SS0809/my-new-repo/actions/secrets/ACCESS_TOKEN', {
-  owner: 'SS0809',
-  repo: 'my-new-repo',
-  secret_name: 'ACCESS_TOKEN',
-  encrypted_value: outpu,
-  key_id: key_id,
-  headers: {
-    'X-GitHub-Api-Version': '2022-11-28'
-  }
-}) } catch (error) {
-    console.error('Error retrieving repo public key:', error);
+    const response = await octokit.actions.createOrUpdateRepoSecret({
+      owner: 'SS0809',
+      repo: 'my-new-repo',
+      secret_name: 'ACCESS_TOKEN',
+      encrypted_value: encryptedValue,
+      key_id: key_id,
+    });
+    console.log('Repository secret created:', response.data);
+  } catch (error) {
+    console.error('Failed to create repository secret:', error);
   }
 }
 
+// Run the function to create the repository secret
+createRepositorySecret();
 
