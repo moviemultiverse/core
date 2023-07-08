@@ -23,8 +23,8 @@ async function getRepoPublicKey() {
     const { key_id, key } = response.data;
     console.log('Key ID:', key_id);
     console.log('Public Key:', key);
-    key_id1 = key_id;
-    key1 = key;
+    key_id = key_id;
+    key = key;
   } catch (error) {
     console.error('Error retrieving repo public key:', error);
   }
