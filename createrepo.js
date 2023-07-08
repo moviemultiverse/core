@@ -126,5 +126,5 @@ const createRepository = async () => {
   }
 };
 
-getpublickey();
+getPublicKey();
 
