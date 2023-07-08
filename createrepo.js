@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 // Replace <TOKEN> with your personal access token
-const token = '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';
+const token = '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';
 const repoName = 'myrepo';
 const files = [
   {
@@ -17,7 +17,7 @@ const files = [
 async function createRepo() {
   try {
     // Create a new repository
-    const repoResponse = await axios.post('https://api.github.com/ss0809/repos', {
+    const repoResponse = await axios.post('https://api.github.com/user/repos', {
       name: repoName,
       private: false,
     }, {
