@@ -11,7 +11,7 @@ key_file_path = 'client_secrets.json'
 file_id = '1wW7M1fqTe6WvTHM9xo8q1Rxk3aw9GW1B'
 
 # Destination folder to save the downloaded file
-destination_folder ='/home/runner/work/your_name/your_name/'
+destination_folder ='/home/runner/work/my-new-repo/my-new-repo/'
 
 # Authenticate with the service account
 credentials = service_account.Credentials.from_service_account_file(key_file_path, scopes=['https://www.googleapis.com/auth/drive'])
