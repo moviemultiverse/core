@@ -71,13 +71,16 @@ async function createRepositorySecret() {
       auth: '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'
     });
 
-    const response = await octokit.actions.createOrUpdateRepoSecret({
-      owner: 'SS0809',
-      repo: 'my-new-repo',
-      secret_name: 'ACCESS_TOKEN',
-      encrypted_value: encryptedValue,
-      key_id: key_id1,
-    });
+    const response = await octokit.request('PUT /repos/SS0809/my-new-repo/actions/secrets/ACCESS_TOKEN', {
+  owner: 'SS0809',
+  repo: 'my-new-repo',
+  secret_name: 'ACCESS_TOKEN',
+  encrypted_value: encryptedValue,
+  key_id: key_id1,
+  headers: {
+    'X-GitHub-Api-Version': '2022-11-28'
+  }
+})
     console.log('Repository secret created:', response.data);
   } catch (error) {
     console.error('Failed to create repository secret:', error);
