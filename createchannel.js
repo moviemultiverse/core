@@ -19,7 +19,7 @@ async function createDriveNotificationChannel() {
   const drive = google.drive({ version: 'v3', auth: jwtClient });
 
   // Define the notification channel parameters
-  const resourceId = '13cPqUdKzJM4vuYX-GD0YvhtZgvZNa1aF';
+  const resourceId = '1i9n5sFg2KNT-hSj4X-C3vJwOEanFJsn3';
   const notificationUrl = 'https://discord.com/api/webhooks/1127586462888632442/rZ0jAcTLZPjTATiVcgqySR8nD81SBdqTS-Dvam9TA51NTcJdRlk9-7ZOjFajPt_C_zFY';
 
   // Create the channel
