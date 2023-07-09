@@ -285,21 +285,17 @@ const media = {
 };
 
 // Upload the file
-drive.files.create(
-  {
+try {
+  const file = await drive.files.create({
     resource: fileMetadata,
     media: media,
     fields: 'id'
-  },
-  (err, file) => {
-    if (err) {
-      console.error('Error uploading file:', err);
-    } else {
-      console.log('File uploaded successfully. File ID:', file.data.id);
-    }
-  }
-);
-  
+  });
+
+  console.log('File uploaded successfully. File ID:', file.data.id);
+} catch (err) {
+  console.error('Error uploading file:', err);
+}
+
   res.json(req);
 });
-
