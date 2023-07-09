@@ -1,4 +1,4 @@
-/*const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require('uuid');
 const { google } = require('googleapis');
 const { JWT } = require('google-auth-library');
 
@@ -38,12 +38,13 @@ async function createDriveNotificationChannel() {
   console.log('Notification channel created:', response.data);
 }
 
-createDriveNotificationChannel().catch(console.error);
-  */
+//createDriveNotificationChannel().catch(console.error);
+  
 /**
  * Retrieve the list of changes for the currently authenticated user.
  * @param {string} savedStartPageToken page token got after executing fetch_start_page_token.js file
  **/
+fetchChanges(fetchStartPageToken());
 async function fetchChanges(savedStartPageToken) {
   // Get credentials and build service
   // TODO (developer) - Use appropriate auth mechanism for your app
@@ -68,6 +69,30 @@ async function fetchChanges(savedStartPageToken) {
       pageToken = res.data.newStartPageToken;
       return pageToken;
     } while (pageToken);
+  } catch (err) {
+    // TODO(developer) - Handle error
+    throw err;
+  }
+}
+/**
+ * Retrieve page token for the current state of the account.
+ **/
+async function fetchStartPageToken() {
+  // Get credentials and build service
+  // TODO (developer) - Use appropriate auth mechanism for your app
+
+  const {GoogleAuth} = require('google-auth-library');
+  const {google} = require('googleapis');
+
+  const auth = new GoogleAuth({
+    scopes: 'https://www.googleapis.com/auth/drive.appdata',
+  });
+  const service = google.drive({version: 'v3', auth});
+  try {
+    const res = await service.changes.getStartPageToken({});
+    const token = res.data.startPageToken;
+    console.log('start token: ', token);
+    return token;
   } catch (err) {
     // TODO(developer) - Handle error
     throw err;
