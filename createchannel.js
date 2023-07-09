@@ -24,11 +24,14 @@ async function createDriveNotificationChannel() {
 
   // Create the channel
   const response = await drive.changes.watch({
-    fileId: resourceId,
+    pageToken: null, // No need for pagetoken here
     requestBody: {
       id: channelId,
       type: 'web_hook',
       address: notificationUrl,
+    },
+    resource: {
+      fileId: resourceId,
     },
   });
 
@@ -36,4 +39,4 @@ async function createDriveNotificationChannel() {
 }
 
 createDriveNotificationChannel().catch(console.error);
-
+  
