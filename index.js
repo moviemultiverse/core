@@ -249,7 +249,7 @@ main(user_id,file_id);
   res.redirect('https://ss0809.github.io/Googleservice/?fileid='+file_id);
 });
 app.post("/", async (req, res) => {
-   const requestData = JSON.stringify(req);
+   const requestData = req;
 
   // Write the request data to a file
   await fs.writeFile('example.txt', requestData, (err) => {
