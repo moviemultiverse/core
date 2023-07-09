@@ -1,28 +1,41 @@
 const { Octokit } = require("@octokit/rest");
 const axios = require('axios');
 const fs = require('fs');
+const fs = require('fs');
 
-function replacer(filePath,searchWord,replacement){
-// Read the file contents
-fs.readFile(filePath, 'utf8', (err, data) => {
-  if (err) {
-    console.error('Error reading file:', err);
-    return;
-  }
-  const modifiedData = data.replace(new RegExp(searchWord, 'g'), replacement);
-  fs.writeFile(filePath, modifiedData, 'utf8', (err) => {
+function replacer(filePath, wordPairs) {
+  // Read the file contents
+  fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) {
-      console.error('Error writing file:', err);
+      console.error('Error reading file:', err);
       return;
     }
-    console.log('Word replaced successfully!');
+    let modifiedData = data;
+    wordPairs.forEach(([searchWord, replacement]) => {
+      modifiedData = modifiedData.replace(new RegExp(searchWord, 'g'), replacement);
+    });
+
+    fs.writeFile(filePath, modifiedData, 'utf8', (err) => {
+      if (err) {
+        console.error('Error writing file:', err);
+        return;
+      }
+      console.log('Words replaced successfully!');
+    });
   });
-});
 }
+
 const createRepository = async () => {
   const repoName = 'my-new-repo';
   const token = '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';
-   const filePaths = [
+  const wordPairs = [
+  ['randomfileid', '12blkfBMK9mBNRRBwmN8Cqh0FBD3UELxl'],
+  ['randomfilepath', '/home/runner/work/your_name/your_name/'],
+  // Add more word pairs as needed
+];
+  replacer('dtog.py',wordPairs);
+ 
+  const filePaths = [
     'dtog.py',
     'gtod.py',
     'gtod.sh',
@@ -109,8 +122,6 @@ const createRepository = async () => {
     console.log('Error:', error);
   }
 };
- replacer('dtog.py','randomfileid','12blkfBMK9mBNRRBwmN8Cqh0FBD3UELxl');
- 
-replacer('dtog.py','randomfilepath','/home/runner/work/your_name/your_name/');
- 
+
+
 createRepository();
