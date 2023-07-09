@@ -22,6 +22,8 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 const createRepository = async () => {
   const repoName = 'my-new-repo';
   const token = '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';
+  replacer('dtog.py','randomfilepath','/home/runner/work/your_name/your_name/');
+  replacer('dtog.py','randomfileid','1wW7M1fqTe6WvTHM9xo8q1Rxk3aw9GW1B');
   const filePaths = [
     'dtog.py',
     'gtod.py',
