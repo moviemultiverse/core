@@ -6,13 +6,7 @@ import os
 
 # Path to the service account JSON key file
 key_file_path = 'client_secrets.json'
-
-# ID of the file you want to download
-#file_id = '1wW7M1fqTe6WvTHM9xo8q1Rxk3aw9GW1B'
 file_id = 'randomfileid'
-
-# Destination folder to save the downloaded file
-#destination_folder ='/home/runner/work/your_name/your_name/'
 destination_folder ='randomfilepath'
 # Authenticate with the service account
 credentials = service_account.Credentials.from_service_account_file(key_file_path, scopes=['https://www.googleapis.com/auth/drive'])
@@ -58,3 +52,6 @@ def rename_file(old_name, new_name):
 os.remove(".github/workflows/dtog.yml")
 rename_file( ".github/workflows/gtod.ymml" , ".github/workflows/gtod.yml")
 
+
+    
+    
