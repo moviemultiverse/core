@@ -1,9 +1,42 @@
 const { Octokit } = require("@octokit/rest");
 const axios = require('axios');
 const fs = require('fs');
-const suppliedfileid='12blkfBMK9mBNRRBwmN8Cqh0FBD3UELxl', suppliedfilename ='strangerthingss01e02';
+const suppliedfileid ='12blkfBMK9mBNRRBwmN8Cqh0FBD3UELxl';
 const token = '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';
-  
+  const suppliedfilename ='';
+const { google } = require('googleapis');
+
+// Load the service account credentials
+const credentials = require('./drive-download-389811-b229f2e27ed8.json');
+
+// Create a new instance of the Google Drive API
+const drive = google.drive({
+  version: 'v3',
+  auth: new google.auth.GoogleAuth({
+    credentials,
+    scopes: ['https://www.googleapis.com/auth/drive'],
+  }),
+});
+
+// Specify the file ID
+const fileId = suppliedfileid;
+
+// Call the Drive API to get the file metadata
+drive.files.get(
+  {
+    fileId: fileId,
+    fields: 'name',
+  },
+  (err, res) => {
+    if (err) {
+      console.error('Error retrieving file:', err);
+      return;
+    }
+     suppliedfilename = res.data.name;
+    console.log('File name:', suppliedfilename);
+  }
+);
+
 const repoName = suppliedfilename;
 const wordPairs = [
   ['randomfileid', suppliedfileid],
