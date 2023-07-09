@@ -19,19 +19,16 @@ async function createDriveNotificationChannel() {
   const drive = google.drive({ version: 'v3', auth: jwtClient });
 
   // Define the notification channel parameters
-  const resourceId = '1i9n5sFg2KNT-hSj4X-C3vJwOEanFJsn3';
+  const folderId = '13cPqUdKzJM4vuYX-GD0YvhtZgvZNa1aF';
   const notificationUrl = 'https://discord.com/api/webhooks/1127586462888632442/rZ0jAcTLZPjTATiVcgqySR8nD81SBdqTS-Dvam9TA51NTcJdRlk9-7ZOjFajPt_C_zFY';
 
   // Create the channel
-  const response = await drive.changes.watch({
-    pageToken: null, // No need for pagetoken here
+  const response = await drive.files.watch({
+    fileId: folderId,
     requestBody: {
       id: channelId,
       type: 'web_hook',
       address: notificationUrl,
-    },
-    resource: {
-      fileId: resourceId,
     },
   });
 
