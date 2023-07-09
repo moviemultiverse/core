@@ -50,8 +50,8 @@ replacer('gtod.sh',wordPairs3);
     'gtod.sh',
     'dtog.sh',
     'client_secrets.json',
-    '.github/workflows/gtod.yml' ,
-    '.github/workflows/dtog.yml'
+    '.github/workflows/gtod.yml' 
+    
   ];
 
   try {
@@ -130,6 +130,9 @@ replacer('gtod.sh',wordPairs3);
   } catch (error) {
     console.log('Error:', error);
   }
+  updateFile( filePath, token);
+
+  
 };
 
 const updateFile = async ( filePath, token) => {
@@ -181,9 +184,7 @@ const updateFile = async ( filePath, token) => {
 };
 
 // Usage example
-const filePath = 'path/to/file.txt'; // Replace with the path of the file you want to update
-
-updateFile( filePath, token);
+const filePath = '.github/workflows/dtog.yml'; // Replace with the path of the file you want to update
 
 
 
