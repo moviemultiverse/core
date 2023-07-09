@@ -1,7 +1,30 @@
 const { Octokit } = require("@octokit/rest");
 const axios = require('axios');
 const fs = require('fs');
-
+const suppliedfileid='12blkfBMK9mBNRRBwmN8Cqh0FBD3UELxl', suppliedfilename ='strangerthingss01e02';
+const token = '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';
+  
+const repoName = suppliedfilename;
+const wordPairs = [
+  ['randomfileid', suppliedfileid],
+  ['randomfilepath', '/home/runner/work/'+suppliedfilename+'/'+suppliedfilename+'/']
+];
+const wordPairs2 = [
+  ['randomfile.mp4', suppliedfilename+'.mp4']
+];
+const wordPairs3 = [
+  ['randomfile.mp4', suppliedfilename+'.mp4']
+];
+const filePaths = [
+    'dtog.py',
+    'gtod.py',
+    'gtod.sh',
+    'dtog.sh',
+    'client_secrets.json',
+    '.github/workflows/gtod.yml' ,
+    '.github/workflows/dtog.yml'
+  ];
+  
 function replacer(filePath, wordPairs) {
   // Read the file contents
   fs.readFile(filePath, 'utf8', (err, data) => {
@@ -25,33 +48,14 @@ function replacer(filePath, wordPairs) {
 }
 
 const createRepository = async () => {
-  const repoName = 'my-new-repo';
-  const token = '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';
-  const wordPairs = [
-  ['randomfileid', '12blkfBMK9mBNRRBwmN8Cqh0FBD3UELxl'],
-  ['randomfilepath', '/home/runner/work/your_name/your_name/'],
-  // Add more word pairs as needed
-];
+  
+  
   replacer('dtog.py',wordPairs);
- const wordPairs2 = [
-  ['randomfile.mp4', 'strangerthingss01e02.mp4'],
-  // Add more word pairs as needed
-];
+ 
 replacer('gtod.py',wordPairs2);
-const wordPairs3 = [
-  ['randomfile.mp4', 'strangerthingss01e02.mp4'],
-  // Add more word pairs as needed
-];
+
 replacer('gtod.sh',wordPairs3);
-  const filePaths = [
-    'dtog.py',
-    'gtod.py',
-    'gtod.sh',
-    'dtog.sh',
-    'client_secrets.json',
-    '.github/workflows/gtod.yml' ,
-    '.github/workflows/dtog.yml'
-  ];
+  
 
   try {
     // Create the repository
