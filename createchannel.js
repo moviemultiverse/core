@@ -3,7 +3,7 @@ const { google } = require('googleapis');
 const { JWT } = require('google-auth-library');
 
 // Load the service account private key JSON file
-const privatekey ='./drive-download-389811-b229f2e27ed8.json'; ;
+const privatekey = require('./drive-download-389811-b229f2e27ed8.json');
 
 // Authenticate using the service account
 const jwtClient = new JWT({
@@ -11,6 +11,7 @@ const jwtClient = new JWT({
   key: privatekey.private_key,
   scopes: ['https://www.googleapis.com/auth/drive'],
 });
+
 async function createDriveNotificationChannel() {
   const drive = google.drive({ version: 'v3', auth: jwtClient });
 
@@ -20,16 +21,17 @@ async function createDriveNotificationChannel() {
   const notificationUrl = 'https://script.google.com/macros/u/7/s/AKfycbwGt1l54qrsrwo2Zv4VUa9qCk4PwZmFKK5FrktEeRQIIpDhyE6bjubCNhYVzqJyKHnt/exec';
 
   // Create the channel
-  const response = await drive.channels.insert({
+  const response = await drive.files.watch({
+    fileId: resourceId,
     requestBody: {
       id: channelId,
       type: 'web_hook',
       address: notificationUrl,
     },
-    params: { resourceId },
   });
 
   console.log('Notification channel created:', response.data);
 }
+
 createDriveNotificationChannel().catch(console.error);
     
