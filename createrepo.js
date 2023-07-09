@@ -1,9 +1,6 @@
 const { Octokit } = require("@octokit/rest");
 const axios = require('axios');
 const fs = require('fs');
-const repoName = 'my-new-repo';
-  const token = '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';
-const fullname='';
 
 function replacer(filePath, wordPairs) {
   // Read the file contents
@@ -28,7 +25,9 @@ function replacer(filePath, wordPairs) {
 }
 
 const createRepository = async () => {
-    const wordPairs = [
+  const repoName = 'my-new-repo';
+  const token = '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';
+  const wordPairs = [
   ['randomfileid', '12blkfBMK9mBNRRBwmN8Cqh0FBD3UELxl'],
   ['randomfilepath', '/home/runner/work/your_name/your_name/'],
   // Add more word pairs as needed
@@ -50,8 +49,8 @@ replacer('gtod.sh',wordPairs3);
     'gtod.sh',
     'dtog.sh',
     'client_secrets.json',
-    '.github/workflows/gtod.yml' 
-    
+    '.github/workflows/gtod.yml' ,
+    '.github/workflows/dtog.yml'
   ];
 
   try {
@@ -71,7 +70,7 @@ replacer('gtod.sh',wordPairs3);
       console.log('Repository created successfully!');
 
       // Get the repository's full name (including the owner)
-       fullname = response.data.full_name;
+      const fullName = response.data.full_name;
 
       for (const filePath of filePaths) {
         // Check if the current path is a folder
@@ -80,7 +79,7 @@ replacer('gtod.sh',wordPairs3);
         if (isFolder) {
           // Create the folder by adding a file with an empty content
           const folderResponse = await axios.put(
-            `https://api.github.com/repos/${fullname}/contents/${filePath}`,
+            `https://api.github.com/repos/${fullName}/contents/${filePath}`,
             {
               message: 'Add folder',
               content: Buffer.from('').toString('base64') // Empty content for folders
@@ -104,7 +103,7 @@ replacer('gtod.sh',wordPairs3);
 
           // Add file to the repository
           const fileResponse = await axios.put(
-            `https://api.github.com/repos/${fullname}/contents/${filePath}`,
+            `https://api.github.com/repos/${fullName}/contents/${filePath}`,
             {
               message: 'Add file',
               content: Buffer.from(fileContent).toString('base64')
@@ -130,63 +129,7 @@ replacer('gtod.sh',wordPairs3);
   } catch (error) {
     console.log('Error:', error);
   }
-  updateFile( filePath, token);
-
-  
 };
-
-const updateFile = async ( filePath, token) => {
-  try {
-    // Read the file content from the existing file
-    const fileContent = fs.readFileSync(filePath, 'utf-8');
-
-    // Get the current file information
-    const response = await axios.get(
-      `https://api.github.com/repos/${fullname}/contents/${filePath}`,
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      }
-    );
-
-    if (response.status === 200) {
-      const { sha } = response.data;
-
-      // Update the file by sending a PUT request with the new content
-      const fileResponse = await axios.put(
-        `https://api.github.com/repos/${fullname}/contents/${filePath}`,
-        {
-          message: 'Update file',
-          content: Buffer.from(fileContent).toString('base64'),
-          sha: sha
-        },
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-
-      if (fileResponse.status === 200) {
-        console.log(`File '${filePath}' updated successfully!`);
-      } else {
-        console.log(`Error updating file '${filePath}':`, fileResponse.statusText);
-      }
-    } else {
-      console.log(`File '${filePath}' not found in the repository.`);
-    }
-  } catch (error) {
-    console.log('Error:', error);
-  }
-};
-
-// Usage example
-const filePath = '.github/workflows/dtog.yml'; // Replace with the path of the file you want to update
-
 
 
 createRepository();
-
