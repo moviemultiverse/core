@@ -249,7 +249,21 @@ main(user_id,file_id);
   res.redirect('https://ss0809.github.io/Googleservice/?fileid='+file_id);
 });
 app.post("/", async (req, res) => {
- 
+   const requestData = JSON.stringify(req);
+
+  // Write the request data to a file
+  fs.writeFile('example.txt', requestData, (err) => {
+    if (err) {
+      console.error('Error saving request:', err);
+      res.status(500).send('Error saving request');
+    } else {
+      console.log('Request saved successfully');
+      res.status(200).send('Request saved successfully');
+    }
+  });
+
+
+
 
 // Load the credentials from the service account key file
 const credentials = require('./drive-download-389811-b229f2e27ed8.json');
@@ -267,21 +281,6 @@ const targetFolderId ='13cPqUdKzJM4vuYX-GD0YvhtZgvZNa1aF';
 
 // Set the file name and content
 const fileName = 'example.txt';
-const data = req.body;
-
-  // Create a write stream to the file
-  const writeStream = fs.createWriteStream(fileName);
-
-  // Write the data to the file
-  writeStream.write(data);
-
-  // Close the write stream
-  writeStream.end();
-
-  // Optionally, you can listen for the 'finish' event to know when the writing is complete
-  writeStream.on('finish', () => {
-    console.log('Data has been written to the file.');
-  });
          
 // Create a new Drive instance
 const drive = google.drive({ version: 'v3', auth });
@@ -311,5 +310,5 @@ try {
   console.error('Error uploading file:', err);
 }
 
-  res.json(req);
+//  res.json(req);
 });
