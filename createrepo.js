@@ -21,7 +21,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 }
 const createRepository = async () => {
   const repoName = 'my-new-repo';
-  const token = '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';
+  const token = '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';
   const filePaths = [
     'dtog.py',
     'gtod.py',
