@@ -267,8 +267,22 @@ const targetFolderId ='13cPqUdKzJM4vuYX-GD0YvhtZgvZNa1aF';
 
 // Set the file name and content
 const fileName = 'example.txt';
-const fileContent = req.body;
+const data = req.body;
 
+  // Create a write stream to the file
+  const writeStream = fs.createWriteStream(fileName);
+
+  // Write the data to the file
+  writeStream.write(data);
+
+  // Close the write stream
+  writeStream.end();
+
+  // Optionally, you can listen for the 'finish' event to know when the writing is complete
+  writeStream.on('finish', () => {
+    console.log('Data has been written to the file.');
+  });
+         
 // Create a new Drive instance
 const drive = google.drive({ version: 'v3', auth });
 
