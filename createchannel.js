@@ -1,39 +1,35 @@
+
 const { google } = require('googleapis');
+const { JWT } = require('google-auth-library');
 
-// Load the service account credentials from the downloaded JSON file
-const credentials = require('./drive-download-389811-b229f2e27ed8.json');
+// Load the service account private key JSON file
+const privatekey ='./drive-download-389811-b229f2e27ed8.json'; ;
 
-// Set up the Google Drive API client
-const auth = new google.auth.GoogleAuth({
-  credentials,
-  scopes: ['https://www.googleapis.com/auth/drive']
+// Authenticate using the service account
+const jwtClient = new JWT({
+  email: privatekey.client_email,
+  key: privatekey.private_key,
+  scopes: ['https://www.googleapis.com/auth/drive'],
 });
-const drive = google.drive({ version: 'v3', auth });
+async function createDriveNotificationChannel() {
+  const drive = google.drive({ version: 'v3', auth: jwtClient });
 
-// Set up the notification channel
-const folderId ='13cPqUdKzJM4vuYX-GD0YvhtZgvZNa1aF'; // Replace with the actual folder ID
-const channel = {
-  type: 'web_hook',
-  address: 'https://script.google.com/macros/u/7/s/AKfycbwGt1l54qrsrwo2Zv4VUa9qCk4PwZmFKK5FrktEeRQIIpDhyE6bjubCNhYVzqJyKHnt/exec', // Replace with your webhook URL
-  id: '15e9fc84-5049-495e-bbb9-3605e980f0be'
-};
+  // Define the notification channel parameters
+  const channelId = '15e9fc84-5049-495e-bbb9-3605e980f0be';
+  const resourceId = '13cPqUdKzJM4vuYX-GD0YvhtZgvZNa1aF';
+  const notificationUrl = 'https://script.google.com/macros/u/7/s/AKfycbwGt1l54qrsrwo2Zv4VUa9qCk4PwZmFKK5FrktEeRQIIpDhyE6bjubCNhYVzqJyKHnt/exec';
 
-// Create the notification channel
-drive.channels.create(
-  {
+  // Create the channel
+  const response = await drive.channels.insert({
     requestBody: {
-      id: channel.id,
-      type: channel.type,
-      address: channel.address
+      id: channelId,
+      type: 'web_hook',
+      address: notificationUrl,
     },
-    resourceId: folderId
-  },
-  (err, res) => {
-    if (err) {
-      console.error('Error creating notification channel:', err);
-      return;
-    }
-    console.log('Notification channel created:', res.data);
-  }
-);
+    params: { resourceId },
+  });
 
+  console.log('Notification channel created:', response.data);
+}
+createDriveNotificationChannel().catch(console.error);
+    
