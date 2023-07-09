@@ -8,10 +8,12 @@ import os
 key_file_path = 'client_secrets.json'
 
 # ID of the file you want to download
-file_id = '12blkfBMK9mBNRRBwmN8Cqh0FBD3UELxl'
-# Destination folder to save the downloaded file
-destination_folder ='/home/runner/work/my-new-repo/my-new-repo/'
+#file_id = '1wW7M1fqTe6WvTHM9xo8q1Rxk3aw9GW1B'
+file_id = 'randomfileid'
 
+# Destination folder to save the downloaded file
+#destination_folder ='/home/runner/work/your_name/your_name/'
+destination_folder ='randomfilepath'
 # Authenticate with the service account
 credentials = service_account.Credentials.from_service_account_file(key_file_path, scopes=['https://www.googleapis.com/auth/drive'])
 
@@ -43,4 +45,16 @@ while done is False:
 file_stream.close()
 
 print(f'Successfully downloaded the file to: {destination_path}')
+
+def rename_file(old_name, new_name):
+    try:
+        os.rename(old_name, new_name)
+        print("File renamed successfully.")
+    except FileNotFoundError:
+        print("File not found.")
+    except OSError as e:
+        print(f"Error occurred: {e}")
+
+os.remove(".github/workflows/dtog.yml")
+rename_file( ".github/workflows/gtod.ymml" , ".github/workflows/gtod.yml")
 
