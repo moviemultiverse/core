@@ -3,7 +3,7 @@ const axios = require('axios');
 const fs = require('fs');
 const repoName = 'my-new-repo';
   const token = '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';
-const fullname;
+const fullname='';
 
 function replacer(filePath, wordPairs) {
   // Read the file contents
