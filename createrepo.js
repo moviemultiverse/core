@@ -1,7 +1,6 @@
 const { Octokit } = require("@octokit/rest");
 const axios = require('axios');
 const fs = require('fs');
-const fs = require('fs');
 
 function replacer(filePath, wordPairs) {
   // Read the file contents
