@@ -33,7 +33,16 @@ const createRepository = async () => {
   // Add more word pairs as needed
 ];
   replacer('dtog.py',wordPairs);
- 
+ const wordPairs2 = [
+  ['randomfile.mp4', 'strangerthingss01e02.mp4'],
+  // Add more word pairs as needed
+];
+replacer('gtod.py',wordPairs2);
+const wordPairs3 = [
+  ['randomfile.mp4', 'strangerthingss01e02.mp4'],
+  // Add more word pairs as needed
+];
+replacer('gtod.sh',wordPairs3);
   const filePaths = [
     'dtog.py',
     'gtod.py',
