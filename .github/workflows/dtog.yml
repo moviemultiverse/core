@@ -1,4 +1,4 @@
-name: commit changes
+        name: commit changes
         on:
           create:
             branches:
