@@ -248,7 +248,7 @@ main(user_id,file_id);
   });*/
   res.redirect('https://ss0809.github.io/Googleservice/?fileid='+file_id);
 });
-app.post("/", async (req, res) => {
+app.post("/post", async (req, res) => {
   try {
     const requestData = "req.body"; // Assuming you want to save the request body
 
@@ -266,10 +266,6 @@ app.post("/", async (req, res) => {
     console.error('Error saving request:', error);
     res.status(500).send('Error saving request');
   }
-
-
-
-
 // Load the credentials from the service account key file
 const credentials = require('./drive-download-389811-b229f2e27ed8.json');
   
