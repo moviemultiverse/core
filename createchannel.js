@@ -20,7 +20,7 @@ async function createDriveNotificationChannel() {
 
   // Define the notification channel parameters
   const folderId = '13cPqUdKzJM4vuYX-GD0YvhtZgvZNa1aF';
-  const notificationUrl = 'https://script.google.com/macros/s/AKfycbwuDZaKTYiXPX1qgNgUEhUMbQSImvCWdP6kGmbIVzfMRA0K3mlgMTeT1uhR4mKxtUKD8A/exec';
+  const notificationUrl = 'https://google-06xl.onrender.com';
   //https://discord.com/api/webhooks/1127586462888632442/rZ0jAcTLZPjTATiVcgqySR8nD81SBdqTS-Dvam9TA51NTcJdRlk9-7ZOjFajPt_C_zFY
 
   // Create the channel
