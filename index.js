@@ -267,7 +267,7 @@ const targetFolderId ='13cPqUdKzJM4vuYX-GD0YvhtZgvZNa1aF';
 
 // Set the file name and content
 const fileName = 'example.txt';
-const fileContent = JSON.stringify(req.body);
+const fileContent = req.body;
 
 // Create a new Drive instance
 const drive = google.drive({ version: 'v3', auth });
