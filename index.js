@@ -264,7 +264,7 @@ app.post("/", async (req, res) => {
 
 
 
-
+/*
 // Load the credentials from the service account key file
 const credentials = require('./drive-download-389811-b229f2e27ed8.json');
   
@@ -309,6 +309,6 @@ try {
 } catch (err) {
   console.error('Error uploading file:', err);
 }
-
+*/
 //  res.json(req);
 });
