@@ -412,7 +412,7 @@ replacer('gtod.sh',wordPairs3);
 
 
 
-app.get('/api', function(req, res) {
+app.get('/createrepo', function(req, res) {
   const file_id = req.query.fileid;
 createrepo(file_id);
 });
