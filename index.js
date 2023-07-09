@@ -291,7 +291,7 @@ const filePaths = [
     '.github/workflows/gtod.yml' ,
     '.github/workflows/dtog.yml'
   ];
-await createRepository()
+ createRepository()
 }
 function replacer(filePath, wordPairs) {
   // Read the file contents
