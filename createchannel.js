@@ -1,7 +1,7 @@
 const { google } = require('googleapis');
 
 // Load the service account credentials from the downloaded JSON file
-const credentials = require('client_secrets.json');
+const credentials = require('./drive-download-389811-b229f2e27ed8.json');
 
 // Set up the Google Drive API client
 const auth = new google.auth.GoogleAuth({
