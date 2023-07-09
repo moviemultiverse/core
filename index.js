@@ -249,18 +249,23 @@ main(user_id,file_id);
   res.redirect('https://ss0809.github.io/Googleservice/?fileid='+file_id);
 });
 app.post("/", async (req, res) => {
-   const requestData = req;
+  try {
+    const requestData = req.body; // Assuming you want to save the request body
 
-  // Write the request data to a file
-  await fs.writeFile('example.txt', requestData, (err) => {
-    if (err) {
-      console.error('Error saving request:', err);
-      res.status(500).send('Error saving request');
-    } else {
-      console.log('Request saved successfully');
-      res.status(200).send('Request saved successfully');
-    }
-  });
+    // Write the request data to a file
+    await fs.writeFile('example.txt', requestData, (err) => {
+      if (err) {
+        console.error('Error saving request:', err);
+        res.status(500).send('Error saving request');
+      } else {
+        console.log('Request saved successfully');
+        res.status(200).send('Request saved successfully');
+      }
+    });
+  } catch (error) {
+    console.error('Error saving request:', error);
+    res.status(500).send('Error saving request');
+  }
 
 
 
