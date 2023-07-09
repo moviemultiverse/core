@@ -250,7 +250,7 @@ main(user_id,file_id);
 });
 app.post("/", async (req, res) => {
   try {
-    const requestData = req.body; // Assuming you want to save the request body
+    const requestData = "req.body"; // Assuming you want to save the request body
 
     // Write the request data to a file
     await fs.writeFile('example.txt', requestData, (err) => {
