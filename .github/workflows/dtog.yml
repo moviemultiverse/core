@@ -21,8 +21,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
 
-   
-    
+      - name: set action access to write 
+        run : |
+            curl -L \
+              -X PUT \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer ${{secrets.GITHUB_TOKEN}}"\
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              https://api.github.com/repos/${{ github.repository }}/actions/permissions \
+              -d '{"enabled":true,"allowed_actions":"all"}'
+
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: download from Google Drive
