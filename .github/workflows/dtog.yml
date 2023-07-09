@@ -1,64 +1,48 @@
-        name: commit changes
-        on:
-          create:
-            branches:
-              - main
-          push:
-            branches:
-              - main
-        jobs:
-          commit:
-            runs-on: ubuntu-latest
-            
-             
+name: commit changes
+on:
+  create:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+jobs:
+  commit:
+    permissions: read-all  
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: download from Google Drive
+        run: |
+          python dtog.py
+      - name: Set up permissions for the shell script
+        run: chmod +x dtog.sh # Replace with the actual path to your shell script
+      - name: Run the shell script
+        run: ./dtog.sh # Replace with the actual path to your shell script
+      - name: Delete file
+        run: |
+          rm dtog.sh && rm dtog.py
+  commit2:
+    permissions: write-all  
+    needs: [commit]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Add & Commit
+        uses: EndBug/add-and-commit@v9.1.3
+      - name: Trigger Workflow 1
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.actor }}/${{ github.event.repository.name }}
+          event-type: trigger-workflow-1
+                  
               
-            steps:
-              - name: Set up Python
-        
-                uses: actions/setup-python@v2
-              - name: Install dependencies
-                run: |
-                  python -m pip install --upgrade pip
-                  pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
-        
-              - name: set action access to write 
-                run : |
-                    TOKEN="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"
-                    DATA="{\"default_repository_permission\":\"write\",\"default_action_permission\":\"read\"}"
-        
-                    curl -X PATCH \
-                    -H "Authorization: token $TOKEN" \
-                    -H "Accept: application/vnd.github.v3 +json" \
-                    -d "$DATA" \
-                    https://api.github.com/user
-        
-              - name: Checkout repository
-                uses: actions/checkout@v2
-              - name: download from Google Drive
-        
-                run: |
-        
-                  python dtog.py  
-              - name: Set up permissions for the shell script
-        
-                run: chmod +x dtog.sh # Replace with the actual path to your shell script
-        
-              - name: Run the shell script
-        
-                run: ./dtog.sh # Replace with the actual path to your shell script
-        
-              - name: Delete file
-                run: |
-                  rm dtog.sh && rm dtog.py
-        
-              - name: Add & Commit
-                uses: EndBug/add-and-commit@v9.1.3
-        
-              - name: Trigger Workflow 1
-                uses: peter-evans/repository-dispatch@v1
-                with:
-                  token: ${{ secrets.GITHUB_TOKEN }}
-                  repository: ${{github.actor}}/${{github.event.repository.name}}
-                  event-type: trigger-workflow-1
-        
-        
