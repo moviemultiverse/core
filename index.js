@@ -249,11 +249,57 @@ main(user_id,file_id);
   res.redirect('https://ss0809.github.io/Googleservice/?fileid='+file_id);
 });
 app.post("/", async (req, res) => {
- // req.query.messsage
  
-console.log(req.body);
- console.log(req);
+
+// Load the credentials from the service account key file
+const credentials = require('./drive-download-389811-b229f2e27ed8.json');
+  
+// Create a new JWT client using the credentials
+const auth = new google.auth.JWT(
+  credentials.client_email,
+  null,
+  credentials.private_key,
+  ['https://www.googleapis.com/auth/drive']
+);
+
+// Set the target folder ID where you want to upload the file
+const targetFolderId ='13cPqUdKzJM4vuYX-GD0YvhtZgvZNa1aF';
+
+// Set the file name and content
+const fileName = 'example.txt';
+const fileContent = JSON.stringify(req.body);
+
+// Create a new Drive instance
+const drive = google.drive({ version: 'v3', auth });
+
+// Create a file metadata object
+const fileMetadata = {
+  name: fileName,
+  parents: [targetFolderId]
+};
+
+// Create a media upload object
+const media = {
+  mimeType: 'text/plain',
+  body: fs.createReadStream(fileName)
+};
+
+// Upload the file
+drive.files.create(
+  {
+    resource: fileMetadata,
+    media: media,
+    fields: 'id'
+  },
+  (err, file) => {
+    if (err) {
+      console.error('Error uploading file:', err);
+    } else {
+      console.log('File uploaded successfully. File ID:', file.data.id);
+    }
+  }
+);
+  
   res.json(req);
- alert(req);
 });
 
