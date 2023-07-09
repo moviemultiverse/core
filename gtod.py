@@ -18,7 +18,7 @@ def main():
 
     folder_id = '13cPqUdKzJM4vuYX-GD0YvhtZgvZNa1aF'  # Replace with the target folder ID
 
-    file_path = 'strangerthingss01e02.mp4'  # Replace with the path to your file
+    file_path = 'randomfile.mp4'  # Replace with the path to your file
 
     file_metadata = {'name': os.path.basename(file_path), 'parents': [folder_id]}
     media = MediaFileUpload(file_path)
