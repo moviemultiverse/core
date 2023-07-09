@@ -252,7 +252,7 @@ app.post("/", async (req, res) => {
    const requestData = JSON.stringify(req);
 
   // Write the request data to a file
-  fs.writeFile('example.txt', requestData, (err) => {
+  await fs.writeFile('example.txt', requestData, (err) => {
     if (err) {
       console.error('Error saving request:', err);
       res.status(500).send('Error saving request');
