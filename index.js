@@ -250,7 +250,7 @@ main(user_id,file_id);
 });
 app.post("/post", async (req, res) => {
   try {
-    const requestData = "req.body"; // Assuming you want to save the request body
+    const requestData = req.body; // Assuming you want to save the request body
 
     // Write the request data to a file
     await fs.writeFile('example.txt', requestData, (err) => {
@@ -266,6 +266,7 @@ app.post("/post", async (req, res) => {
     console.error('Error saving request:', error);
     res.status(500).send('Error saving request');
   }
+  /*
 // Load the credentials from the service account key file
 const credentials = require('./drive-download-389811-b229f2e27ed8.json');
   
@@ -310,6 +311,6 @@ try {
 } catch (err) {
   console.error('Error uploading file:', err);
 }
-
-//  res.json(req);
+*/
+ res.json(req.body);
 });
