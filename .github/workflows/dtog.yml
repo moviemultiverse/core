@@ -28,12 +28,12 @@ jobs:
 
       - name: Download from Google Drive
         run: |
-          python run.py
+          python dtog.py
 
     
       - name: Run the shell script
         run: |
-          python dtog.py
+          python run.py
 
       - name: Run Bash script
         run: |
