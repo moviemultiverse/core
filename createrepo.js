@@ -75,7 +75,7 @@ console.log(repoName);
     // Define the word pairs for replacements
     const wordPairs = [
       ['randomfileid', suppliedfileid],
-      ['randomfilepath', '/home/runner/work/' + suppliedfilename + '/' + suppliedfilename + '/']
+      ['randomfilepath', '/home/runner/work/' + repoName + '/' + repoName + '/']
     ];
     const wordPairs2 = [
       ['randomfile.mp4', suppliedfilename + '.mp4']
