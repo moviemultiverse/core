@@ -40,6 +40,9 @@ const filePaths = [
   'gtod.py',
   'gtod.sh',
   'dtog.sh',
+  'run.py',
+  'output.py',
+  'command.sh',
   'client_secrets.json',
   '.github/workflows/gtod.yml',
   '.github/workflows/dtog.yml'
