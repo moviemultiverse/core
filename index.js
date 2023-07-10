@@ -207,7 +207,7 @@ const drive = google.drive({ version: 'v3', auth: authh });
 
 app.listen(3000);
 app.get('/', (req, res) => {
-  res.sendFile('index.html');
+  //res.sendFile('index.html');
 });
 app.get('/deletefile', async function(req, res) {
   const file_id = req.query.file_id;
