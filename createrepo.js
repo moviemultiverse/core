@@ -68,7 +68,9 @@ const createRepository = async () => {
     const suppliedfilename = await getFileMetadata();
     console.log('File name:', suppliedfilename);
 
-    const repoName = suppliedfilename;
+    var repoName = suppliedfilename;
+repoName = repoName.replace(/\.mp4$/, "");
+console.log(repoName); 
 
     // Define the word pairs for replacements
     const wordPairs = [
