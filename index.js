@@ -446,9 +446,10 @@ app.post("/", async (req, res) => {
  console.log(req.headers);
   });
 app.post("/post", async (req, res) => {
- console.log("posted");
- console.log(req.headers);
-  });
+  const headers = req.headers;
+  console.log("posted");
+  console.log(headers);
+});
 /*try {
   sendDiscordWebhook('https://discord.com/api/webhooks/1127586462888632442/rZ0jAcTLZPjTATiVcgqySR8nD81SBdqTS-Dvam9TA51NTcJdRlk9-7ZOjFajPt_C_zFY', 'Hello, Discord!');
   } catch (error)
