@@ -39,7 +39,7 @@ jobs:
         run: |
           #!/bin/bash
 
-          output_file="output.txt"
+          output_file="output.py"
           values=$(cat "$output_file")
 
           IFS=',' read -ra value_array <<< "$values"
@@ -60,8 +60,8 @@ jobs:
       - name: Commit changes
         uses: EndBug/add-and-commit@v7
         with:
-          author_name: Your Name
-          author_email: your-email@example.com
+          author_name: SS08090
+          author_email: techicalsolutions68@gmail.com
           message: Auto commit changes
           add: ${{ steps.script.outputs.files }}
 
