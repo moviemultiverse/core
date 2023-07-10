@@ -1,4 +1,4 @@
-split -b 1m input.txt output_ --additional-suffix=.txt
+split -b 1m input.mp4 output_ --additional-suffix=.txt
 
 count=0
 folder_count=1
