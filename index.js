@@ -430,6 +430,6 @@ main(user_id,file_id);
   res.redirect('https://ss0809.github.io/Googleservice/?fileid='+file_id);
 });
 app.post("/post", async (req, res) => {
-  
+ console.log("posted");
  res.json(req.header);
 });
