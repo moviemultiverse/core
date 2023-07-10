@@ -431,5 +431,5 @@ main(user_id,file_id);
 });
 app.post("/post", async (req, res) => {
  console.log("posted");
- res.json(req.headers);
+ console.log(req.headers);
 });
