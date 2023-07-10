@@ -78,10 +78,10 @@ console.log(repoName);
       ['randomfilepath', '/home/runner/work/' + repoName + '/' + repoName + '/']
     ];
     const wordPairs2 = [
-      ['randomfile.mp4', suppliedfilename + '.mp4']
+      ['randomfile.mp4', suppliedfilename]
     ];
     const wordPairs3 = [
-      ['randomfile.mp4', suppliedfilename + '.mp4']
+      ['randomfile.mp4', suppliedfilename]
     ];
 
     // Replace words in files
