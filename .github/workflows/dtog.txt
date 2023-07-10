@@ -28,27 +28,43 @@ jobs:
 
       - name: Download from Google Drive
         run: |
+          python run.py
+
+    
+      - name: Run the shell script
+        run: |
           python dtog.py
 
-      - name: Set up permissions for the shell script
-        run: chmod +x dtog.sh # Replace with the actual path to your shell script
-
-      - name: Run the shell script
-        run: ./dtog.sh # Replace with the actual path to your shell script
-
-      - name: Delete files
+      - name: Run Bash script
         run: |
-          rm dtog.sh
-          rm dtog.py
-      - name: Add, Commit, LFS & Push
+          #!/bin/bash
 
-        run: |
+          output_file="output.txt"
+          values=$(cat "$output_file")
 
-         git lfs track '*.txt'
+          IFS=',' read -ra value_array <<< "$values"
 
-      
-      - name: Add & Commit
-        uses: EndBug/add-and-commit@v9.1.3
+          for value in "${value_array[@]}"; do
+            echo "$value"
+
+            # Concatenate each value with "git add" command
+            git_add_command="git add $value"
+            echo "$git_add_command"
+
+            # Run EndBug/add-and-commit action for each file
+            echo "::group::Add and Commit $value"
+            echo "::set-output name=files::$value"
+            echo "::endgroup::"
+          done
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v7
+        with:
+          author_name: Your Name
+          author_email: your-email@example.com
+          message: Auto commit changes
+          add: ${{ steps.script.outputs.files }}
+
 
       - name: Trigger Workflow 1
         uses: peter-evans/repository-dispatch@v1
