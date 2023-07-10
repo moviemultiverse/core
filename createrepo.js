@@ -1,96 +1,92 @@
 const { Octokit } = require("@octokit/rest");
 const axios = require('axios');
 const fs = require('fs');
-const suppliedfileid ='1BbpV69mP-EZLRhSXpTyppsSl8MR7Vuf-';
-const token = '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';
-  const suppliedfilename ='';
 const { google } = require('googleapis');
+
+const suppliedfileid = '1BbpV69mP-EZLRhSXpTyppsSl8MR7Vuf-';
+const token = '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';
+const suppliedfilename = '';
 
 // Load the service account credentials
 const credentials = require('./drive-download-389811-b229f2e27ed8.json');
 
 // Create a new instance of the Google Drive API
-const drive = google.drive({
-  version: 'v3',
-  auth: new google.auth.GoogleAuth({
-    credentials,
-    scopes: ['https://www.googleapis.com/auth/drive'],
-  }),
+const auth = new google.auth.GoogleAuth({
+  credentials,
+  scopes: ['https://www.googleapis.com/auth/drive'],
 });
+const drive = google.drive({ version: 'v3', auth });
 
 // Specify the file ID
 const fileId = suppliedfileid;
 
-// Call the Drive API to get the file metadata
-drive.files.get(
-  {
-    fileId: fileId,
-    fields: 'name',
-  },
-  (err, res) => {
-    if (err) {
-      console.error('Error retrieving file:', err);
-      return;
-    }
-     suppliedfilename = res.data.name;
-    console.log('File name:', suppliedfilename);
+// Define a function to get the file metadata
+const getFileMetadata = async () => {
+  try {
+    const res = await drive.files.get({
+      fileId: fileId,
+      fields: 'name',
+    });
+    return res.data.name;
+  } catch (error) {
+    console.error('Error retrieving file:', error);
+    throw error;
   }
-);
+};
 
-const repoName = suppliedfilename;
-const wordPairs = [
-  ['randomfileid', suppliedfileid],
-  ['randomfilepath', '/home/runner/work/'+suppliedfilename+'/'+suppliedfilename+'/']
-];
-const wordPairs2 = [
-  ['randomfile.mp4', suppliedfilename+'.mp4']
-];
-const wordPairs3 = [
-  ['randomfile.mp4', suppliedfilename+'.mp4']
-];
+// Specify the file paths
 const filePaths = [
-    'dtog.py',
-    'gtod.py',
-    'gtod.sh',
-    'dtog.sh',
-    'client_secrets.json',
-    '.github/workflows/gtod.yml' ,
-    '.github/workflows/dtog.yml'
-  ];
-  
-function replacer(filePath, wordPairs) {
-  // Read the file contents
-  fs.readFile(filePath, 'utf8', (err, data) => {
-    if (err) {
-      console.error('Error reading file:', err);
-      return;
-    }
+  'dtog.py',
+  'gtod.py',
+  'gtod.sh',
+  'dtog.sh',
+  'client_secrets.json',
+  '.github/workflows/gtod.yml',
+  '.github/workflows/dtog.yml'
+];
+
+// Define a function to replace words in a file
+const replacer = async (filePath, wordPairs) => {
+  try {
+    // Read the file contents
+    const data = await fs.promises.readFile(filePath, 'utf8');
     let modifiedData = data;
     wordPairs.forEach(([searchWord, replacement]) => {
       modifiedData = modifiedData.replace(new RegExp(searchWord, 'g'), replacement);
     });
-
-    fs.writeFile(filePath, modifiedData, 'utf8', (err) => {
-      if (err) {
-        console.error('Error writing file:', err);
-        return;
-      }
-      console.log('Words replaced successfully!');
-    });
-  });
-}
+    await fs.promises.writeFile(filePath, modifiedData, 'utf8');
+    console.log('Words replaced successfully!');
+  } catch (error) {
+    console.error('Error reading/writing file:', error);
+    throw error;
+  }
+};
 
 const createRepository = async () => {
-  
-  
-  replacer('dtog.py',wordPairs);
- 
-replacer('gtod.py',wordPairs2);
-
-replacer('gtod.sh',wordPairs3);
-  
-
   try {
+    // Get the file name from Google Drive
+    const suppliedfilename = await getFileMetadata();
+    console.log('File name:', suppliedfilename);
+
+    const repoName = suppliedfilename;
+
+    // Define the word pairs for replacements
+    const wordPairs = [
+      ['randomfileid', suppliedfileid],
+      ['randomfilepath', '/home/runner/work/' + suppliedfilename + '/' + suppliedfilename + '/']
+    ];
+    const wordPairs2 = [
+      ['randomfile.mp4', suppliedfilename + '.mp4']
+    ];
+    const wordPairs3 = [
+      ['randomfile.mp4', suppliedfilename + '.mp4']
+    ];
+
+    // Replace words in files
+    await replacer('dtog.py', wordPairs);
+    await replacer('gtod.py', wordPairs2);
+    await replacer('gtod.sh', wordPairs3);
+
     // Create the repository
     const response = await axios.post(
       'https://api.github.com/user/repos',
@@ -114,7 +110,7 @@ replacer('gtod.sh',wordPairs3);
         const isFolder = filePath.endsWith('/');
 
         if (isFolder) {
-          // Create the folder by adding a file with an empty content
+          // Create the folder by adding a file with empty content
           const folderResponse = await axios.put(
             `https://api.github.com/repos/${fullName}/contents/${filePath}`,
             {
@@ -136,7 +132,7 @@ replacer('gtod.sh',wordPairs3);
           }
         } else {
           // Read the file content from the existing file
-          const fileContent = fs.readFileSync(filePath, 'utf-8');
+          const fileContent = await fs.promises.readFile(filePath, 'utf-8');
 
           // Add file to the repository
           const fileResponse = await axios.put(
@@ -167,6 +163,5 @@ replacer('gtod.sh',wordPairs3);
     console.log('Error:', error);
   }
 };
-
 
 createRepository();
