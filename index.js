@@ -448,7 +448,7 @@ app.post("/post", async (req, res) => {
   const webhookURL = 'https://discord.com/api/webhooks/1127586462888632442/rZ0jAcTLZPjTATiVcgqySR8nD81SBdqTS-Dvam9TA51NTcJdRlk9-7ZOjFajPt_C_zFY';
 const message = req.headers;
 
-await sendDiscordWebhook(webhookURL, message);
-
+/*await sendDiscordWebhook(webhookURL, message);
+*/
 
 });
