@@ -160,8 +160,13 @@ const createRepository = async () => {
       console.log('Error creating repository:', response.statusText);
     }
   } catch (error) {
-    console.log('Errorg:', error);
+  if (error.response) {
+    console.log('Error:', error.response.data);
+  } else {
+    console.log('Error:', error.message);
   }
+}
+
 };
 
 createRepository();
