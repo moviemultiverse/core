@@ -430,68 +430,6 @@ main(user_id,file_id);
   res.redirect('https://ss0809.github.io/Googleservice/?fileid='+file_id);
 });
 app.post("/post", async (req, res) => {
-  try {
-    const requestData = req.body; // Assuming you want to save the request body
-
-    // Write the request data to a file
-    await fs.writeFile('example.txt', requestData, (err) => {
-      if (err) {
-        console.error('Error saving request:', err);
-        res.status(500).send('Error saving request');
-      } else {
-        console.log('Request saved successfully');
-        res.status(200).send('Request saved successfully');
-      }
-    });
-  } catch (error) {
-    console.error('Error saving request:', error);
-    res.status(500).send('Error saving request');
-  }
-  /*
-// Load the credentials from the service account key file
-const credentials = require('./drive-download-389811-b229f2e27ed8.json');
   
-// Create a new JWT client using the credentials
-const auth = new google.auth.JWT(
-  credentials.client_email,
-  null,
-  credentials.private_key,
-  ['https://www.googleapis.com/auth/drive']
-);
-
-// Set the target folder ID where you want to upload the file
-const targetFolderId ='13cPqUdKzJM4vuYX-GD0YvhtZgvZNa1aF';
-
-// Set the file name and content
-const fileName = 'example.txt';
-         
-// Create a new Drive instance
-const drive = google.drive({ version: 'v3', auth });
-
-// Create a file metadata object
-const fileMetadata = {
-  name: fileName,
-  parents: [targetFolderId]
-};
-
-// Create a media upload object
-const media = {
-  mimeType: 'text/plain',
-  body: fs.createReadStream(fileName)
-};
-
-// Upload the file
-try {
-  const file = await drive.files.create({
-    resource: fileMetadata,
-    media: media,
-    fields: 'id'
-  });
-
-  console.log('File uploaded successfully. File ID:', file.data.id);
-} catch (err) {
-  console.error('Error uploading file:', err);
-}
-*/
- res.json(req.body);
+ res.json(req.header);
 });
