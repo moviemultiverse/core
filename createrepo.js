@@ -87,12 +87,15 @@ console.log(repoName);
     const wordPairs3 = [
       ['randomfile.mp4', suppliedfilename]
     ];
-
+    const wordPairs4 = [
+      ['randomfile.mp4', suppliedfilename]
+    ];
     // Replace words in files
     await replacer('dtog.py', wordPairs);
     await replacer('gtod.py', wordPairs2);
     await replacer('gtod.sh', wordPairs3);
-
+    await replacer('snapshot.py', wordPairs4);
+    
     // Create the repository
     const response = await axios.post(
       'https://api.github.com/user/repos',
