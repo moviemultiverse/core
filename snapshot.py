@@ -32,8 +32,8 @@ def snapshot_random_frames(video_path, num_frames, output_dir):
     video.release()
 
 # Example usage
-video_path = 'Fast_X.mp4'
-num_frames = 5
+video_path = 'randomfile.mp4'
+num_frames = 8
 output_dir = 'snapshots'
 
 snapshot_random_frames(video_path, num_frames, output_dir)
