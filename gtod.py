@@ -21,24 +21,20 @@ def main():
     file_path = 'randomfile.mp4'  # Replace with the path to your file
 
     file_metadata = {'name': os.path.basename(file_path), 'parents': [folder_id]}
-    media = MediaFileUpload(file_path, resumable=True)
+    media = MediaFileUpload(file_path)
 
-    request = drive_service.files().insert(
+    file = drive_service.files().create(
         body=file_metadata,
-        media_body=media
-    )
-    response = None
-    while response is None:
-        status, response = request.next_chunk()
-        if status:
-            print(f"Uploaded {int(status.progress() * 100)}%")
+        media_body=media,
+        fields='id'
+    ).execute()
 
-    print(f'File uploaded. ID: {response["id"]}')
+    print(f'File uploaded. ID: {file["id"]}')
     url = 'https://google-06xl.onrender.com/driveupdate'
-    params = {'name': file_path, 'id': response["id"]}
+    params = {'name': file_path, 'id': file["id"]}
     response_text = call_url_with_params(url, params)
     print(response_text)
 
 if __name__ == '__main__':
     main()
-
+    
