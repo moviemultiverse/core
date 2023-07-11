@@ -16,10 +16,10 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: LFS fetch
-        run: |
-          git lfs fetch
-          git checkout '*.txt'
+    
+   
+       
+        
       - name: Set up permissions for the shell script
         run: chmod +x gtod.sh # Replace with the actual path to your shell script
 
