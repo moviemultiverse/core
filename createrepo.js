@@ -41,6 +41,7 @@ const filePaths = [
   'gtod.sh',
   'dtog.sh',
   'run.py',
+  'snapshot.py',
   'output.py',
   'command.sh',
   'client_secrets.json',
