@@ -29,3 +29,31 @@ jobs:
       - name: Upload to Google Drive
         run: |
           python gtod.py  
+          
+          
+
+  
+
+      - name: Install dependencies
+
+        run: pip install opencv-python-headless
+
+        
+
+      - name: Snapshot random frames from video
+
+        run: python snapshot.py
+
+        
+
+      - name: Create artifact
+
+        uses: actions/upload-artifact@v2
+
+        with:
+
+          name: video-snapshots
+
+          path: snapshots/
+
+          
