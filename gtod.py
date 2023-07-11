@@ -33,3 +33,12 @@ def main():
 if __name__ == '__main__':
     main()
         
+#TODO
+#media = MediaFileUpload('pig.png', mimetype='image/png', resumable=True)
+#request = farm.animals().insert(media_body=media, body={'name': 'Pig'})
+#response = None
+#while response is None:
+#  status, response = request.next_chunk()
+#  if status:
+#    print "Uploaded %d%%." % int(status.progress() * 100)
+#print "Upload Complete!"
