@@ -15,11 +15,8 @@ jobs:
           pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
 
       - name: Checkout repository
-        uses: actions/checkout@v2
-    
-   
-       
-        
+        uses: actions/checkout@v2       
+             
       - name: Set up permissions for the shell script
         run: chmod +x gtod.sh # Replace with the actual path to your shell script
 
@@ -30,30 +27,17 @@ jobs:
         run: |
           python gtod.py  
           
-          
-
-  
-
       - name: Install dependencies
 
         run: pip install opencv-python-headless
 
-        
-
       - name: Snapshot random frames from video
-
-        run: python snapshot.py
-
-        
+        run: python snapshot.py     
 
       - name: Create artifact
-
         uses: actions/upload-artifact@v2
-
         with:
-
           name: video-snapshots
-
           path: snapshots/
 
           
