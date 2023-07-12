@@ -1,8 +1,6 @@
-name: commit changes
+name: Commit changes
+
 on:
-  create:
-    branches:
-      - main
   push:
     branches:
       - main
@@ -17,6 +15,8 @@ jobs:
     steps:
       - name: Set up Python
         uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
 
       - name: Install dependencies
         run: |
@@ -30,45 +30,55 @@ jobs:
         run: |
           python dtog.py
 
-    
       - name: Run the shell script
         run: |
           python run.py
 
-      - name: Run Bash script
+      - name: Commit changes
+        id: commit
         run: |
-          #!/bin/bash
-
           output_file="output.py"
           values=$(cat "$output_file")
-
           IFS=',' read -ra value_array <<< "$values"
-
+          files_to_commit=""
           for value in "${value_array[@]}"; do
             echo "$value"
-
             # Concatenate each value with "git add" command
             git_add_command="git add $value"
             echo "$git_add_command"
-
-            # Run EndBug/add-and-commit action for each file
-            echo "::group::Add and Commit $value"
-            echo "::set-output name=files::$value"
-            echo "::endgroup::"
+            # Concatenate the value to the files_to_commit variable
+            files_to_commit+=",$value"
           done
+          # Remove leading comma from files_to_commit
+          files_to_commit="${files_to_commit:1}"
+          echo "FILES_TO_COMMIT=$files_to_commit" >> $GITHUB_ENV
 
-      - name: Commit changes
+      - name: Final Commit
         uses: EndBug/add-and-commit@v7
         with:
           author_name: SS08090
           author_email: techicalsolutions68@gmail.com
           message: Auto commit changes
-          add: ${{ steps.script.outputs.files }}
+          add: folder1/*
+      - name: Final Commit
+        uses: EndBug/add-and-commit@v7
+        with:
+          author_name: SS08090
+          author_email: techicalsolutions68@gmail.com
+          message: Auto commit changes
+          add: folder2/*
 
-
+      - name: Final Commit
+        uses: EndBug/add-and-commit@v7
+        with:
+          author_name: SS08090
+          author_email: techicalsolutions68@gmail.com
+          message: Auto commit changes
+          add: folder3/*
+      
       - name: Trigger Workflow 1
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.actor }}/${{ github.event.repository.name }}
+          repository: ${{ github.repository }}
           event-type: trigger-workflow-1
