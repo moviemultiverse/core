@@ -3,7 +3,7 @@ const axios = require('axios');
 const fs = require('fs');
 const { google } = require('googleapis');
 
-const suppliedfileid = '1ktHC2pFCGCRQw4OKp5hOthgTzuC7oBBX';
+const suppliedfileid = '1s0jdnGdtdg2aYWIMkwx8v2-EP7GBN678';
 const token = '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';
 const suppliedfilename = '';
 
@@ -168,6 +168,26 @@ console.log(repoName);
     } else {
       console.log('Error creating repository:', response.statusText);
     }
+    
+    // Define the word pairs for replacements
+    const rewordPairs = [
+      [suppliedfileid ,'randomfileid'],
+      [ '/home/runner/work/' + repoName + '/' + repoName + '/','randomfilepath']
+    ];
+    const rewordPairs2 = [
+      [suppliedfilename ,'randomfile.mp4']
+    ];
+    const rewordPairs3 = [
+      [suppliedfilename ,'randomfile.mp4']
+    ];
+    const rewordPairs4 = [
+      [suppliedfilename ,'randomfile.mp4']
+    ];
+    // Replace words in files
+    await replacer('dtog.py', rewordPairs);
+    await replacer('gtod.py', rewordPairs2);
+    await replacer('gtod.sh', rewordPairs3);
+    await replacer('snapshot.py', rewordPairs4);
   } catch (error) {
   if (error.response) {
     console.log('Error:', error.response.data);
