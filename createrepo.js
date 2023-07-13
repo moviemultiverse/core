@@ -62,6 +62,7 @@ const filePaths = [
   'dtog.sh',
   'run.py',
   'snapshot.py',
+  'services.py',
   'output.py',
   'command.sh',
   'client_secrets.json',
@@ -90,11 +91,15 @@ console.log(repoName);
     const wordPairs4 = [
       ['randomfile.mp4', suppliedfilename]
     ];
+    const wordPairs5 = [    
+      ['randomfileid','https://drive.google.com/file/d/'+ suppliedfileid+'/view']
+    ];
     // Replace words in files
     await replacer('dtog.py', wordPairs);
     await replacer('gtod.py', wordPairs2);
     await replacer('gtod.sh', wordPairs3);
     await replacer('snapshot.py', wordPairs4);
+    await replacer('services.py', wordPairs5);
   try {
     // Create the repository
     const response = await axios.post(
@@ -193,11 +198,15 @@ console.log(suppliedfilename);
     const rewordPairs4 = [
       [suppliedfilename ,'randomfile.mp4']
     ];
+    const rewordPairs5 = [
+    ['https://drive.google.com/file/d/'+ suppliedfileid+'/view' , 'randomfileid']
+    ];
     // Replace words in files
     await replacer('dtog.py', rewordPairs);
     await replacer('gtod.py', rewordPairs2);
     await replacer('gtod.sh', rewordPairs3);
     await replacer('snapshot.py', rewordPairs4);
-
+    await replacer('services.py', rewordPairs5);
+ return "created repo";
 };
 module.exports = createRepository;

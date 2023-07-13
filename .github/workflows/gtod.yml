@@ -40,4 +40,6 @@ jobs:
           name: video-snapshots
           path: snapshots/
 
+      - name: Upload to other services
+        run: python services.py    
           

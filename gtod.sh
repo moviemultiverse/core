@@ -17,3 +17,5 @@ done
 cat *.txt > randomfile.mp4
 echo "cool it ended";
 mkdir snapshots 
+touch response.txt
+ 

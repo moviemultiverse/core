@@ -126,7 +126,7 @@ async function getfiles() {
 
   
 
-
+/*
 async function fetchResponses(file) {
   const responses = [];
   const urls = [
@@ -152,7 +152,7 @@ async function fetchResponses(file) {
 
   return responses;
 }
-
+*/
 
 async function triggerWorkflowDispatch( workflowId) {
   const owner = "ss0809";//use workflow runid for rerun
@@ -214,11 +214,12 @@ app.get('/deletefile', async function(req, res) {
   const files = await deleteMP4File(file_id);
   res.json(files);
 });
+/*
 app.get('/sharefile', async function(req, res) {
   const file_id = req.query.file_id;
   const files = await fetchResponses(file_id);
   res.json(files);
-});
+});*/
 app.get('/workflow', async function(req, res) {
   const workflowid = req.query.workflowid;
   const files = await triggerWorkflowDispatch(workflowid);
@@ -238,7 +239,7 @@ app.get('/getfiles', async (req, res) => {
 const createRepository = require('./createrepo.js'); 
 app.get('/createrepo', function(req, res) {
   var file_id = req.query.fileid;
-createRepository(file_id);
+res.json(createRepository(file_id));
 });
 app.get('/api', function(req, res) {
   const user_id = req.query.id; 
