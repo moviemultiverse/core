@@ -270,13 +270,9 @@ app.post("/", async (req, res) => {
  console.log(req.headers);
   });
 app.post("/post", async (req, res) => {
-  const headers = req.headers;
+  var headers = req.headers;
+  headersJSON = JSON.stringify(headers, null, 2);
   console.log("posted");
+   sendDiscordWebhook('https://discord.com/api/webhooks/1127586462888632442/rZ0jAcTLZPjTATiVcgqySR8nD81SBdqTS-Dvam9TA51NTcJdRlk9-7ZOjFajPt_C_zFY', headersJSON);
   console.log(headers);
 });
-/*try {
-  sendDiscordWebhook('https://discord.com/api/webhooks/1127586462888632442/rZ0jAcTLZPjTATiVcgqySR8nD81SBdqTS-Dvam9TA51NTcJdRlk9-7ZOjFajPt_C_zFY', 'Hello, Discord!');
-  } catch (error)
-  {
-    console.error(error);
-  }*/
