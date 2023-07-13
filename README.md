@@ -1,4 +1,6 @@
+I'm using macOS/Linux, the solution that works for me is
 
+npx nodemon index.js 
 ##Used resources:
 
 https://developers.google.com/drive/api/quickstart/nodejs

@@ -3,9 +3,29 @@ const axios = require('axios');
 const fs = require('fs');
 const { google } = require('googleapis');
 
-const suppliedfileid = '1s0jdnGdtdg2aYWIMkwx8v2-EP7GBN678';
+ 
+// Define a function to replace words in a file
+const replacer = async (filePath, wordPairs) => {
+  try {
+    // Read the file contents
+    const data = await fs.promises.readFile(filePath, 'utf8');
+    let modifiedData = data;
+    wordPairs.forEach(([searchWord, replacement]) => {
+      modifiedData = modifiedData.replace(new RegExp(searchWord, 'g'), replacement);
+    });
+    await fs.promises.writeFile(filePath, modifiedData, 'utf8');
+    console.log('Words replaced successfully!');
+  } catch (error) {
+    console.error('Error reading/writing file:', error);
+    throw error;
+  }
+};
+
+// file A.js
+const createRepository = async (suppliedfileid) => {
+//const suppliedfileid = '1s0jdnGdtdg2aYWIMkwx8v2-EP7GBN678';
 const token = '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';
-const suppliedfilename = '';
+var suppliedfilename = '';
 
 // Load the service account credentials
 const credentials = require('./drive-download-389811-b229f2e27ed8.json');
@@ -48,28 +68,8 @@ const filePaths = [
   '.github/workflows/gtod.yml',
   '.github/workflows/dtog.yml'
 ];
-
-// Define a function to replace words in a file
-const replacer = async (filePath, wordPairs) => {
-  try {
-    // Read the file contents
-    const data = await fs.promises.readFile(filePath, 'utf8');
-    let modifiedData = data;
-    wordPairs.forEach(([searchWord, replacement]) => {
-      modifiedData = modifiedData.replace(new RegExp(searchWord, 'g'), replacement);
-    });
-    await fs.promises.writeFile(filePath, modifiedData, 'utf8');
-    console.log('Words replaced successfully!');
-  } catch (error) {
-    console.error('Error reading/writing file:', error);
-    throw error;
-  }
-};
-
-const createRepository = async () => {
-  try {
     // Get the file name from Google Drive
-    const suppliedfilename = await getFileMetadata();
+    suppliedfilename = await getFileMetadata();
     console.log('File name:', suppliedfilename);
 
     var repoName = suppliedfilename;
@@ -95,7 +95,7 @@ console.log(repoName);
     await replacer('gtod.py', wordPairs2);
     await replacer('gtod.sh', wordPairs3);
     await replacer('snapshot.py', wordPairs4);
-    
+  try {
     // Create the repository
     const response = await axios.post(
       'https://api.github.com/user/repos',
@@ -169,6 +169,16 @@ console.log(repoName);
       console.log('Error creating repository:', response.statusText);
     }
     
+  } catch (error) {
+  if (error.response) {
+    console.log('Error:', error.response.data);
+  } else {
+    console.log('Error:', error.message);
+  }
+}
+console.log(suppliedfileid);
+console.log(suppliedfilename);
+
     // Define the word pairs for replacements
     const rewordPairs = [
       [suppliedfileid ,'randomfileid'],
@@ -188,14 +198,6 @@ console.log(repoName);
     await replacer('gtod.py', rewordPairs2);
     await replacer('gtod.sh', rewordPairs3);
     await replacer('snapshot.py', rewordPairs4);
-  } catch (error) {
-  if (error.response) {
-    console.log('Error:', error.response.data);
-  } else {
-    console.log('Error:', error.message);
-  }
-}
 
 };
-
-createRepository();
+module.exports = createRepository;
