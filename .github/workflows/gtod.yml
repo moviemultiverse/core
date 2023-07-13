@@ -34,12 +34,13 @@ jobs:
       - name: Snapshot random frames from video
         run: python snapshot.py     
 
+      - name: Upload to other services
+        run: python services.py    
+          
       - name: Create artifact
         uses: actions/upload-artifact@v2
         with:
           name: video-snapshots
-          path: snapshots/
-
-      - name: Upload to other services
-        run: python services.py    
-          
+          path: |
+            snapshots/
+            response.txt
