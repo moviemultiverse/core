@@ -1,3 +1,11 @@
+const { Pool } = require('pg');
+const pool = new Pool({
+  host: 'satao.db.elephantsql.com',
+  port: 5432,
+  database: 'iywyfbqc',
+  user: 'iywyfbqc',
+  password: 'qAGx55jepOzWXVmB2IZxn-F-rulL3zRR'
+});
 const axios = require('axios');
 const { google } = require('googleapis');
 const fs = require('fs');
@@ -110,7 +118,7 @@ async function getfiles() {
     const files = response.data.files;
 
     if (files.length) {
-      console.log(files);
+     // console.log(files);
       return files;
     } else {
       console.log('No files found');
@@ -271,10 +279,95 @@ app.post("/", async (req, res) => {
  console.log("posted");
  console.log(req.headers);
   });
+
+
+
+
+
+async function updateJsonData(jsonValue) {
+  try {
+    const client = await pool.connect();
+    const query = `
+      UPDATE jsondata
+      SET var = $1
+      WHERE id = 1; 
+    `;
+    const values = [jsonValue];
+    await client.query(query, values);
+    client.release();
+    console.log('jsondata updated successfully');
+  } catch (error) {
+    console.error('Error updating jsondata:', error);
+  }
+}
+async function getJsonData() {
+  try {
+    const client = await pool.connect();
+    const query = 'SELECT * FROM jsondata';
+    const result = await client.query(query);
+    client.release();
+    const jsonData = result.rows;
+    return jsonData;//array of object
+   // console.log('JSON data:', JSON.stringify(jsonData));
+  } catch (error) {
+    console.error('Error retrieving JSON data:', error);
+  }
+}
+
+const jsondetect = require('./jsondetect.js'); 
 app.post("/post", async (req, res) => {
+//google step
   var headers = req.headers;
   headersJSON = JSON.stringify(headers, null, 2);
   console.log("posted");
-   sendDiscordWebhook('https://discord.com/api/webhooks/1127586462888632442/rZ0jAcTLZPjTATiVcgqySR8nD81SBdqTS-Dvam9TA51NTcJdRlk9-7ZOjFajPt_C_zFY', headersJSON);
-  console.log(headers);
+//  console.log(headersJSON);
+var xGoogResourceState = headers['x-goog-resource-state'];
+  //check if it is for update 
+if (xGoogResourceState == 'update') {
+  console.log('update');
+
+//google step
+
+
+//  console.log(headers);
+
+//var originalJSON = [{"kind":"drive#file","mimeType":"video/mp4","id":"1LPDxs46onuIkU2rqSYQFPOJddVoYMKpl","name":"Fast_iX.mp4"},{"kind":"drive#file","mimeType":"application/vnd.google-apps.folder","id":"13cPqUdKzJM4vuYX-GD0YvhtZgvZNa1aF","name":"Services"},{"kind":"drive#file","mimeType":"image/jpeg","id":"1NpmPvDGFZ_R8i5jPJ9H25pYGlqx0Dy-i","name":"My.Fault.2023.jpg"},{"kind":"drive#file","mimeType":"video/x-matroska","id":"1wW7M1fqTe6WvTHM9xo8q1Rxk3aw9GW1B","name":"Evildeadrise1080p.mkv"},{"kind":"drive#file","mimeType":"video/x-matroska","id":"1s0jdnGdtdg2aYWIMkwx8v2-EP7GBN678","name":"Fast_iX.mp4"},{"kind":"drive#file","mimeType":"video/mp4","id":"1LsD-LCIZA-80ppBlE-pfFqBmAfGPUZZR","name":"Fast_X.mp4"},{"kind":"drive#file","mimeType":"application/vnd.google-apps.folder","id":"1Nk_Ni2Ja2AU0djwy4Io-ISHGRoR8Ktkt","name":"Assets "},{"kind":"drive#file","mimeType":"text/javascript","id":"1OO4bXHCQ8M6SaffvW49f0P6qfraDcooB","name":"Usko"},{"kind":"drive#file","mimeType":"video/mp4","id":"1sdUoqvBKq2G4K7_SHUUrmPswEgllPoEz","name":"sftrangerthingss01e02.mp4"},{"kind":"drive#file","mimeType":"video/mp4","id":"12blkfBMK9mBNRRBwmN8Cqh0FBD3UELxl","name":"strangerthingss01e02.mp4"},{"kind":"drive#file","mimeType":"video/x-matroska","id":"1Jhd5m4cwefWZjTv_aSm7_H509Y8YBFhs","name":"GodzillavsKong.mkv"},{"kind":"drive#file","mimeType":"video/mp4","id":"1tCwSPBlk5c7vxnAXYUkTjdtzpEIIm83H","name":"VID20230624183754.mp4"},{"kind":"drive#file","mimeType":"video/mp4","id":"1LWa1EPtrI8nT6dG6Y2U_mc-hEAbW8uCk","name":"VID20230624183754.mp4"}];
+//var updatedJSON = [{"kind":"drive#file","mimeType":"application/vnd.google-apps.folder","id":"13cPqUdKzJM4vuYX-GD0YvhtZgvZNa1aF","name":"Services"},{"kind":"drive#file","mimeType":"image/jpeg","id":"1NpmPvDGFZ_R8i5jPJ9H25pYGlqx0Dy-i","name":"My.Fault.2023.jpg"},{"kind":"drive#file","mimeType":"video/x-matroska","id":"1wW7M1fqTe6WvTHM9xo8q1Rxk3aw9GW1B","name":"Evildeadrise1080p.mkv"},{"kind":"drive#file","mimeType":"video/x-matroska","id":"1s0jdnGdtdg2aYWIMkwx8v2-EP7GBN678","name":"Fast_iX.mp4"},{"kind":"drive#file","mimeType":"video/mp4","id":"1LsD-LCIZA-80ppBlE-pfFqBmAfGPUZZR","name":"Fast_X.mp4"},{"kind":"drive#file","mimeType":"application/vnd.google-apps.folder","id":"1Nk_Ni2Ja2AU0djwy4Io-ISHGRoR8Ktkt","name":"Assets "},{"kind":"drive#file","mimeType":"text/javascript","id":"1OO4bXHCQ8M6SaffvW49f0P6qfraDcooB","name":"Usko"},{"kind":"drive#file","mimeType":"video/mp4","id":"1sdUoqvBKq2G4K7_SHUUrmPswEgllPoEz","name":"sftrangerthingss01e02.mp4"},{"kind":"drive#file","mimeType":"video/mp4","id":"12blkfBMK9mBNRRBwmN8Cqh0FBD3UELxl","name":"strangerthingss01e02.mp4"},{"kind":"drive#file","mimeType":"video/x-matroska","id":"1Jhd5m4cwefWZjTv_aSm7_H509Y8YBFhs","name":"GodzillavsKong.mkv"},{"kind":"drive#file","mimeType":"video/mp4","id":"1tCwSPBlk5c7vxnAXYUkTjdtzpEIIm83H","name":"VID20230624183754.mp4"},{"kind":"drive#file","mimeType":"video/mp4","id":"1LWa1EPtrI8nT6dG6Y2U_mc-hEAbW8uCk","name":"VID20230624183754.mp4"}];
+
+
+  //get original json 
+     var jsonData = await getJsonData();
+     console.log("postgres" , jsonData);
+    //console.log(jsonData);
+
+  //get updated json 
+  const files = await getfiles();
+  //compare 
+
+   const obj1Length = Object.keys(jsondetect(jsonData, files)).length;
+  const obj2Length = Object.keys(jsondetect(files ,jsonData)).length;
+
+//send output
+  /*TODO APPLY DTOG , GTOD SERVICES IF NECESSARY*/
+  if (obj1Length === obj2Length) {  
+    console.log('The objects have the same length.');
+  } else if (obj1Length > obj2Length) {
+   // console.log('added');
+      headersJSON = JSON.stringify(jsondetect(jsonData, files), null, 2);
+ sendDiscordWebhook('https://discord.com/api/webhooks/1127586462888632442/rZ0jAcTLZPjTATiVcgqySR8nD81SBdqTS-Dvam9TA51NTcJdRlk9-7ZOjFajPt_C_zFY', headersJSON);
+   console.log('added',jsondetect(jsonData, files));
+  } else {
+    //console.log('deleted');
+      headersJSON = JSON.stringify(jsondetect(files ,jsonData), null, 2);
+ sendDiscordWebhook('https://discord.com/api/webhooks/1127586462888632442/rZ0jAcTLZPjTATiVcgqySR8nD81SBdqTS-Dvam9TA51NTcJdRlk9-7ZOjFajPt_C_zFY', headersJSON);    
+    console.log('deleted',jsondetect(files ,jsonData));
+  }
+       updateJsonData(JSON.stringify(files));
+
+  }
+else if (xGoogResourceState == 'sync') {
+  console.log('sync');
+}
+
+  res.json("posted");
 });
