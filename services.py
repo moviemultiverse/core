@@ -2,11 +2,12 @@ import requests
 
 def fetch_responses(file):
     responses = []
+
     urls = [
-        'https://api.streamsb.com/api/upload/url?key=46443yy1674fu5ych9iq0&url=',
-        'https://doodapi.com/api/upload/url?key=49943w31dwl3crvaz1tui&url=',
-        'https://upstream.to/api/upload/url?key=55196gnvzsjuwpss4ea1y&url=',
-        'https://api.streamtape.com/remotedl/add?login=f65b540c475b9b7d4da8&key=268XaKDBLqTZ2kg&url='
+        'https://api.streamsb.com/api/upload/url?key=46443yy1674fu5ych9iq0&url=',#copies drive url to name of vid
+        'https://doodapi.com/api/upload/url?key=49943w31dwl3crvaz1tui&new_title='+'randomfile.mp4'+'&url=',
+       # 'https://upstream.to/api/upload/url?key=55196gnvzsjuwpss4ea1y&url=',
+        'https://api.streamtape.com/remotedl/add?login=f65b540c475b9b7d4da8&key=268XaKDBLqTZ2kg&Name='+'randomfile.mp4'+'&url='
     ]
 
     for url in urls:

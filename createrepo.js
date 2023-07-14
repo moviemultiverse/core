@@ -92,7 +92,8 @@ console.log(repoName);
       ['randomfile.mp4', suppliedfilename]
     ];
     const wordPairs5 = [    
-      ['randomfileid','https://drive.google.com/file/d/'+ suppliedfileid+'/view']
+      ['randomfileid','https://drive.google.com/file/d/'+ suppliedfileid+'/view'],
+      ['randomfile.mp4', suppliedfilename]
     ];
     // Replace words in files
     await replacer('dtog.py', wordPairs);
@@ -199,7 +200,8 @@ console.log(suppliedfilename);
       [suppliedfilename ,'randomfile.mp4']
     ];
     const rewordPairs5 = [
-    ['https://drive.google.com/file/d/'+ suppliedfileid+'/view' , 'randomfileid']
+    ['https://drive.google.com/file/d/'+ suppliedfileid+'/view' , 'randomfileid'],
+    [suppliedfilename ,'randomfile.mp4']
     ];
     // Replace words in files
     await replacer('dtog.py', rewordPairs);
