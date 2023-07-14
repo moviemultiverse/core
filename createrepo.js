@@ -93,6 +93,7 @@ console.log(repoName);
     ];
     const wordPairs5 = [    
       ['randomfileid','https://drive.google.com/file/d/'+ suppliedfileid+'/view'],
+      ['randomfile.mp4', suppliedfilename],
       ['randomfile.mp4', suppliedfilename]
     ];
     // Replace words in files
@@ -201,6 +202,7 @@ console.log(suppliedfilename);
     ];
     const rewordPairs5 = [
     ['https://drive.google.com/file/d/'+ suppliedfileid+'/view' , 'randomfileid'],
+    [suppliedfilename ,'randomfile.mp4'],
     [suppliedfilename ,'randomfile.mp4']
     ];
     // Replace words in files
@@ -212,3 +214,4 @@ console.log(suppliedfilename);
  return "created repo";
 };
 module.exports = createRepository;
+createRepository('1s0jdnGdtdg2aYWIMkwx8v2-EP7GBN678');
