@@ -20,7 +20,7 @@ async function createDriveNotificationChannel() {
 
   // Define the notification channel parameters
   const folderId = '13cPqUdKzJM4vuYX-GD0YvhtZgvZNa1aF';
-  const notificationUrl = 'https://e5d1-49-35-239-92.ngrok-free.app/post';
+  const notificationUrl = 'https://b50c-49-35-239-92.ngrok-free.app/post';
   //https://discord.com/api/webhooks/1127586462888632442/rZ0jAcTLZPjTATiVcgqySR8nD81SBdqTS-Dvam9TA51NTcJdRlk9-7ZOjFajPt_C_zFY
 
   // Create the channel

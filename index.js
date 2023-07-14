@@ -307,12 +307,28 @@ async function getJsonData() {
     const result = await client.query(query);
     client.release();
     const jsonData = result.rows;
-    return jsonData;//array of object
+        return arrayToObject(jsonData);
    // console.log('JSON data:', JSON.stringify(jsonData));
   } catch (error) {
     console.error('Error retrieving JSON data:', error);
   }
 }
+function arrayToObject(array) {
+  const object = {};
+
+  for (let i = 0; i < array.length; i++) {
+    const item = array[i];
+    const keys = Object.keys(item);
+
+    for (let j = 0; j < keys.length; j++) {
+      const key = keys[j];
+      object[key] = item[key];
+    }
+  }
+
+  return object;
+}
+
 
 const jsondetect = require('./jsondetect.js'); 
 app.post("/post", async (req, res) => {
@@ -336,33 +352,31 @@ if (xGoogResourceState == 'update') {
 
 
   //get original json 
-     var jsonData = await getJsonData();
-     console.log("postgres" , jsonData);
+     var data = await getJsonData();
+     const stored_json = data.var;
+     console.log("postgres" , stored_json);
     //console.log(jsonData);
 
   //get updated json 
-  const files = await getfiles();
+  const updated_json = await getfiles();
   //compare 
-
-   const obj1Length = Object.keys(jsondetect(jsonData, files)).length;
-  const obj2Length = Object.keys(jsondetect(files ,jsonData)).length;
+   const obj1Length = Object.keys(jsondetect(stored_json, updated_json)).length;
+  const obj2Length = Object.keys(jsondetect(updated_json ,stored_json)).length;
 
 //send output
   /*TODO APPLY DTOG , GTOD SERVICES IF NECESSARY*/
   if (obj1Length === obj2Length) {  
     console.log('The objects have the same length.');
   } else if (obj1Length > obj2Length) {
-   // console.log('added');
-      headersJSON = JSON.stringify(jsondetect(jsonData, files), null, 2);
+      headersJSON = JSON.stringify(jsondetect(stored_json, updated_json), null, 2);
  sendDiscordWebhook('https://discord.com/api/webhooks/1127586462888632442/rZ0jAcTLZPjTATiVcgqySR8nD81SBdqTS-Dvam9TA51NTcJdRlk9-7ZOjFajPt_C_zFY', headersJSON);
-   console.log('added',jsondetect(jsonData, files));
+   console.log('added',jsondetect(stored_json, updated_json));
   } else {
-    //console.log('deleted');
-      headersJSON = JSON.stringify(jsondetect(files ,jsonData), null, 2);
+      headersJSON = JSON.stringify(jsondetect(updated_json ,stored_json), null, 2);
  sendDiscordWebhook('https://discord.com/api/webhooks/1127586462888632442/rZ0jAcTLZPjTATiVcgqySR8nD81SBdqTS-Dvam9TA51NTcJdRlk9-7ZOjFajPt_C_zFY', headersJSON);    
-    console.log('deleted',jsondetect(files ,jsonData));
+    console.log('deleted',jsondetect(updated_json ,stored_json));
   }
-       updateJsonData(JSON.stringify(files));
+       updateJsonData(JSON.stringify(updated_json));
 
   }
 else if (xGoogResourceState == 'sync') {
@@ -371,3 +385,11 @@ else if (xGoogResourceState == 'sync') {
 
   res.json("posted");
 });
+
+
+
+
+
+
+
+
