@@ -214,4 +214,3 @@ console.log(suppliedfilename);
  return "created repo";
 };
 module.exports = createRepository;
-createRepository('1s0jdnGdtdg2aYWIMkwx8v2-EP7GBN678');
