@@ -9,7 +9,8 @@ const pool = new Pool({
 const axios = require('axios');
 const { google } = require('googleapis');
 const fs = require('fs');
-
+const { v4: uuidv4 } = require('uuid');
+const { JWT } = require('google-auth-library');
 const { Octokit } = require("@octokit/rest");
 
 // Create an Octokit instance with your PAT
@@ -250,13 +251,16 @@ app.get('/createrepo', function(req, res) {
   var file_id = req.query.fileid;
 res.json(createRepository(file_id));
 });
+app.get('/noti', function(req, res) {
+  var notificationUrl = req.query.url;//https://30be-157-34-122-53.ngrok-free.app/post
+res.json(createDriveNotificationChannel(notificationUrl));
+//TODO it will have sync data errors due to inconsistentscy in data noti....
+});
 app.get('/api', function(req, res) {
   const user_id = req.query.id; 
   const file_id = req.query.fileid;
 main(user_id,file_id);
   
-
-
  /* res.send({
     'user_id': user_id,
     'file_id': file_id
@@ -354,7 +358,7 @@ if (xGoogResourceState == 'update') {
   //get original json 
      var data = await getJsonData();
      const stored_json = data.var;
-     console.log("postgres" , stored_json);
+     //console.log("postgres" , stored_json);
     //console.log(jsonData);
 
   //get updated json 
@@ -365,20 +369,38 @@ if (xGoogResourceState == 'update') {
 
 //send output
   /*TODO APPLY DTOG , GTOD SERVICES IF NECESSARY*/
-  if (obj1Length === obj2Length) {  
-    console.log('The objects have the same length.');
-  } else if (obj1Length > obj2Length) {
+ if (obj1Length > obj2Length) {
       headersJSON = JSON.stringify(jsondetect(stored_json, updated_json), null, 2);
- sendDiscordWebhook('https://discord.com/api/webhooks/1127586462888632442/rZ0jAcTLZPjTATiVcgqySR8nD81SBdqTS-Dvam9TA51NTcJdRlk9-7ZOjFajPt_C_zFY', headersJSON);
-   console.log('added',jsondetect(stored_json, updated_json));
+ //sendDiscordWebhook('https://discord.com/api/webhooks/1127586462888632442/rZ0jAcTLZPjTATiVcgqySR8nD81SBdqTS-Dvam9TA51NTcJdRlk9-7ZOjFajPt_C_zFY', headersJSON);
+  // console.log('added',jsondetect(stored_json, updated_json));
   } else {
       headersJSON = JSON.stringify(jsondetect(updated_json ,stored_json), null, 2);
- sendDiscordWebhook('https://discord.com/api/webhooks/1127586462888632442/rZ0jAcTLZPjTATiVcgqySR8nD81SBdqTS-Dvam9TA51NTcJdRlk9-7ZOjFajPt_C_zFY', headersJSON);    
-    console.log('deleted',jsondetect(updated_json ,stored_json));
+ //sendDiscordWebhook('https://discord.com/api/webhooks/1127586462888632442/rZ0jAcTLZPjTATiVcgqySR8nD81SBdqTS-Dvam9TA51NTcJdRlk9-7ZOjFajPt_C_zFY', headersJSON);    
+  //  console.log('deleted',jsondetect(updated_json ,stored_json));
   }
+    console.log('new',jsondetect(stored_json, updated_json));
        updateJsonData(JSON.stringify(updated_json));
+if ( jsondetect(stored_json, updated_json) !== []) {
+    console.log('name',jsondetect(stored_json, updated_json)[0].name);
+    console.log('id',jsondetect(stored_json, updated_json)[0].id);
+    console.log('type',jsondetect(stored_json, updated_json)[0].mimeType);
 
-  }
+ 
+    if(jsondetect(stored_json, updated_json)[0].mimeType == 'video/mp4' ||
+    jsondetect(stored_json, updated_json)[0].mimeType ==  'video/x-matroska' )
+    {
+           createRepository(jsondetect(stored_json, updated_json)[0].id);
+           /*
+           TODO service isn't  able to delete the file created with me
+           not even named error not granted write permission to app
+           currently it will use file to dtog operation and reupload to uploaded folder
+
+
+
+           */
+    }
+
+  }}
 else if (xGoogResourceState == 'sync') {
   console.log('sync');
 }

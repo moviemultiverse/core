@@ -7,7 +7,7 @@ def main():
     credentials = service_account.Credentials.from_service_account_file('client_secrets.json', scopes=['https://www.googleapis.com/auth/drive.file'])
     drive_service = build('drive', 'v3', credentials=credentials)
 
-    folder_id = '13cPqUdKzJM4vuYX-GD0YvhtZgvZNa1aF'  # Replace with the target folder ID
+    folder_id = '15NnqIEGg6BtLZn2cfKjoCWirJnplfpm7'  # Replace with the target folder ID
 
     file_path = 'randomfile.mp4'  # Replace with the path to your file
 
@@ -22,10 +22,6 @@ def main():
         ).execute()
 
         print(f'File uploaded. ID: {file["id"]}')
-        url = 'https://google-06xl.onrender.com/driveupdate'
-        params = {'name': file_path, 'id': file["id"]}
-        response_text = call_url_with_params(url, params)
-        print(response_text)
 
     except Exception as e:
         print(f'Error occurred during file upload: {str(e)}')
