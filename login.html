@@ -1,0 +1,73 @@
+  <script src="https://apis.google.com/js/api.js"></script>
+
+<body>
+  <h2>LOGIN TO DARK MATTER
+  </h2>
+<script>
+    
+//MAIN API 
+   var YOUR_CLIENT_ID = '1096318296267-p5jrmp0ks4ij0vk3np4ndsiqv6b4bgdg.apps.googleusercontent.com';
+    var YOUR_REDIRECT_URI = 'https://google-2pun.onrender.com/callback';
+
+  
+  var x='ok', fragmentString = location.hash.substring(1);
+  var params = {};
+  var regex = /([^&=]+)=([^&]*)/g, m;
+  while (m = regex.exec(fragmentString)) {
+    params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+  }
+  if (Object.keys(params).length > 0) {
+    localStorage.setItem('oauth2-test-params', JSON.stringify(params) );
+    if (params['state'] && params['state'] == 'try_sample_request') {
+      trySampleRequest();
+    }
+  }
+
+  function trySampleRequest() {
+  var params = JSON.parse(localStorage.getItem('oauth2-test-params'));
+  if (params && params['access_token']) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', YOUR_REDIRECT_URI);
+    xhr.setRequestHeader('Authorization', 'Bearer ' + params['access_token']);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function (e) {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          console.log(xhr.response);
+        } else if (xhr.status === 401) {
+          // Token invalid, so prompt for user permission.
+          oauth2SignIn();
+        }
+      }
+    };
+    xhr.send();
+  } else {
+    oauth2SignIn();
+  }
+  //alert("shataakk baby! LOgin");
+}
+
+  function oauth2SignIn() {
+    var oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
+    var form = document.createElement('form');
+    form.setAttribute('method', 'GET'); // Send as a GET request.
+    form.setAttribute('action', oauth2Endpoint);
+    var params = {'client_id': '1096318296267-p5jrmp0ks4ij0vk3np4ndsiqv6b4bgdg.apps.googleusercontent.com',
+                  'redirect_uri':YOUR_REDIRECT_URI,
+                  'scope': 'https://www.googleapis.com/auth/userinfo.email',
+                  'state': 'try_sample_request',
+                  'include_granted_scopes': 'true',
+                  'response_type': 'token'};
+    for (var p in params) {
+      var input = document.createElement('input');
+      input.setAttribute('type', 'hidden');
+      input.setAttribute('name', p);
+      input.setAttribute('value', params[p]);
+      form.appendChild(input);
+    }
+    document.body.appendChild(form);
+    form.submit();
+  }
+</script>
+<button onclick="oauth2SignIn();">sign in</button>
+</body></html>

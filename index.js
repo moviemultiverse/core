@@ -219,6 +219,38 @@ app.listen(3000);
 app.get('/', (req, res) => {
   res.json('files');
 });
+app.get('/login', (req, res) => {
+  res.sendFile(__dirname + '/login.html');
+});
+app.get('/callback', (req, res) => {
+    res.sendFile(__dirname + '/login.html');
+});
+app.post('/callback', (req, res) => {
+  console.log(req.headers); // Access the posted data here
+  const accessToken = req.headers.authorization.split('Bearer ')[1];
+  console.log(accessToken);
+
+  axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  })
+    .then(response => {
+      // Extract email, name, and profile picture URL from the response
+      const { email, name, picture } = response.data;
+
+      // Do something with the email, name, and profile picture URL
+      res.send(`Welcome, ${name} (${email}). Profile picture: ${picture}`);
+    })
+    .catch(error => {
+      // Handle the error if the request fails
+      console.error('Error retrieving user profile:', error);
+      res.status(500).send('Error retrieving user profile');
+    });
+});
+
+
+
 app.get('/deletefile', async function(req, res) {
   const file_id = req.query.file_id;
   const files = await deleteMP4File(file_id);
