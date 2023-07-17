@@ -225,6 +225,21 @@ app.get('/login', (req, res) => {
 app.get('/callback', (req, res) => {
     res.sendFile(__dirname + '/login.html');
 });
+
+async function insertuser(user , email , picture) {
+  try {
+    const client = await pool.connect();
+    const query = `
+      INSERT INTO users_login_dark_matter (name, email ,picture) VALUES ($1, $2 ,$3);
+    `;
+    const values = [user , email , picture];
+    await client.query(query, values);
+    client.release();
+    console.log('user added successfully');
+  } catch (error) {
+    console.error('Error updating user insertion:', error);
+  }
+}
 app.post('/callback', (req, res) => {
   console.log(req.headers); // Access the posted data here
   const accessToken = req.headers.authorization.split('Bearer ')[1];
@@ -238,9 +253,10 @@ app.post('/callback', (req, res) => {
     .then(response => {
       // Extract email, name, and profile picture URL from the response
       const { email, name, picture } = response.data;
-
-      // Do something with the email, name, and profile picture URL
+      if(insertuser(name,email,picture ))
       res.send(`Welcome, ${name} (${email}). Profile picture: ${picture}`);
+      else
+      res.json("error");
     })
     .catch(error => {
       // Handle the error if the request fails
