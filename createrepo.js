@@ -97,11 +97,11 @@ console.log(repoName);
       ['randomfile.mp4', suppliedfilename]
     ];
     // Replace words in files
-    await replacer('dtog.py', wordPairs);
-    await replacer('gtod.py', wordPairs2);
-    await replacer('gtod.sh', wordPairs3);
-    await replacer('snapshot.py', wordPairs4);
-    await replacer('services.py', wordPairs5);
+    await replacer('repoassets/dtog.py', wordPairs);
+    await replacer('repoassets/gtod.py', wordPairs2);
+    await replacer('repoassets/gtod.sh', wordPairs3);
+    await replacer('repoassets/snapshot.py', wordPairs4);
+    await replacer('repoassets/services.py', wordPairs5);
   try {
     // Create the repository
     const response = await axios.post(
@@ -121,7 +121,7 @@ console.log(repoName);
       // Get the repository's full name (including the owner)
       const fullName = response.data.full_name;
 
-      for (const filePath of filePaths) {
+      for (var filePath of filePaths) {
         // Check if the current path is a folder
         const isFolder = filePath.endsWith('/');
 
@@ -148,8 +148,7 @@ console.log(repoName);
           }
         } else {
           // Read the file content from the existing file
-          const fileContent = await fs.promises.readFile(filePath, 'utf-8');
-
+          const fileContent = await fs.promises.readFile('repoassets/' +filePath, 'utf-8');
           // Add file to the repository
           const fileResponse = await axios.put(
             `https://api.github.com/repos/${fullName}/contents/${filePath}`,
@@ -206,11 +205,11 @@ console.log(suppliedfilename);
     [suppliedfilename ,'randomfile.mp4']
     ];
     // Replace words in files
-    await replacer('dtog.py', rewordPairs);
-    await replacer('gtod.py', rewordPairs2);
-    await replacer('gtod.sh', rewordPairs3);
-    await replacer('snapshot.py', rewordPairs4);
-    await replacer('services.py', rewordPairs5);
+    await replacer('repoassets/dtog.py', rewordPairs);
+    await replacer('repoassets/gtod.py', rewordPairs2);
+    await replacer('repoassets/gtod.sh', rewordPairs3);
+    await replacer('repoassets/snapshot.py', rewordPairs4);
+    await replacer('repoassets/services.py', rewordPairs5);
  return "created repo";
 };
 module.exports = createRepository;
