@@ -89,6 +89,54 @@ app.get('/upstream',(req , res) => {
     }
   });
 });
+async function insertuser(user , email , picture) {
+  try {
+    const client = await pool.connect();
+    const query = `
+      INSERT INTO users_login_dark_matter (name, email ,picture) VALUES ($1, $2 ,$3);
+    `;
+    const values = [user , email , picture];
+    await client.query(query, values);
+    client.release();
+    console.log('user added successfully');
+  } catch (error) {
+    console.error('Error updating user insertion:', error);
+  }
+}
+async function updateJsonData(jsonValue) {
+  try {
+    const client = await pool.connect();
+    const query = `
+      UPDATE jsondata
+      SET var = $1
+      WHERE id = 1; 
+    `;
+    const values = [jsonValue];
+    await client.query(query, values);
+    client.release();
+    console.log('jsondata updated successfully');
+  } catch (error) {
+    console.error('Error updating jsondata:', error);
+  }
+}
+async function getJsonData() {
+  try {
+    const client = await pool.connect();
+    const query = 'SELECT * FROM jsondata';
+    const result = await client.query(query);
+    client.release();
+    const jsonData = result.rows;
+        return arrayToObject(jsonData);
+   // console.log('JSON data:', JSON.stringify(jsonData));
+  } catch (error) {
+    console.error('Error retrieving JSON data:', error);
+  }
+}
+
+
+module.exports = insertuser;
+module.exports = updateJsonData;
+module.exports = getJsonData;
 
 /*
 README 

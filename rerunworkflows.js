@@ -1,7 +1,6 @@
 const axios = require('axios');
-
+async function rerunworkflow(repository_name) {
 const repository_owner = "ss08090";
-const repository_name = "Fast_iX"; // changeable with randomfilename
 const access_token = "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";
 const headers = {
   "Accept": "application/vnd.github+json",
@@ -10,7 +9,7 @@ const headers = {
 };
 const url = `https://api.github.com/repos/${repository_owner}/${repository_name}/actions/runs`;
 
-axios.get(url, { headers })
+   axios.get(url, { headers })
   .then(response => {
     const data = response.data.workflow_runs;
     let run_id = null;
@@ -35,3 +34,9 @@ axios.get(url, { headers })
     }
   })
   .catch(error => console.error(error));
+
+  // body...
+}
+
+
+module.exports = rerunworkflow;

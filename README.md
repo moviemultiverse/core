@@ -1,27 +1,35 @@
-I'm using macOS/Linux, the solution that works for me is
-
+# Dark Matter
+A platform to store movies at mega large scale
+## Start Command
+```javascript
 npx nodemon index.js 
-##Used resources:
+```
+## Used resources:
 
 https://developers.google.com/drive/api/quickstart/nodejs
-
 https://developers.google.com/drive/api/v3/reference
-
 https://bretcameron.medium.com/how-to-use-the-google-drive-api-with-javascript-57a6cc9e5262
-
 https://cloud.google.com/nodejs/docs/reference/google-auth-library/latest
-
 https://developers.google.com/identity/gsi/web/guides/personalized-button
-
 https://github.com/TeemuKoivisto/google-oauth-drive-example
 
-
-
-DATABASE FOR USERS
+## Api Public Endpoints
+```
+.get('/deletefile') with query param file_id(drive)
+.get('/workflow') with query param workflowrepo(github reponame)
+.get('/createrepo') with query param file_id(drive)
+.get('/getfiles') returns total files owned by service account
+.get('/noti') with query param url (domain/post)
+.get('/api') with query param id && fileid (share file with user from service account)
+.get('/login')(general login working...)
+```
+## DATABASE FOR USERS
+```SQL
 CREATE TABLE users_login_dark_matter (
     name VARCHAR(255),
     email VARCHAR(255) PRIMARY KEY ,
     picture VARCHAR(255),
 );
 
-INSERT INTO users (name, email,picture) VALUES ($1, $2 ,$3 );
+INSERT INTO users_login_dark_matter (name, email,picture) VALUES ($1, $2 ,$3 );
+```

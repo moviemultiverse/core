@@ -12,18 +12,13 @@ const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 const { JWT } = require('google-auth-library');
 const { Octokit } = require("@octokit/rest");
-
-// Create an Octokit instance with your PAT
+const credentials = require('./drive-download-389811-b229f2e27ed8.json');
 const octokit = new Octokit({
   auth: "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",
 });
-
-// Define the repository and workflow details
-
 const express = require('express');
 var app = express();
 app.use(express.json());
-const credentials = require('./drive-download-389811-b229f2e27ed8.json');
 
 async function createFilePermission(authClient, fileId, emailAddress, role) {
   try {
@@ -131,49 +126,6 @@ async function getfiles() {
   }
 }
 
-
-
-
-  
-
-/*
-async function fetchResponses(file) {
-  const responses = [];
-  const urls = [
-    'https://api.streamsb.com/api/upload/url?key=46443yy1674fu5ych9iq0&url=',
-    'https://doodapi.com/api/upload/url?key=49943w31dwl3crvaz1tui&url=',
-    'https://upstream.to/api/upload/url?key=55196gnvzsjuwpss4ea1y&url=',
-    'https://api.streamtape.com/remotedl/add?login=f65b540c475b9b7d4da8&key=268XaKDBLqTZ2kg&url='
-  ];
-
-  for (const url of urls) {
-    const fullUrl = url.concat(file);
-
-    try {
-      const response = await axios.get(fullUrl);
-      if (response.status === 200) {
-        const data = response.data;
-        responses.push(data);
-      }
-    } catch (error) {
-      console.error('Error occurred during fetch:', error);
-    }
-  }
-
-  return responses;
-}
-*/
-
-async function triggerWorkflowDispatch( workflowId) {
-  const owner = "ss0809";//use workflow runid for rerun
-const repo = "strangerthingss01e02";
-await octokit.request('POST /repos/{owner}/{repo}/actions/runs/{run_id}/rerun', {
-  owner: owner,
-  repo: repo,
-  run_id: workflowId
-})
-}
-
 async function deleteMP4File(fileId) {
   try {
     // Authenticate using the service account credentials
@@ -226,25 +178,12 @@ app.get('/callback', (req, res) => {
     res.sendFile(__dirname + '/login.html');
 });
 
-async function insertuser(user , email , picture) {
-  try {
-    const client = await pool.connect();
-    const query = `
-      INSERT INTO users_login_dark_matter (name, email ,picture) VALUES ($1, $2 ,$3);
-    `;
-    const values = [user , email , picture];
-    await client.query(query, values);
-    client.release();
-    console.log('user added successfully');
-  } catch (error) {
-    console.error('Error updating user insertion:', error);
-  }
-}
+
 app.post('/callback', (req, res) => {
   console.log(req.headers); // Access the posted data here
   const accessToken = req.headers.authorization.split('Bearer ')[1];
   console.log(accessToken);
-
+  const insertuser = require('./database.js');
   axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -279,10 +218,12 @@ app.get('/sharefile', async function(req, res) {
   res.json(files);
 });*/
 app.get('/workflow', async function(req, res) {
-  const workflowid = req.query.workflowid;
-  const files = await triggerWorkflowDispatch(workflowid);
+  const workflowrepo = req.query.workflowrepo;
+  const rerunworkflow = require('./rerunworkflows.js');
+  const files = await rerunworkflow(workflowrepo);
   res.json(files);
 });
+
 
 
 app.get('/getfiles', async (req, res) => {
@@ -336,35 +277,6 @@ app.post("/", async (req, res) => {
 
 
 
-async function updateJsonData(jsonValue) {
-  try {
-    const client = await pool.connect();
-    const query = `
-      UPDATE jsondata
-      SET var = $1
-      WHERE id = 1; 
-    `;
-    const values = [jsonValue];
-    await client.query(query, values);
-    client.release();
-    console.log('jsondata updated successfully');
-  } catch (error) {
-    console.error('Error updating jsondata:', error);
-  }
-}
-async function getJsonData() {
-  try {
-    const client = await pool.connect();
-    const query = 'SELECT * FROM jsondata';
-    const result = await client.query(query);
-    client.release();
-    const jsonData = result.rows;
-        return arrayToObject(jsonData);
-   // console.log('JSON data:', JSON.stringify(jsonData));
-  } catch (error) {
-    console.error('Error retrieving JSON data:', error);
-  }
-}
 function arrayToObject(array) {
   const object = {};
 
@@ -382,8 +294,10 @@ function arrayToObject(array) {
 }
 
 
-const jsondetect = require('./jsondetect.js'); 
 app.post("/post", async (req, res) => {
+const jsondetect = require('./jsondetect.js'); 
+const updateJsonData = require('./database.js');
+const getJsonData = require('./database.js');
 //google step
   var headers = req.headers;
   headersJSON = JSON.stringify(headers, null, 2);
