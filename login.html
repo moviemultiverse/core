@@ -7,7 +7,7 @@
     
 //MAIN API 
    var YOUR_CLIENT_ID = '1096318296267-p5jrmp0ks4ij0vk3np4ndsiqv6b4bgdg.apps.googleusercontent.com';
-    var YOUR_REDIRECT_URI = 'http://localhost:3000/callback';
+    var YOUR_REDIRECT_URI = 'https://google-2pun.onrender.com/callback';
 
   
   var x='ok', fragmentString = location.hash.substring(1);
@@ -26,6 +26,7 @@
   function trySampleRequest() {
   var params = JSON.parse(localStorage.getItem('oauth2-test-params'));
   if (params && params['access_token']) {
+      alert("loggedd in ");
     var xhr = new XMLHttpRequest();
     xhr.open('POST', YOUR_REDIRECT_URI);
     xhr.setRequestHeader('Authorization', 'Bearer ' + params['access_token']);
