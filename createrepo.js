@@ -63,11 +63,14 @@ const filePaths = [
   'run.py',
   'snapshot.py',
   'services.py',
+  'doodstream.py',
+  'streamtape.py',
   'output.py',
   'command.sh',
   'client_secrets.json',
   '.github/workflows/gtod.yml',
-  '.github/workflows/dtog.yml'
+  '.github/workflows/dtog.yml',
+  '.github/workflows/cron.yml'
 ];
     // Get the file name from Google Drive
     suppliedfilename = await getFileMetadata();
@@ -96,12 +99,20 @@ console.log(repoName);
       ['randomfile.mp4', suppliedfilename],
       ['randomfile.mp4', suppliedfilename]
     ];
+    const wordPairs6 = [
+      ['randomfile.mp4', suppliedfilename]
+    ];
+    const wordPairs7 = [
+      ['randomfile.mp4', suppliedfilename]
+    ];
     // Replace words in files
     await replacer('repoassets/dtog.py', wordPairs);
     await replacer('repoassets/gtod.py', wordPairs2);
     await replacer('repoassets/gtod.sh', wordPairs3);
     await replacer('repoassets/snapshot.py', wordPairs4);
     await replacer('repoassets/services.py', wordPairs5);
+    await replacer('repoassets/streamtape.py', wordPairs6);
+    await replacer('repoassets/doodstream.py', wordPairs7);
   try {
     // Create the repository
     const response = await axios.post(
@@ -204,12 +215,21 @@ console.log(suppliedfilename);
     [suppliedfilename ,'randomfile.mp4'],
     [suppliedfilename ,'randomfile.mp4']
     ];
+    const rewordPairs6 = [
+      [suppliedfilename ,'randomfile.mp4']
+    ];
+    const rewordPairs7 = [
+      [suppliedfilename ,'randomfile.mp4']
+    ];
     // Replace words in files
     await replacer('repoassets/dtog.py', rewordPairs);
     await replacer('repoassets/gtod.py', rewordPairs2);
     await replacer('repoassets/gtod.sh', rewordPairs3);
     await replacer('repoassets/snapshot.py', rewordPairs4);
     await replacer('repoassets/services.py', rewordPairs5);
+    await replacer('repoassets/streamtape.py', rewordPairs6);
+    await replacer('repoassets/doodstream.py', rewordPairs7);
+
  return "created repo";
 };
 module.exports = createRepository;
