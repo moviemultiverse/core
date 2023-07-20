@@ -13,8 +13,9 @@ const { v4: uuidv4 } = require('uuid');
 const { JWT } = require('google-auth-library');
 const { Octokit } = require("@octokit/rest");
 const credentials = require('./drive-download-389811-b229f2e27ed8.json');
+const githubToken = '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'; 
 const octokit = new Octokit({
-  auth: "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",
+  auth: githubToken,
 });
 const express = require('express');
 var app = express();
@@ -258,6 +259,31 @@ app.get('/movie_data', (req, res) => {
     }
   });
 });
+app.get('/getrepo', async (req, res) => {
+    searchRepositories("ss08090", githubToken)
+  .then((repos) => {
+    //console.log( repos);
+    res.json(repos);
+  })
+  .catch((err) => {
+    console.error('Error:', err);
+  });
+});
+async function searchRepositories(username, token) {
+  const apiUrl = `https://api.github.com/search/repositories?q=user:${username}`;
+  const headers = {
+    Authorization: `token ${token}`,
+  };
+
+  try {
+    const response = await axios.get(apiUrl, { headers });
+    return response.data.items.map((repo) => repo.name);
+  } catch (error) {
+    console.error('Error fetching repositories:', error.message);
+    return [];
+  }
+}
+
 const createRepository = require('./createrepo.js'); 
 app.get('/createrepo', function(req, res) {
   var file_id = req.query.fileid;
