@@ -247,7 +247,17 @@ app.get('/getfiles', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
+app.get('/movie_data', (req, res) => {
+  var movie = req.query.movie;
+  pool.query('SELECT * FROM moviedata', (error, results) => {
+    if (error) {
+      console.error('Error executing query', error);
+      res.status(500).send('Error retrieving users');
+    } else {
+      res.json(results.rows);
+    }
+  });
+});
 const createRepository = require('./createrepo.js'); 
 app.get('/createrepo', function(req, res) {
   var file_id = req.query.fileid;

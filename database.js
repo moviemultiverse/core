@@ -12,9 +12,10 @@ var app = express();
 app.use(express.json());
 app.listen(3000);
 
-app.get('/', (req, res) => {
+
+app.get('/movie', (req, res) => {
   var movie = req.query.movie;
-  pool.query('SELECT * FROM moviedata WHERE movie_name = $1', [movie], (error, results) => {
+  pool.query('SELECT * FROM moviedata', (error, results) => {
     if (error) {
       console.error('Error executing query', error);
       res.status(500).send('Error retrieving users');
@@ -24,6 +25,17 @@ app.get('/', (req, res) => {
   });
 });
 
+app.get('/movie', (req, res) => {
+  var movie = req.query.movie;
+  pool.query('SELECT * FROM moviedata',  (error, results) => {
+    if (error) {
+      console.error('Error executing query', error);
+      res.status(500).send('Error retrieving users');
+    } else {
+      res.json(results.rows);
+    }
+  });
+});
 app.get('/update',(req , res) => {//ambigious
   var movieid = req.query.movieid;
   pool.query('UPDATE moviedata SET streamsb_code = $1 ,streamtape_code = $2 , doodstream_code = $3 , upstream_code = $4 WHERE drive_code = $5;',
