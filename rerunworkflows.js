@@ -1,7 +1,7 @@
 const axios = require('axios');
 async function rerunworkflow(repository_name) {
 const repository_owner = "ss08090";
-const access_token = "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";
+const access_token = "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";
 const headers = {
   "Accept": "application/vnd.github+json",
   "Authorization": `Bearer ${access_token}`,
