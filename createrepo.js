@@ -2,8 +2,15 @@ const { Octokit } = require("@octokit/rest");
 const axios = require('axios');
 const fs = require('fs');
 const { google } = require('googleapis');
-
- 
+const { Pool } = require('pg');
+const pool = new Pool({
+  host: 'satao.db.elephantsql.com',
+  port: 5432,
+  database: 'iywyfbqc',
+  user: 'iywyfbqc',
+  password: 'qAGx55jepOzWXVmB2IZxn-F-rulL3zRR'
+});
+   
 // Define a function to replace words in a file
 const replacer = async (filePath, wordPairs) => {
   try {
@@ -195,7 +202,18 @@ console.log(repoName);
 }
 console.log(suppliedfileid);
 console.log(suppliedfilename);
-
+ pool.query(
+  'INSERT INTO moviedata (drive_code , streamsb_code , movie_name , size_mb , streamtape_code , doodstream_code , upstream_code , is_github ) \
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8);',
+  [fileId, null, repoName, null, null, null, null, 1],
+  (error, results) => {
+    if (error) {
+      console.error('Error executing query', error);
+    } else {
+      console.log("added to database");
+    }
+  }
+);
     // Define the word pairs for replacements
     const rewordPairs = [
       [suppliedfileid ,'randomfileid'],
