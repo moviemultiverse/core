@@ -46,14 +46,16 @@ const drive = google.drive({ version: 'v3', auth });
 
 // Specify the file ID
 const fileId = suppliedfileid;
-
+var size_mb ;
 // Define a function to get the file metadata
 const getFileMetadata = async () => {
   try {
     const res = await drive.files.get({
       fileId: fileId,
-      fields: 'name',
+      fields: 'name , size ',
     });
+    size_mb = res.data.size.toString().substring(0, 4) ;
+    console.log(size_mb);
     return res.data.name;
   } catch (error) {
     console.error('Error retrieving file:', error);
@@ -205,7 +207,7 @@ console.log(suppliedfilename);
  pool.query(
   'INSERT INTO moviedata (drive_code , streamsb_code , movie_name , size_mb , streamtape_code , doodstream_code , upstream_code , is_github ) \
   VALUES ($1, $2, $3, $4, $5, $6, $7, $8);',
-  [fileId, null, repoName, null, null, null, null, 1],
+  [fileId, null, repoName, size_mb, null, null, null, 1],
   (error, results) => {
     if (error) {
       console.error('Error executing query', error);
