@@ -238,7 +238,11 @@ app.get('/workflow', async function(req, res) {
   res.json(files);
 });
 
-
+app.get('/artifact',async (req , res) => {
+const getWorkflowArtifacts = require('./artifact.js'); 
+  var reponame = req.query.reponame;
+res.json(await getWorkflowArtifacts(reponame));
+});
 
 app.get('/getfiles', async (req, res) => {
   try {
@@ -283,7 +287,6 @@ async function searchRepositories(username, token) {
     return [];
   }
 }
-
 const createRepository = require('./createrepo.js'); 
 app.get('/createrepo', function(req, res) {
   var file_id = req.query.fileid;

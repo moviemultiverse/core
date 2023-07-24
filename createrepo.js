@@ -78,8 +78,8 @@ const filePaths = [
   'command.sh',
   'client_secrets.json',
   '.github/workflows/gtod.yml',
-  '.github/workflows/dtog.yml',
-  '.github/workflows/cron.yml'
+  '.github/workflows/cron.yml',
+  '.github/workflows/dtog.yml'
 ];
     // Get the file name from Google Drive
     suppliedfilename = await getFileMetadata();
@@ -137,6 +137,18 @@ console.log(repoName);
 
     if (response.status === 201) {
       console.log('Repository created successfully!');
+             pool.query(
+  'INSERT INTO moviedata (drive_code , streamsb_code , movie_name , size_mb , streamtape_code , doodstream_code , upstream_code , is_github ) \
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8);',
+  [fileId, null, repoName, size_mb, null, null, null, 1],
+  (error, results) => {
+    if (error) {
+      console.error('Error executing query', error);
+    } else {
+      console.log("added to database");
+    }
+  }
+);
 
       // Get the repository's full name (including the owner)
       const fullName = response.data.full_name;
@@ -204,18 +216,7 @@ console.log(repoName);
 }
 console.log(suppliedfileid);
 console.log(suppliedfilename);
- pool.query(
-  'INSERT INTO moviedata (drive_code , streamsb_code , movie_name , size_mb , streamtape_code , doodstream_code , upstream_code , is_github ) \
-  VALUES ($1, $2, $3, $4, $5, $6, $7, $8);',
-  [fileId, null, repoName, size_mb, null, null, null, 1],
-  (error, results) => {
-    if (error) {
-      console.error('Error executing query', error);
-    } else {
-      console.log("added to database");
-    }
-  }
-);
+
     // Define the word pairs for replacements
     const rewordPairs = [
       [suppliedfileid ,'randomfileid'],
