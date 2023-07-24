@@ -1,5 +1,6 @@
 import psycopg2
 import cv2
+import re
 import os
 import random
 from googleapiclient.discovery import build
