@@ -126,6 +126,34 @@ async function getfiles() {
     return [];
   }
 }
+async function getvidFiles() {
+  try {
+    const auth = new google.auth.JWT(
+      credentials.client_email,
+      null,
+      credentials.private_key,
+      ['https://www.googleapis.com/auth/drive']
+    );
+
+    const drive = google.drive({ version: 'v3', auth });
+    const response = await drive.files.list({
+      q: "mimeType='video/mp4'",
+    });
+
+    const mp4Files = response.data.files;
+
+    if (mp4Files.length) {
+      // console.log(mp4Files);
+      return mp4Files;
+    } else {
+      console.log('No mp4 files found');
+      return [];
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    return [];
+  }
+}
 
 async function deleteMP4File(fileId) {
   try {
@@ -252,6 +280,15 @@ app.get('/getfiles', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+app.get('/getvidfiles', async (req, res) => {
+  try {
+    const files = await getvidFiles();
+    res.json(files);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.get('/movie_data', (req, res) => {
   var movie = req.query.movie;
   pool.query('SELECT * FROM moviedata', (error, results) => {
