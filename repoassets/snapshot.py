@@ -1,3 +1,4 @@
+import json
 import psycopg2
 import cv2
 import re
@@ -68,8 +69,14 @@ def upload_images_to_google_drive(credentials_path, folder_path, folder_id):
 
     #return file_ids
 
+snapshot_random_frames(video_path, num_frames, output_dir)
+credentials_path = 'client_secrets.json'
+folder_id = '1Nk_Ni2Ja2AU0djwy4Io-ISHGRoR8Ktkt'
+upload_images_to_google_drive(credentials_path, output_dir, folder_id)
 
 
+
+file_ids_json = json.dumps(file_ids)
 
 db_params = {
     "host": "satao.db.elephantsql.com",
@@ -86,7 +93,7 @@ update_query = """
     SET img_data = %s
     WHERE movie_name = %s;
 """
-values = (file_ids , toxic)
+values = (file_ids_json , toxic)
 try:
     cursor.execute(update_query, values)
     connection.commit()
@@ -105,9 +112,3 @@ connection.close()
 
 
 
-
-
-snapshot_random_frames(video_path, num_frames, output_dir)
-credentials_path = 'client_secrets.json'
-folder_id = '1Nk_Ni2Ja2AU0djwy4Io-ISHGRoR8Ktkt'
-upload_images_to_google_drive(credentials_path, output_dir, folder_id)
