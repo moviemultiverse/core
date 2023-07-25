@@ -2,6 +2,7 @@ import requests
 import psycopg2
 import re
 target_file_name = "randomfile.mp4"
+toxic = re.sub(r'\.mp4$', '', target_file_name)
 
 def get_link_by_name():
     api_url = 'https://api.streamtape.com/file/listfolder?login=f65b540c475b9b7d4da8&key=268XaKDBLqTZ2kg'
@@ -38,7 +39,6 @@ db_params = {
 }
 connection = psycopg2.connect(**db_params)
 cursor = connection.cursor()
-toxic = re.sub(r'\.mp4$', '', target_file_name)
 update_query = """
     UPDATE moviedata 
     SET streamtape_code = %s
