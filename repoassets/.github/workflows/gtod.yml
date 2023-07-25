@@ -44,7 +44,3 @@ jobs:
           path: |
             snapshots/
             response.txt
-      - name: Get details from other services
-        run: |
-             python streamtape.py  
-             python doodstream.py  
