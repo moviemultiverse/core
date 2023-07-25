@@ -1,8 +1,9 @@
 import requests
+import psycopg2
+target_file_name = "randomfile.mp4"
 
 def get_link_by_name():
     api_url = 'https://api.streamtape.com/file/listfolder?login=f65b540c475b9b7d4da8&key=268XaKDBLqTZ2kg'
-    target_file_name = "randomfile.mp4"
 
     try:
         response = requests.get(api_url)
@@ -27,3 +28,29 @@ def get_link_by_name():
 
 link = get_link_by_name()
 print(link)
+db_params = {
+    "host": "satao.db.elephantsql.com",
+    "port": 5432,
+    "database": "iywyfbqc",
+    "user": "iywyfbqc",
+    "password": "qAGx55jepOzWXVmB2IZxn-F-rulL3zRR"
+}
+connection = psycopg2.connect(**db_params)
+cursor = connection.cursor()
+toxic = re.sub(r'\.mp4$', '', target_file_name)
+update_query = """
+    UPDATE moviedata 
+    SET streamtape_code = %s
+    WHERE movie_name = %s;
+"""
+values = (link , toxic)
+try:
+    cursor.execute(update_query, values)
+    connection.commit()
+    print("Update successful!")
+
+except (Exception, psycopg2.Error) as error:
+    connection.rollback()
+    print("Error executing query:", error)
+cursor.close()
+connection.close()
