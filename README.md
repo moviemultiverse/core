@@ -22,6 +22,7 @@ https://github.com/TeemuKoivisto/google-oauth-drive-example
 .get('/getvidfiles') returns total vid files owned by service account
 .get('/getmappeddata')(check if github exists for file in drive){mutant of getvidfiles}
 .get('/noti') with query param url (domain/post)
+.get('/movie_data') get movie_data from database
 .get('/api') with query param id && fileid (share file with user from service account)
 .get('/login')(general login working...)
 ```
