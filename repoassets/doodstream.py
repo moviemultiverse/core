@@ -14,7 +14,7 @@ def get_link_by_name():
         files = data['result']['files']
         for file in files:
             if file['title'] == toxic:
-                return file['download_url']
+                return file['file_code']
 
         return None  
 

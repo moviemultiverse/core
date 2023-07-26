@@ -362,7 +362,53 @@ app.post("/", async (req, res) => {
  console.log(req.headers);
   });
 
+async function Mappeddata(jsonFiles, fileNamesArray) {
+  const resultMap = {};
 
+  for (const file of jsonFiles) {
+    const fileNameWithoutExtension = file.name.replace(/\.[^/.]+$/, ''); // Remove .mp4 extension
+    const found = fileNamesArray.includes(fileNameWithoutExtension);
+    resultMap[fileNameWithoutExtension] = found;
+  }
+
+  // Convert resultMap to JSON using JSON.stringify()
+  const resultMapJSON = JSON.stringify(resultMap);
+
+  return resultMapJSON;
+}
+
+
+function addDataToJSON(mainJSON, newDataJSON) {
+  for (const newDataObj of newDataJSON) {
+    for (const name in newDataObj) {
+      const matchingData = mainJSON.find((data) => data.name.replace(/\.[^/.]+$/, '') === name);
+      if (matchingData) {
+        matchingData.check = newDataObj[name];
+      }
+    }
+  }
+  return mainJSON;
+}
+
+
+app.get('/getmappeddata', async function(req, res) {
+  try {
+    const files = await getvidFiles();
+    const repos = await searchRepositories("ss08090", githubToken);
+    const result = await Mappeddata(files, repos);
+    try{
+    const updatedJSON = addDataToJSON(files, [JSON.parse(result)]);
+    res.json(updatedJSON);
+    }
+    catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ error: "An error occurred" });
+  }
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(500).json({ error: "An error occurred" });
+  }
+});
 
 
 

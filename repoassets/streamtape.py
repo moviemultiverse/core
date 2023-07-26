@@ -15,7 +15,7 @@ def get_link_by_name():
         files = data['result']['files']
         for file in files:
             if file['name'] == target_file_name:
-                return file['link']
+                return file['linkid']
 
         return None  # Return None if the file with the given name is not found
 
@@ -30,6 +30,7 @@ def get_link_by_name():
 
 link = get_link_by_name()
 print(link)
+
 db_params = {
     "host": "satao.db.elephantsql.com",
     "port": 5432,
