@@ -11,7 +11,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@apollo/server": "^4.8.1",
+    "@apollo/server": "^3.4.0",
+    "@apollo/server/express4": "^3.4.0",
+    "body-parser": "^1.19.1",
+    "cors": "^2.8.5",
+    "graphql-type-json": "^0.4.0",
+    "http": "0.0.1-security",
     "@octokit/rest": "19.0.13",
     "apollo-server": "^3.12.0",
     "axios": "1.4.0",
