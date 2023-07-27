@@ -62,14 +62,12 @@ const resolvers = {
 const app = express();
 const httpServer = http.createServer(app);
 
-// Set up Apollo Server
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 
-// Start the Apollo Server before using expressMiddleware
 async function startServer() {
   await server.start();
   app.use(

@@ -1,0 +1,20 @@
+{
+  "name": "graphql",
+  "version": "1.0.0",
+  "description": "GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data. This api will be used to fetch moviedata for doodstream and streamtape",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^4.8.1",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "graphql-type-json": "^0.3.2",
+    "http": "^0.0.1-security",
+    "pg": "^8.11.1"
+  }
+}

@@ -1,2 +1,4 @@
 node_modules/*
 package-lock.json
+graphql/node_modules/*
+graphql/package-lock.json
