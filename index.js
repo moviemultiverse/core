@@ -137,7 +137,7 @@ async function getvidFiles() {
 
     const drive = google.drive({ version: 'v3', auth });
     const response = await drive.files.list({
-      q: "mimeType='video/mp4'",
+      q: "mimeType='video/mp4' or mimeType='video/x-matroska'",
     });
 
     const mp4Files = response.data.files;
