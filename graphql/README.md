@@ -19,3 +19,4 @@ This api will be used to fetch moviedata for doodstream and streamtape
   }
 
 ```
+added NODE_VERSION = 20.1.0 environment variable to render
