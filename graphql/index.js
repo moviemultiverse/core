@@ -1,5 +1,6 @@
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
+const { GraphQLJSON, GraphQLJSONObject } = require('graphql-type-json');
 const { ApolloServerPluginDrainHttpServer } = require('@apollo/server/plugin/drainHttpServer');
 const express = require('express');
 const http = require('http');
@@ -15,16 +16,21 @@ const pool = new Pool({
 });
 
 const typeDefs = `
-  type Movie {
-    movie_name: String!
-    doodstream_code: String
-    streamtape_code: String
-  }
+scalar JSON
+scalar JSONObject
 
-  type Query {
-    movie(movie_name: String!): Movie
-    allMovieNames: [String!]!
-  }
+type Movie {
+  movie_name: String!
+  doodstream_code: String
+  streamtape_code: String
+  img_data: JSONObject  
+}
+
+type Query {
+  movie(movie_name: String!): Movie
+  allMovieNames: [String!]!
+}
+
 `;
 
 const resolvers = {
