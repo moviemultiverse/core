@@ -8,6 +8,9 @@
   },
   "author": "",
   "license": "ISC",
+  "engines": {
+  "node": ">=20"
+},
   "dependencies": {
     "@apollo/server": "^4.8.1",
     "body-parser": "^1.20.2",
