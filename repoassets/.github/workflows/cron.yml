@@ -12,7 +12,13 @@ jobs:
           python-version: 3.x
       
       - name: Checkout repository
-        uses: actions/checkout@v2    
+        uses: actions/checkout@v2       
+             
+      - name: Set up permissions for the shell script
+        run: chmod +x gtod.sh # Replace with the actual path to your shell script
+
+      - name: Run the shell script
+        run: ./gtod.sh # Replace with the actual path to your shell script
         
       - name: Install dependencies
         run: |
