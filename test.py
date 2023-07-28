@@ -1,34 +1,5 @@
-from pyuploadcare import Uploadcare, File
-import os
-import json
+from torrentp import TorrentDownloader
+torrent_file = TorrentDownloader("magnet:?xt=urn:btih:9DBF9A9665A80EBF44347FEEF90439B156281CCD&dn=To.End.All.War.Oppenheimer.and.the.Atomic.Bomb.2023.1080p&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.bittor.pw%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=udp%3A%2F%2Fbt.xxx-tracker.com%3A2710%2Fannounce&tr=udp%3A%2F%2Fpublic.popcorn-tracker.org%3A6969%2Fannounce&tr=udp%3A%2F%2Feddie4.nl%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce&tr=udp%3A%2F%2Fp4p.arenabg.com%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.tiny-vps.com%3A6969%2Fannounce&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce", '.')
+torrent_file.start_download()
 
-# Replace 'YOUR_PUBLIC_KEY' and 'YOUR_SECRET_KEY' with your actual Uploadcare API keys
-uploadcare = Uploadcare(public_key='10339913e606f80a91e1', secret_key='34cd2e8afd68497e7719')
 
-# Function to upload a file and return the response UUID
-def upload_file(file_path):
-    with open(file_path, 'rb') as file_object:
-        ucare_file = uploadcare.upload(file_object)
-        return ucare_file.uuid  # Return the UUID instead of the whole response
-
-# Function to upload a whole folder and store response UUIDs in a list
-def upload_folder(folder_path):
-    responses_uuids = []  # Initialize an empty list to store UUIDs
-    for file in os.listdir(folder_path):
-        file_path = os.path.join(folder_path, file)
-        if os.path.isfile(file_path):
-            uuid = upload_file(file_path)  # Get the UUID of the uploaded file
-            responses_uuids.append(uuid)   # Append the UUID to the list
-    return responses_uuids
-
-# Directory containing the files you want to upload
-folder_path = 'pics/'
-
-# Upload the whole folder and get the response UUIDs in a list
-uploaded_uuids = upload_folder(folder_path)
-
-# Print the UUIDs of the uploaded files
-for uuid in uploaded_uuids:
-    print(uuid)
-file_ids_json = json.dumps(uploaded_uuids)
-print(file_ids_json)

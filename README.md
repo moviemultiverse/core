@@ -12,6 +12,7 @@ https://bretcameron.medium.com/how-to-use-the-google-drive-api-with-javascript-5
 https://cloud.google.com/nodejs/docs/reference/google-auth-library/latest
 https://developers.google.com/identity/gsi/web/guides/personalized-button
 https://github.com/TeemuKoivisto/google-oauth-drive-example
+https://medium.com/@nimk/how-to-download-torrent-files-python-3818194fbf71
 
 ## Api Public Endpoints
 ```
