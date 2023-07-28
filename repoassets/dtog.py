@@ -6,8 +6,8 @@ import os
 
 # Path to the service account JSON key file
 key_file_path = 'client_secrets.json'
-file_id = 'randomfileid'
-destination_folder ='randomfilepath'
+file_id = '18FVpRnYxto5hv9nHOXGKDDL03MjV9fmE'
+destination_folder ='/home/runner/work/AvengersAgeofUltron/AvengersAgeofUltron/'
 # Authenticate with the service account
 credentials = service_account.Credentials.from_service_account_file(key_file_path, scopes=['https://www.googleapis.com/auth/drive'])
 

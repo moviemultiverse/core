@@ -14,7 +14,7 @@ for folder in "${folders[@]}"; do
   fi
 done
 
-cat *.txt > randomfile.mp4
+cat *.txt > AvengersAgeofUltron.mp4
 echo "cool it ended";
 mkdir snapshots 
 touch response.txt

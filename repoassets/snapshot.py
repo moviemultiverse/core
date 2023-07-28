@@ -11,7 +11,7 @@ from google.oauth2 import service_account
 from googleapiclient.http import MediaFileUpload 
 
 
-video_path = 'randomfile.mp4'
+video_path = 'AvengersAgeofUltron.mp4'
 num_frames = 8
 output_dir = 'snapshots'
 file_ids = {}

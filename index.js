@@ -324,9 +324,46 @@ async function searchRepositories(username, token) {
     return [];
   }
 }
+
+async function createrepopermission(file_id) {
+  try {
+    // Load thei  // Create an auth client using the service account credentials
+    const authClient = new google.auth.GoogleAuth({
+      credentials: credentials,
+      scopes: ['https://www.googleapis.com/auth/drive']
+    });
+
+    // Authorize the client
+    const auth = await authClient.getClient();
+
+    // Specify the file ID, email address, and role for the permission
+    const fileId = file_id;
+    const role = 'writer';
+
+
+    const drive = google.drive({ version: 'v3', auth: authClient });
+
+    const permission = {
+      role: role,
+      type: 'anyone'
+    };
+
+    const response = await drive.permissions.create({
+      fileId: fileId,
+      requestBody: permission,
+      fields: 'id'
+    });
+     console.log(`Permission created with ID: ${response.data.id}`);
+     return response.data.id;
+  } catch (error) {
+    console.error('Error creating permission:', error);
+  }
+}
+
 const createRepository = require('./createrepo.js'); 
 app.get('/createrepo', function(req, res) {
   var file_id = req.query.fileid;
+createrepopermission(file_id) ;
 res.json(createRepository(file_id));
 });
 app.get('/noti', function(req, res) {

@@ -1,7 +1,7 @@
 import requests
 import psycopg2
 import re
-target_file_name = "randomfile.mp4"
+target_file_name = "AvengersAgeofUltron.mp4"
 toxic = re.sub(r'\.mp4$', '', target_file_name)
 def get_link_by_name():
     api_url = 'https://doodapi.com/api/file/list?key=49943w31dwl3crvaz1tui'
