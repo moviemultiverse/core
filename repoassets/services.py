@@ -5,9 +5,9 @@ def fetch_responses(file):
 
     urls = [
        # 'https://api.streamsb.com/api/upload/url?key=46443yy1674fu5ych9iq0&url=',#copies drive url to name of vid
-        'https://doodapi.com/api/upload/url?key=49943w31dwl3crvaz1tui&new_title='+'AvengersAgeofUltron.mp4'+'&url=',
+        'https://doodapi.com/api/upload/url?key=49943w31dwl3crvaz1tui&new_title='+'randomfile.mp4'+'&url=',
        # 'https://upstream.to/api/upload/url?key=55196gnvzsjuwpss4ea1y&url=',
-        'https://api.streamtape.com/remotedl/add?login=f65b540c475b9b7d4da8&key=268XaKDBLqTZ2kg&Name='+'AvengersAgeofUltron.mp4'+'&url='
+        'https://api.streamtape.com/remotedl/add?login=f65b540c475b9b7d4da8&key=268XaKDBLqTZ2kg&Name='+'randomfile.mp4'+'&url='
     ]
 
     for url in urls:
@@ -23,7 +23,7 @@ def fetch_responses(file):
 
     return responses
 
-responses = fetch_responses('https://drive.google.com/file/d/18FVpRnYxto5hv9nHOXGKDDL03MjV9fmE/view')
+responses = fetch_responses('randomfileid')
 
 with open('response.txt', 'w') as file:
     for response in responses:
