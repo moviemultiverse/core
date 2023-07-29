@@ -6,7 +6,7 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { Pool } = require('pg');
+const  { Pool } = require('pg');
 const pool = new Pool({
   host: 'satao.db.elephantsql.com',
   port: 5432,
@@ -18,25 +18,24 @@ const pool = new Pool({
 const typeDefs = `
 scalar JSON
 scalar JSONObject
+  type Movie {
+    movie_name: String!
+    size_mb: String
+    streamtape_code: String
+    doodstream_code: String
+    img_data: JSON  
+  }
 
-type Movie {
-  movie_name: String!
-  size_mb: String
-  streamtape_code: String
-  doodstream_code: String
-  img_data: JSONObject  
-}
-
-type Query {
-  movie(movie_name: String!): Movie
-  allMovieNames: [String!]!
-}
-
+  type Query {
+    movie(movie_name: String!): Movie
+    allMovieNames: [String!]!
+    movieSearch(query: String!): [Movie!]!
+  }
 `;
 
 const resolvers = {
   Query: {
-    movie: async (parent, { movie_name }) => {
+    movie: async (_, { movie_name }) => {
       try {
         const query = 'SELECT * FROM moviedata WHERE movie_name = $1';
         const values = [movie_name];
@@ -55,6 +54,17 @@ const resolvers = {
       } catch (error) {
         console.error('Error executing query', error);
         throw new Error('Error retrieving movie names');
+      }
+    },
+    movieSearch: async (_, { query }) => {
+      try {
+        const searchQuery = `%${query.toLowerCase()}%`;
+        const sqlQuery = 'SELECT * FROM moviedata WHERE lower(movie_name) LIKE $1';
+        const result = await pool.query(sqlQuery, [searchQuery]);
+        return result.rows;
+      } catch (error) {
+        console.error('Error executing query', error);
+        throw new Error('Error searching movies');
       }
     },
   },

@@ -1,0 +1,57 @@
+<!-- Input field to type the search query -->
+<input type="text" id="searchInput" placeholder="Search..." />
+
+<!-- Display the search results -->
+<ul id="searchResults"></ul>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  // Function to fetch search results from the server
+  function getSearchResults(searchQuery) {
+    $.ajax({
+      url: `https://graphql-pyt9.onrender.com`, // Use the GraphQL endpoint
+      method: 'POST', // Use POST for GraphQL queries
+      contentType: 'application/json',
+      data: JSON.stringify({ query: `
+        query {
+          movieSearch(query: "${searchQuery}") {
+            movie_name
+          }
+        }
+      `}),
+      success: function (data) {
+        displaySearchResults(data.data.movieSearch);
+        console.log(data.data.movieSearch);
+      },
+      error: function (error) {
+        console.error('Error fetching search results:', error);
+      }
+    });
+  }
+
+  // Function to display search results in the HTML
+  function displaySearchResults(results) {
+    const searchResultsList = $('#searchResults');
+    searchResultsList.empty();
+
+    results.forEach((result) => {
+      const movieTitle = result.movie_name;
+      const listItem = $('<li>').text(movieTitle);
+      searchResultsList.append(listItem);
+    });
+  }
+
+  $(document).ready(function () {
+    const searchInput = $('#searchInput');
+
+    searchInput.on('input', function () {
+      const searchQuery = searchInput.val();
+      if (searchQuery.trim() !== '') {
+        getSearchResults(searchQuery);
+      } else {
+        const searchResultsList = $('#searchResults');
+        searchResultsList.empty();
+      }
+    });
+  });
+</script>
