@@ -198,6 +198,11 @@ const drive = google.drive({ version: 'v3', auth: authh });
 
 app.listen(3000);
 app.get('/', (req, res) => {
+  // Set the Access-Control-Allow-Origin header to allow requests from any origin
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  // Set the Content-Type header to indicate JSON data
+  res.setHeader('Content-Type', 'application/json');
+  // Respond with the JSON data 'files'
   res.json('files');
 });
 app.get('/login', (req, res) => {
