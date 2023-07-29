@@ -305,6 +305,23 @@ app.get('/movie_data', (req, res) => {
     }
   });
 });
+app.get('/size', (req, res) => {
+  var movie = req.query.movie;
+  pool.query('SELECT SUM(size_mb) as total_size FROM moviedata', (error, results) => {
+    if (error) {
+      console.error('Error executing query', error);
+      res.status(500).send('Error retrieving data');
+    } else {
+      // `results.rows` will contain an array with a single object
+      // representing the sum of the 'size_mb' column as 'total_size'.
+      // We can extract it and send it in the response.
+      const totalSize = results.rows[0].total_size;
+      res.json({ totalSize });
+    }
+  });
+});
+
+
 app.get('/getrepo', async (req, res) => {
     searchRepositories("ss08090", githubToken)
   .then((repos) => {
