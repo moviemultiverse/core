@@ -21,8 +21,7 @@ scalar JSONObject
 
 type Movie {
   movie_name: String!
-  doodstream_code: String
-  streamtape_code: String
+  size_mb: String
   img_data: JSONObject  
 }
 
