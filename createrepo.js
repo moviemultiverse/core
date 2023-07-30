@@ -88,9 +88,9 @@ console.log(repoName);
     if (response.status === 201) {
       console.log('Repository created successfully!');
              pool.query(
-  'INSERT INTO moviedata (drive_code  , movie_name , size_mb , streamtape_code , doodstream_code  , is_github ) \
-  VALUES ($1, $2, $3, $4, $5, $6);',
-  [fileId, repoName, size_mb, null, null, 1],
+  'INSERT INTO moviedata (drive_code  , movie_name , size_mb , streamtape_code , doodstream_code  , is_github , is_reported) \
+  VALUES ($1, $2, $3, $4, $5, $6 ,$7);',
+  [fileId, repoName, size_mb, null, null, 1 ,0],
   (error, results) => {
     if (error) {
       console.error('Error executing query', error);

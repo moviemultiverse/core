@@ -16,14 +16,16 @@ const pool = new Pool({
 });
 
 const typeDefs = `
-scalar JSON
-scalar JSONObject
+  scalar JSON
+  scalar JSONObject
+
   type Movie {
     movie_name: String!
     size_mb: String
     streamtape_code: String
     doodstream_code: String
     img_data: JSON  
+    is_reported: Int
   }
 
   type Query {
@@ -32,7 +34,12 @@ scalar JSONObject
     totalsize: JSONObject!
     movieSearch(query: String!): [Movie!]!
   }
+
+  type Mutation {
+    report(movie_name: String!): Movie
+  }
 `;
+
 
 const resolvers = {
   Query: {
@@ -82,6 +89,20 @@ const resolvers = {
       }
     },
   },
+Mutation: {
+  report: async (_, { movie_name }) => {
+    try {
+      const query = 'UPDATE moviedata SET is_reported = is_reported + 1 WHERE movie_name = $1 RETURNING *';
+      const values = [movie_name];
+      const result = await pool.query(query, values);
+      return result.rows[0]; // Access the is_reported value from the first row
+    } catch (error) {
+      console.error('Error executing query', error);
+      throw new Error('Error reporting movie');
+    }
+  },
+},
+
 };
 
 const app = express();
