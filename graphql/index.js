@@ -29,6 +29,7 @@ scalar JSONObject
   type Query {
     movie(movie_name: String!): Movie
     allMovieNames: [String!]!
+    totalsize: JSONObject!
     movieSearch(query: String!): [Movie!]!
   }
 `;
@@ -56,6 +57,19 @@ const resolvers = {
         throw new Error('Error retrieving movie names');
       }
     },
+    totalsize: async () => {
+      try {
+        const query = 'SELECT SUM(size_mb) as total_size FROM moviedata';
+        const result = await pool.query(query);
+        const totalSize = result.rows[0].total_size; // Get the total_size from the first row
+
+        return { total_size: totalSize }; // Wrap the totalSize in a JSONObject
+      } catch (error) {
+        console.error('Error executing query', error);
+        throw new Error('Error retrieving movie names');
+      }
+    },
+
     movieSearch: async (_, { query }) => {
       try {
         const searchQuery = `%${query.toLowerCase()}%`;
