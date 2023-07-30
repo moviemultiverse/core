@@ -33,6 +33,7 @@ const typeDefs = `
     allMovieNames: [String!]!
     totalsize: JSONObject!
     movieSearch(query: String!): [Movie!]!
+    version: String!
   }
 
   type Mutation {
@@ -76,7 +77,16 @@ const resolvers = {
         throw new Error('Error retrieving movie names');
       }
     },
-
+    version:async () => {
+      try {
+        const query = 'SELECT version FROM blackhole_version';
+        const result = await pool.query(query);
+        return result.rows[0].version;
+      } catch (error) {
+        console.error('Error executing query', error);
+        throw new Error('Error retrieving movie names');
+      }
+    },
     movieSearch: async (_, { query }) => {
       try {
         const searchQuery = `%${query.toLowerCase()}%`;
