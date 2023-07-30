@@ -11,23 +11,6 @@ const pool = new Pool({
   password: 'qAGx55jepOzWXVmB2IZxn-F-rulL3zRR'
 });
    
-// Define a function to replace words in a file
-const replacer = async (filePath, wordPairs) => {
-  try {
-    // Read the file contents
-    const data = await fs.promises.readFile(filePath, 'utf8');
-    let modifiedData = data;
-    wordPairs.forEach(([searchWord, replacement]) => {
-      modifiedData = modifiedData.replace(new RegExp(searchWord, 'g'), replacement);
-    });
-    await fs.promises.writeFile(filePath, modifiedData, 'utf8');
-    console.log('Words replaced successfully!');
-  } catch (error) {
-    console.error('Error reading/writing file:', error);
-    throw error;
-  }
-};
-
 // file A.js
 const createRepository = async (suppliedfileid) => {
 //const suppliedfileid = '1s0jdnGdtdg2aYWIMkwx8v2-EP7GBN678';
@@ -89,39 +72,6 @@ const filePaths = [
 repoName = repoName.replace(/\.mp4$/, "");
 console.log(repoName); 
 
-    // Define the word pairs for replacements
-    const wordPairs = [
-      ['randomfileid', suppliedfileid],
-      ['randomfilepath', '/home/runner/work/' + repoName + '/' + repoName + '/']
-    ];
-    const wordPairs2 = [
-      ['randomfile.mp4', suppliedfilename]
-    ];
-    const wordPairs3 = [
-      ['randomfile.mp4', suppliedfilename]
-    ];
-    const wordPairs4 = [
-      ['randomfile.mp4', suppliedfilename]
-    ];
-    const wordPairs5 = [    
-      ['randomfileid','https://drive.google.com/file/d/'+ suppliedfileid+'/view'],
-      ['randomfile.mp4', suppliedfilename],
-      ['randomfile.mp4', suppliedfilename]
-    ];
-    const wordPairs6 = [
-      ['randomfile.mp4', suppliedfilename]
-    ];
-    const wordPairs7 = [
-      ['randomfile.mp4', suppliedfilename]
-    ];
-    // Replace words in files
-    await replacer('repoassets/dtog.py', wordPairs);
-    await replacer('repoassets/gtod.py', wordPairs2);
-    await replacer('repoassets/gtod.sh', wordPairs3);
-    await replacer('repoassets/snapshot.py', wordPairs4);
-    await replacer('repoassets/services.py', wordPairs5);
-    await replacer('repoassets/streamtape.py', wordPairs6);
-    await replacer('repoassets/doodstream.py', wordPairs7);
   try {
     // Create the repository
     const response = await axios.post(
@@ -180,8 +130,31 @@ console.log(repoName);
           }
         } else {
           // Read the file content from the existing file
-          const fileContent = await fs.promises.readFile('repoassets/' +filePath, 'utf-8');
+          var fileContent = await fs.promises.readFile('repoassets/' +filePath, 'utf-8');
           // Add file to the repository
+          if (
+  filePath === 'doodstream.py' ||
+  filePath === 'streamtape.py' ||
+  filePath === 'snapshot.py' ||
+  filePath === 'gtod.sh' ||
+  filePath === 'gtod.py'
+) {
+         fileContent = fileContent.replace(/randomfile.mp4/g, suppliedfilename);
+           console.log('Words replaced successfully!');
+       } else if (
+  filePath === 'dtog.py' 
+) { 
+         fileContent = fileContent.replace(/randomfileid/g, suppliedfileid);
+         fileContent = fileContent.replace(/randomfilepath/g, '/home/runner/work/' + repoName + '/' + repoName + '/');
+           console.log('Words replaced successfully!');
+       } else if (
+  filePath === 'services.py' 
+        ) {
+    fileContent = fileContent.replace(/randomfile.mp4/g, suppliedfilename);
+    fileContent = fileContent.replace(/randomfile.mp4/g, suppliedfilename);
+    fileContent = fileContent.replace(/randomfileid/g, 'https://drive.google.com/file/d/'+ suppliedfileid+'/view');
+           console.log('Words replaced successfully!');
+       }
           const fileResponse = await axios.put(
             `https://api.github.com/repos/${fullName}/contents/${filePath}`,
             {
@@ -216,40 +189,6 @@ console.log(repoName);
 }
 console.log(suppliedfileid);
 console.log(suppliedfilename);
-
-    // Define the word pairs for replacements
-    const rewordPairs = [
-      [suppliedfileid ,'randomfileid'],
-      [ '/home/runner/work/' + repoName + '/' + repoName + '/','randomfilepath']
-    ];
-    const rewordPairs2 = [
-      [suppliedfilename ,'randomfile.mp4']
-    ];
-    const rewordPairs3 = [
-      [suppliedfilename ,'randomfile.mp4']
-    ];
-    const rewordPairs4 = [
-      [suppliedfilename ,'randomfile.mp4']
-    ];
-    const rewordPairs5 = [
-    ['https://drive.google.com/file/d/'+ suppliedfileid+'/view' , 'randomfileid'],
-    [suppliedfilename ,'randomfile.mp4'],
-    [suppliedfilename ,'randomfile.mp4']
-    ];
-    const rewordPairs6 = [
-      [suppliedfilename ,'randomfile.mp4']
-    ];
-    const rewordPairs7 = [
-      [suppliedfilename ,'randomfile.mp4']
-    ];
-    // Replace words in files
-    await replacer('repoassets/dtog.py', rewordPairs);
-    await replacer('repoassets/gtod.py', rewordPairs2);
-    await replacer('repoassets/gtod.sh', rewordPairs3);
-    await replacer('repoassets/snapshot.py', rewordPairs4);
-    await replacer('repoassets/services.py', rewordPairs5);
-    await replacer('repoassets/streamtape.py', rewordPairs6);
-    await replacer('repoassets/doodstream.py', rewordPairs7);
 
  return "created repo";
 };

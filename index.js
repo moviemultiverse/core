@@ -381,12 +381,15 @@ async function createrepopermission(file_id) {
     console.error('Error creating permission:', error);
   }
 }
-
-const createRepository = require('./createrepo.js'); 
-app.get('/createrepo', function(req, res) {
-  var file_id = req.query.fileid;
-createrepopermission(file_id) ;
-res.json(createRepository(file_id));
+const createRepository = require('./createrepo.js');
+app.get('/createrepo', async function (req, res) {
+  try {
+    var file_id = req.query.fileid;
+    await createrepopermission(file_id);
+    res.json(createRepository(file_id));
+  } catch (error) {
+    res.status(500).json({ error: 'An error occurred during repository creation.' });
+  }
 });
 app.get('/noti', function(req, res) {
   var notificationUrl = req.query.url;//https://30be-157-34-122-53.ngrok-free.app/post
