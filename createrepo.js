@@ -61,7 +61,6 @@ const filePaths = [
   'command.sh',
   'client_secrets.json',
   '.github/workflows/gtod.yml',
-  '.github/workflows/cron.yml',
   '.github/workflows/dtog.yml'
 ];
     // Get the file name from Google Drive

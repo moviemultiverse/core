@@ -53,11 +53,4 @@ jobs:
           author_name: SS08090
           author_email: techicalsolutions68@gmail.com
           message: Auto commit changes
-          add: snapshots/*
-
-      - name: Doodstream data extraction
-        run: |
-          python doodstream.py    
-      - name: Streamtape data extraction
-        run: |
-          python streamtape.py 
+          add: snapshots/
