@@ -12,22 +12,22 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.8.0",
-    "body-parser": "^1.19.1",
-    "cors": "^2.8.5",
-    "graphql-type-json": "^0.4.0",
-    "http": "0.0.1-security",
     "@octokit/rest": "19.0.13",
     "apollo-server": "^3.12.0",
     "axios": "1.4.0",
+    "body-parser": "^1.19.1",
+    "cors": "^2.8.5",
     "ejs": "3.1.9",
     "express": "^4.17.3",
     "googleapis": "118.0.0",
     "graphql-http": "1.21.0",
+    "graphql-type-json": "0.3.2",
+    "http": "0.0.1-security",
     "morgan": "^1.10.0",
     "node-fetch": "3.1.1",
+    "node-telegram-bot-api": "^0.61.0",
     "nodemon": "3.0.1",
     "pg": "8.11.1",
-    "uuid": "9.0.0",
-    "graphql-type-json":"0.3.2"
+    "uuid": "9.0.0"
   }
 }
