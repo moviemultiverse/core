@@ -55,8 +55,6 @@ const filePaths = [
   'run.py',
   'snapshot.py',
   'services.py',
-  'doodstream.py',
-  'streamtape.py',
   'output.py',
   'command.sh',
   'client_secrets.json',
@@ -132,8 +130,6 @@ console.log(repoName);
           var fileContent = await fs.promises.readFile('repoassets/' +filePath, 'utf-8');
           // Add file to the repository
           if (
-  filePath === 'doodstream.py' ||
-  filePath === 'streamtape.py' ||
   filePath === 'snapshot.py' ||
   filePath === 'gtod.sh' ||
   filePath === 'gtod.py'
