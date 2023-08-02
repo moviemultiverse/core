@@ -18,7 +18,7 @@ def fetch_responses(file, streamtape_tokens, dood_api_keys):
     except requests.exceptions.RequestException as error:
         print('Error occurred during Streamtape fetch:', error)
 
-    dood_url = 'https://doodapi.com/api/upload/url?key={api_key}&new_title='+'randomfile.mp4'+'&url=',
+    dood_url = 'https://doodapi.com/api/upload/url?key={api_key}&new_title='+'randomfile.mp4'+'&url='
 
     # Choose a random API key for doodapi.com
     random_doodapi_key = random.choice(dood_api_keys)
