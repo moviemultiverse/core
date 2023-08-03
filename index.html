@@ -62,7 +62,9 @@ function getFromLocalStorage(key) {
 
     if (params && params['access_token']) {
 
-      window.open("intent://ss0809.github.io/Dark_Matter/success.html?access_token=" + params['access_token']+  "#Intent;scheme=https;package=com.example.blackhole;end;", '_blank');
+      window.open("https://ss0809.github.io/Dark_Matter/success.html?access_token=" + params['access_token'] , '_blank');
+const linkElement = document.getElementById('hreff');
+linkElement.setAttribute('href', "https://ss0809.github.io/Dark_Matter/success.html?access_token=" + params['access_token']);
       
       var id ="id";
 
@@ -139,5 +141,7 @@ alert("shataakk baby! copied" );
 </script>
 
 <button onclick="oauth2SignIn();">LOGIN</button>
+
+<a href="" id="hreff">OPEN APP </a>
 
 </body></html>
