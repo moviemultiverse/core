@@ -46,7 +46,7 @@ function getFromLocalStorage(key) {
 
     if (params['state'] && params['state'] == 'try_sample_request') {
 
-    //  trySampleRequest();
+      trySampleRequest();
 
     }
 
@@ -61,32 +61,9 @@ function getFromLocalStorage(key) {
     var params = JSON.parse(localStorage.getItem('oauth2-test-params'));
 
     if (params && params['access_token']) {
+
+      window.location = "/success.html?access_token" + params['access_token'];
       
-
-      var xhr = new XMLHttpRequest();
-
-      xhr.open('POST',
-
-          'https://www.googleapis.com/drive/v2/files/'+t+'/parents?' +
-
-          'access_token=' + params['access_token']);
-
-      xhr.onreadystatechange = function (e) {
-
-        if (xhr.readyState === 4 && xhr.status === 200) {
-
-          console.log(xhr.response);
-
-        } else if (xhr.readyState === 4 && xhr.status === 401) {
-
-          // Token invalid, so prompt for user permission.
-
-          oauth2SignIn();
-
-        }
-
-      };
-
       var id ="id";
 
       var obj= {};
@@ -99,16 +76,6 @@ function getFromLocalStorage(key) {
 
       xhr.send(JSON.stringify(obj));
 
-      /*xhr.send(JSON.stringify(
-
-        {
-
-          "id": "1G6l5oasBfwZdc3jho60j5IM3iFW3hk-n"
-
-        })
-
-        );*/
-
     } else {
 
       oauth2SignIn();
@@ -118,119 +85,6 @@ alert("shataakk baby! copied" );
   }
 
   
-
-    function copyfile() {
-
-    var params = JSON.parse(localStorage.getItem('oauth2-test-params'));
-
-    if (params && params['access_token']) {
-
-      var xhr = new XMLHttpRequest();
-
-      xhr.open('POST',
-
-          'https://www.googleapis.com/drive/v3/files/'+getFromLocalStorage('fileid')+'/copy?' +
-
-          'access_token=' + params['access_token']);
-
-      xhr.onreadystatechange = function (e) {
-
-        if (xhr.readyState === 4 && xhr.status === 200) {
-
-          var myObj2 = JSON.parse(xhr.response);
-
-console.log(xhr.response+"copy");
-
- fileid2 = myObj2.id;
-
- createfolder(fileid2);
-
-        } else if (xhr.readyState === 4 && xhr.status === 401) {
-
-          // Token invalid, so prompt for user permission.
-
-          oauth2SignIn();
-
-        }
-
-      };
-
-    
-
-      xhr.send(null);
-
-    } else {
-
-      oauth2SignIn();
-
-    }
-
-  }
-
-  
-
-  function createfolder(t) {
-
-    var params = JSON.parse(localStorage.getItem('oauth2-test-params'));
-
-    if (params && params['access_token']) {
-
-      var xhr = new XMLHttpRequest();
-
-      xhr.open('POST',
-
-          'https://www.googleapis.com/drive/v3/files?' +
-
-          'access_token=' + params['access_token']);
-
-      xhr.onreadystatechange = function (e) {
-
-        if (xhr.readyState === 4 && xhr.status === 200) {
-
-          var myObj = JSON.parse(xhr.response);
-
-console.log(xhr.response+"fold");
-
- x = myObj.id;
-
- trySampleRequest(x,t);
-
-        } else if (xhr.readyState === 4 && xhr.status === 401) {
-
-          // Token invalid, so prompt for user permission.
-
-          oauth2SignIn();
-
-        }
-
-      };
-
-   
-
-      xhr.send(JSON.stringify(
-
-{
-
-  "name": "created",
-
-  "mimeType": "application/vnd.google-apps.folder"
-
-}));
-
-    } else {
-
-      oauth2SignIn();
-
-    }
-
-  }
-
-  /*
-
-   * Create form to request access token from Google's OAuth 2.0 server.
-
-   */
-
   function oauth2SignIn() {
 
     // Google's OAuth 2.0 endpoint for requesting an access token
@@ -284,6 +138,6 @@ console.log(xhr.response+"fold");
   }
 </script>
 
-<button onclick="copyfile();">Save fike from shared drive to my drive in created folder</button>
+<button onclick="oauth2SignIn();">LOGIN</button>
 
 </body></html>
