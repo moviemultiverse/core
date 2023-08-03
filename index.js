@@ -47,7 +47,7 @@ async function searchMovie(chatId, query) {
 }
 
 
-
+/*
 // Require the node-telegram-bot-api package
 const TelegramBot = require('node-telegram-bot-api');
 
@@ -71,7 +71,7 @@ bot.on('message', (msg) => {
   }
 });
 
-
+*/
 const { Pool } = require('pg');
 const pool = new Pool({
   host: 'satao.db.elephantsql.com',
