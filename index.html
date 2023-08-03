@@ -53,13 +53,7 @@ var YOUR_CLIENT_ID = '1096318296267-a3l9r898cd6uc95n64at2q06k31duh45.apps.google
     if (params && params['access_token']) {
 
 
-url = new URL(document.URL);
-urlsp = url.searchParams;
-if(urlsp.get("uuid")!=null){
 
-
-
-}
       
       var id ="id";
 
@@ -95,6 +89,8 @@ alert("shataakk baby! copied" );
     form.setAttribute('method', 'GET'); // Send as a GET request.
 
     form.setAttribute('action', oauth2Endpoint);
+    url = new URL(document.URL);
+urlsp = url.searchParams;
 
     // Parameters to pass to OAuth 2.0 endpoint.
 
