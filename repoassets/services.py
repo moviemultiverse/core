@@ -4,7 +4,7 @@ import random
 def fetch_responses(file, streamtape_tokens, dood_api_keys):
     responses = []
 
-    streamtape_url = 'https://api.streamtape.com/remotedl/add?login={LOGIN}&token={TOKEN}&Name='+'randomfile.mp4'+'&url='
+    streamtape_url = 'https://api.streamtape.com/remotedl/add?login={LOGIN}&key={TOKEN}&Name='+'randomfile.mp4'+'&url='
 
     # Choose a random token for api.streamtape.com
     random_streamtape_token = random.choice(streamtape_tokens)

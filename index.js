@@ -271,6 +271,13 @@ const drive = google.drive({ version: 'v3', auth: authh });
 
 
 app.listen(3000);
+app.get('/.well-known/assetlinks.json', (req, res) => {
+   res.send('[{\
+  "relation": ["delegate_permission/common.handle_all_urls"],\
+  "target" : { "namespace": "android_app", "package_name": "com.example.blackhole",\
+               "sha256_cert_fingerprints": ["2E:19:FA:29:4C:5E:84:96:46:B5:4E:C0:06:FC:46:C7:D9:17:5F:27:81:EB:89:84:47:AC:FB:C3:91:6E:DF:71"] }\
+}]');
+});
 app.get('/', (req, res) => {
   // Set the Access-Control-Allow-Origin header to allow requests from any origin
   res.setHeader('Access-Control-Allow-Origin', '*');
