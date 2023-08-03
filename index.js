@@ -83,7 +83,7 @@ const pool = new Pool({
 const axios = require('axios');
 const { google } = require('googleapis');
 const fs = require('fs');
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4, validate: isUUID } = require('uuid');
 const { JWT } = require('google-auth-library');
 const { Octokit } = require("@octokit/rest");
 const credentials = require('./drive-download-389811-b229f2e27ed8.json');
@@ -271,6 +271,69 @@ const drive = google.drive({ version: 'v3', auth: authh });
 
 
 app.listen(3000);
+app.get('/createuuid',async (req,res)=>{
+   var var_uuid = uuidv4();
+   try {
+    const client = await pool.connect();
+    const query = `
+     INSERT INTO uuidtable(uuid) VALUES ($1);
+    `;
+    const values = [var_uuid ];
+    await client.query(query, values);
+    client.release();
+    console.log('user added successfully');
+    res.json(var_uuid );
+  } catch (error) {
+    console.error('Error updating user insertion:', error);
+    res.json(error);
+  }
+});
+
+app.get('/getuuid', async (req, res) => {
+  const uuid = req.query.uuid;
+  const access_token = req.query.access_token;
+
+  if (uuid != null && access_token != null && isUUID(uuid)) {
+    try {
+      const client = await pool.connect();
+      const query = `
+        UPDATE uuidtable SET access_token = $2 WHERE uuid = $1;
+      `;
+      const values = [uuid, access_token];
+      await client.query(query, values);
+      client.release();
+      console.log('User updated successfully');
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error updating user:', error);
+      res.status(500).json({ error: 'Error updating user' });
+    }
+  } else {
+    res.status(400).json({ error: 'Bad Request: Missing or Invalid UUID or Access Token' });
+  }
+});
+app.get( '/fetchtoken' , async (req , res)=>{
+   const uuid = req.query.uuid;
+   if (uuid != null && isUUID(uuid)) {
+    try {
+      const client = await pool.connect();
+      const query = `
+        SELECT access_token FROM uuidtable WHERE uuid = $1;
+      `;
+      const values = [uuid];
+      var result  = await client.query(query, values);
+      client.release();
+      console.log('token fetched successfully');
+      res.json(result.rows[0].access_token);
+    } catch (error) {
+      console.error('Error updating user:', error);
+      res.send('error');
+    }
+  } else {
+    res.send('error');
+  }
+});
+
 app.get('/.well-known/assetlinks.json', (req, res) => {
    res.send('[{\
   "relation": ["delegate_permission/common.handle_all_urls"],\

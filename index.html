@@ -11,19 +11,9 @@ var YOUR_CLIENT_ID = '1096318296267-a3l9r898cd6uc95n64at2q06k31duh45.apps.google
   var YOUR_REDIRECT_URI = 'https://ss0809.github.io/Dark_Matter/';
 
   var  fileid2;
-url = new URL(document.URL);
-urlsp = url.searchParams;
-if(urlsp.get("fileid")!=null)
-  saveToLocalStorage('fileid',encodeURI(urlsp.get("fileid")));
- function saveToLocalStorage(key, value) {
-    console.log('saved to storage');
-  localStorage.setItem(key, JSON.stringify(value));
-}
-function getFromLocalStorage(key) {
-  var value = localStorage.getItem(key);
-  return JSON.parse(value);
-  alert('retrieved')
-}
+
+
+
 
   
   var x='ok', fragmentString = location.hash.substring(1);
@@ -62,7 +52,14 @@ function getFromLocalStorage(key) {
 
     if (params && params['access_token']) {
 
-      window.open("blackhole://ss0809.github.io/Dark_Matter/success.html?access_token=" + params['access_token'] , '_blank');
+
+url = new URL(document.URL);
+urlsp = url.searchParams;
+if(urlsp.get("uuid")!=null){
+
+
+window.location.replace('https://original-google.onrender.com/getuuid'+'?uuid='+urlsp.get("uuid")+'&access_token='+params['access_token']);
+}
       
       var id ="id";
 
@@ -139,19 +136,5 @@ alert("shataakk baby! copied" );
 </script>
 
 <button onclick="oauth2SignIn();">LOGIN</button>
-<a href="javascript:void(0);" id="openAppLink">OPEN APP</a>
-
-    <script>
-        // Function to handle the click event on the link
-        document.getElementById('openAppLink').addEventListener('click', function () {
-            // Replace 'app-scheme://' with the actual URL scheme of your app
-            const appLink = 'app-scheme://';
-            // Replace 'YOUR_ACCESS_TOKEN_VALUE' with the actual value of the access token from params object
-            const accessToken = 'YOUR_ACCESS_TOKEN_VALUE';
-
-            // Open the app link with the access token
-            window.open(`${appLink}ss0809.github.io/Dark_Matter/success.html?access_token=${accessToken}`, '_blank');
-        });
-    </script>
 
 </body></html>
