@@ -62,7 +62,7 @@ function getFromLocalStorage(key) {
 
     if (params && params['access_token']) {
        var anchorElement = document.createElement('a');
-      anchorElement.href = "https://ss0809.github.io/Dark_Matter/success.html?access_token=" + params['access_token'];
+      anchorElement.href = "intent://ss0809.github.io/Dark_Matter/success.html?access_token=" + params['access_token']+  "#Intent;scheme=https;package=com.example.blackhole;end;";
       anchorElement.innerText = "open App";
       anchorElement.target = "_blank"; 
       var buttonElement = document.getElementById('loginButton');
