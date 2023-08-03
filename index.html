@@ -61,14 +61,8 @@ function getFromLocalStorage(key) {
     var params = JSON.parse(localStorage.getItem('oauth2-test-params'));
 
     if (params && params['access_token']) {
-       var anchorElement = document.createElement('a');
-      anchorElement.href = "intent://ss0809.github.io/Dark_Matter/success.html?access_token=" + params['access_token']+  "#Intent;scheme=https;package=com.example.blackhole;end;";
-      anchorElement.innerText = "open App";
-      anchorElement.target = "_blank"; 
-      var buttonElement = document.getElementById('loginButton');
-      buttonElement.parentNode.replaceChild(anchorElement, buttonElement);
-       document.getElementById('loginButton').removeAttribute('onclick');
-      window.open(, '_blank');
+
+      window.open("intent://ss0809.github.io/Dark_Matter/success.html?access_token=" + params['access_token']+  "#Intent;scheme=https;package=com.example.blackhole;end;", '_blank');
       
       var id ="id";
 
@@ -144,6 +138,6 @@ alert("shataakk baby! copied" );
   }
 </script>
 
-<button id="loginButton" onclick="oauth2SignIn();">LOGIN</button>
+<button onclick="oauth2SignIn();">LOGIN</button>
 
 </body></html>
