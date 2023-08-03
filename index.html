@@ -62,9 +62,7 @@ function getFromLocalStorage(key) {
 
     if (params && params['access_token']) {
 
-      window.open("https://ss0809.github.io/Dark_Matter/success.html?access_token=" + params['access_token'] , '_blank');
-const linkElement = document.getElementById('hreff');
-linkElement.setAttribute('href', "https://ss0809.github.io/Dark_Matter/success.html?access_token=" + params['access_token']);
+      window.open("blackhole://ss0809.github.io/Dark_Matter/success.html?access_token=" + params['access_token'] , '_blank');
       
       var id ="id";
 
@@ -141,7 +139,19 @@ alert("shataakk baby! copied" );
 </script>
 
 <button onclick="oauth2SignIn();">LOGIN</button>
+<a href="javascript:void(0);" id="openAppLink">OPEN APP</a>
 
-<a href="" id="hreff">OPEN APP </a>
+    <script>
+        // Function to handle the click event on the link
+        document.getElementById('openAppLink').addEventListener('click', function () {
+            // Replace 'app-scheme://' with the actual URL scheme of your app
+            const appLink = 'app-scheme://';
+            // Replace 'YOUR_ACCESS_TOKEN_VALUE' with the actual value of the access token from params object
+            const accessToken = 'YOUR_ACCESS_TOKEN_VALUE';
+
+            // Open the app link with the access token
+            window.open(`${appLink}ss0809.github.io/Dark_Matter/success.html?access_token=${accessToken}`, '_blank');
+        });
+    </script>
 
 </body></html>
