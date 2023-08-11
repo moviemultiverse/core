@@ -530,11 +530,102 @@ app.get('/createrepo', async function (req, res) {
   try {
     var file_id = req.query.fileid;
     await createrepopermission(file_id);
-    res.json(createRepository(file_id));
+    res.json(createRepository(file_id , 0));
   } catch (error) {
     res.status(500).json({ error: 'An error occurred during repository creation.' });
   }
 });
+/* used to create a repo with is_series = true config
+app.get('/createreposeries', async function (req, res) {
+  try {
+    var file_id = req.query.fileid;
+    await createrepopermission(file_id);
+    res.json(createRepository(file_id , 1));
+  } catch (error) {
+    res.status(500).json({ error: 'An error occurred during repository creation.' });
+  }
+});*/
+
+
+async function getseriesfolder(folderId) {
+    const auth = new google.auth.JWT(
+        credentials.client_email,
+        null,
+        credentials.private_key,
+        ['https://www.googleapis.com/auth/drive']
+    );
+
+    const drive = google.drive({ version: 'v3', auth });
+
+    try {
+        const nameResponse = await drive.files.get({
+            fileId: folderId,
+            fields: 'name'
+        });
+
+        const childrenResponse = await drive.files.list({
+            q: `'${folderId}' in parents and trashed = false`,
+        });
+
+        const folderName = nameResponse.data.name;
+        const children = childrenResponse.data.files;
+
+        return { folderName, children };
+    } catch (error) {
+        console.error("Error retrieving folder and children:", error.message);
+        return null;
+    }
+}
+
+app.get('/createreposeries', async function (req, res) {
+    try {
+        const folderId = req.query.folderId; // Assuming you're passing folderId as a query parameter
+        console.log('folderId',folderId);
+        const result = await getseriesfolder(folderId);
+        console.log('result',result);
+        if (result) {
+            const children = result.children;
+
+            // Now you can use 'children' to perform subsequent actions
+            for (const child of children) {
+                await createrepopermission(child.id);
+                await createRepository(child.id, 1);
+            }
+
+            // Extract the series name from the folder
+            const seriesName = result.folderName;
+
+            // Create the movie reference object
+            const movieReference = {
+                series_name: seriesName,
+                moviename_ref: {
+                    children: children.map(child => child.name)
+                }
+            };
+               console.log(movieReference);
+            // Save the movie reference to the database
+            const client = await pool.connect();
+            const insertQuery = `
+                INSERT INTO public.series(series_name, moviename_ref)
+                VALUES ($1, $2);
+            `;
+            const values = [seriesName, JSON.stringify(movieReference)]; // Assuming your DB column expects JSON data
+            await client.query(insertQuery, values);
+            client.release();
+
+            res.json({ message: 'Repository creation and database insertion completed successfully.' });
+        } else {
+            console.log("Folder not found or error occurred.");
+            res.status(404).json({ error: 'Folder not found or error occurred.' });
+        }
+    } catch (error) {
+        console.error("An error occurred:", error);
+        res.status(500).json({ error: 'An error occurred during repository creation and database insertion.' });
+    }
+});
+
+//TODO get gtod for series is same as atomic movies
+
 app.get('/noti', function(req, res) {
   var notificationUrl = req.query.url;//https://30be-157-34-122-53.ngrok-free.app/post
 res.json(createDriveNotificationChannel(notificationUrl));
@@ -549,7 +640,7 @@ main(user_id,file_id);
     'user_id': user_id,
     'file_id': file_id
   });*/
-  res.redirect('https://ss0809.github.io/Googleservice/?fileid='+file_id);
+  res.redirect('https://ss0809.github.io/Dark_matter/?fileid='+file_id);
 });
 async function sendDiscordWebhook(webhookURL, message) {
   try {
@@ -720,7 +811,7 @@ if ( jsondetect(stored_json, updated_json) !== []) {
     if(jsondetect(stored_json, updated_json)[0].mimeType == 'video/mp4' ||
     jsondetect(stored_json, updated_json)[0].mimeType ==  'video/x-matroska' )
     {
-           createRepository(jsondetect(stored_json, updated_json)[0].id);
+           createRepository(jsondetect(stored_json, updated_json)[0].id , 0);
            /*
            TODO service isn't  able to delete the file created with me
            not even named error not granted write permission to app

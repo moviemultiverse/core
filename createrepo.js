@@ -12,7 +12,7 @@ const pool = new Pool({
 });
    
 // file A.js
-const createRepository = async (suppliedfileid) => {
+const createRepository = async (suppliedfileid , is_series) => {
 //const suppliedfileid = '1s0jdnGdtdg2aYWIMkwx8v2-EP7GBN678';
 const token = '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';
 var suppliedfilename = '';
@@ -85,9 +85,9 @@ console.log(repoName);
     if (response.status === 201) {
       console.log('Repository created successfully!');
              pool.query(
-  'INSERT INTO moviedata (drive_code  , movie_name , size_mb , streamtape_code , doodstream_code  , is_github , is_reported) \
+  'INSERT INTO moviedata (drive_code  , movie_name , size_mb , streamtape_code , doodstream_code  , is_series , is_reported) \
   VALUES ($1, $2, $3, $4, $5, $6 ,$7);',
-  [fileId, repoName, size_mb, null, null, 1 ,0],
+  [fileId, repoName, size_mb, null, null, is_series ,0],
   (error, results) => {
     if (error) {
       console.error('Error executing query', error);

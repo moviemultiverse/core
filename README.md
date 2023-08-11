@@ -19,6 +19,7 @@ https://medium.com/@nimk/how-to-download-torrent-files-python-3818194fbf71
 .get('/deletefile') with query param file_id(drive)
 .get('/workflow') with query param workflowrepo(github reponame)
 .get('/createrepo') with query param file_id(drive)
+.get('/createreposeries') with query param folderId(drive)
 .get('/getfiles') returns total files owned by service account
 .get('/getvidfiles') returns total vid files owned by service account
 .get('/getmappeddata')(check if github exists for file in drive){mutant of getvidfiles}
