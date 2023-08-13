@@ -580,9 +580,9 @@ async function getseriesfolder(folderId) {
 app.get('/createreposeries', async function (req, res) {
     try {
         const folderId = req.query.folderId; // Assuming you're passing folderId as a query parameter
-        console.log('folderId',folderId);
+        console.log('folderId', folderId);
         const result = await getseriesfolder(folderId);
-        console.log('result',result);
+        console.log('result', result);
         if (result) {
             const children = result.children;
 
@@ -597,9 +597,10 @@ app.get('/createreposeries', async function (req, res) {
 
             // Create the movie reference object
             const movieReference = {
-                    children: children.map(child => child.name)//TODO remove .mp4
+                children: children.map(child => child.name.replace(/\.mp4$/, '')) // Remove ".mp4" from child names
             };
-               console.log(movieReference);
+            console.log(movieReference);
+
             // Save the movie reference to the database
             const client = await pool.connect();
             const insertQuery = `
@@ -620,6 +621,7 @@ app.get('/createreposeries', async function (req, res) {
         res.status(500).json({ error: 'An error occurred during repository creation and database insertion.' });
     }
 });
+
 
 //TODO get gtod for series is same as atomic movies
 
