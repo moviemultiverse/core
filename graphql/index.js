@@ -19,6 +19,10 @@ const typeDefs = `
   scalar JSON
   scalar JSONObject
 
+  type Series {
+    series_name: String!
+    moviename_ref: JSON  
+  }
   type Movie {
     movie_name: String!
     size_mb: String
@@ -30,7 +34,8 @@ const typeDefs = `
 
   type Query {
     movie(movie_name: String!): Movie
-    series(movie_name: String!): Movie    
+    movieseries(movie_name: String!): Movie
+    series(series_name: String!): Series    
     allMovieNames: [String!]!
     allSeriesNames: [String!]!
     totalsize: JSONObject!
@@ -57,10 +62,21 @@ const resolvers = {
         throw new Error('Error retrieving movie');
       }
     },
-    series: async (_, { movie_name }) => {
+    movieseries: async (_, { movie_name }) => {
       try {
-        const query = 'SELECT * FROM moviedata WHERE movie_name = $1 AND is_series = true;';
+        const query = 'SELECT * FROM moviedata WHERE movie_name = $1 ;';
         const values = [movie_name];
+        const result = await pool.query(query, values);
+        return result.rows[0];
+      } catch (error) {
+        console.error('Error executing query', error);
+        throw new Error('Error retrieving movie');
+      }
+    },
+    series: async (_, { series_name }) => {
+      try {
+        const query = 'SELECT * FROM series WHERE series_name = $1 ';
+        const values = [series_name];
         const result = await pool.query(query, values);
         return result.rows[0];
       } catch (error) {
@@ -80,9 +96,9 @@ const resolvers = {
     },
     allSeriesNames: async () => {
       try {
-        const query = 'SELECT movie_name FROM moviedata WHERE is_series = true;';
+        const query = 'SELECT series_name FROM series ';
         const result = await pool.query(query);
-        return result.rows.map(row => row.movie_name);
+        return result.rows.map(row => row.series_name);
       } catch (error) {
         console.error('Error executing query', error);
         throw new Error('Error retrieving movie names');

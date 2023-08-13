@@ -597,10 +597,7 @@ app.get('/createreposeries', async function (req, res) {
 
             // Create the movie reference object
             const movieReference = {
-                series_name: seriesName,
-                moviename_ref: {
-                    children: children.map(child => child.name)
-                }
+                    children: children.map(child => child.name)//TODO remove .mp4
             };
                console.log(movieReference);
             // Save the movie reference to the database
