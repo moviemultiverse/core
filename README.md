@@ -2,7 +2,7 @@
 A platform to store movies at mega large scale
 ## Start Command
 ```javascript
-npx nodemon index.js 
+omya runn baby
 ```
 ## Used resources:
 
