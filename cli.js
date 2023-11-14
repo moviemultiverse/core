@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 const { createCommand } = require('commander');
 const program = createCommand();
 const cliProgress = require('cli-progress');
@@ -16,6 +17,7 @@ program
     exec('node index.js');
     console.log('\x1b[32mhello Saurabh , server is running\x1b[32m');
 });
+
 
 //DATABASE CONNECTION TESTING
 program
