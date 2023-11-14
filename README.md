@@ -1,18 +1,20 @@
-# Dark Matter
+# The Core 
 A platform to store movies at mega large scale
 ## Start Command
-```javascript
-omya runn baby
-```
-## Used resources:
+```bash
+Usage: omya [options] [command]
 
-https://developers.google.com/drive/api/quickstart/nodejs
-https://developers.google.com/drive/api/v3/reference
-https://bretcameron.medium.com/how-to-use-the-google-drive-api-with-javascript-57a6cc9e5262
-https://cloud.google.com/nodejs/docs/reference/google-auth-library/latest
-https://developers.google.com/identity/gsi/web/guides/personalized-button
-https://github.com/TeemuKoivisto/google-oauth-drive-example
-https://medium.com/@nimk/how-to-download-torrent-files-python-3818194fbf71
+CLI for core
+
+Options:
+  -V, --version   output the version number
+  -h, --help      display help for command
+
+Commands:
+  runn <baby>
+  test <db>
+  help [command]  display help for command
+```
 
 ## Api Public Endpoints
 ```
@@ -49,3 +51,13 @@ ALTER TABLE moviedata  DROP CONSTRAINT moviedata_pkey;
 
 INSERT INTO users_login_dark_matter (name, email,picture) VALUES ($1, $2 ,$3 );
 ```
+
+## Used resources:
+
+https://developers.google.com/drive/api/quickstart/nodejs
+https://developers.google.com/drive/api/v3/reference
+https://bretcameron.medium.com/how-to-use-the-google-drive-api-with-javascript-57a6cc9e5262
+https://cloud.google.com/nodejs/docs/reference/google-auth-library/latest
+https://developers.google.com/identity/gsi/web/guides/personalized-button
+https://github.com/TeemuKoivisto/google-oauth-drive-example
+https://medium.com/@nimk/how-to-download-torrent-files-python-3818194fbf71

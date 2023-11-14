@@ -1,36 +1,33 @@
 #!/usr/bin/env node
-const { program } = require('commander');
+const { createCommand } = require('commander');
+const program = createCommand();
 const cliProgress = require('cli-progress');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 
 program
   .version('1.0.0')
-  .description('My Awesome CLI');
+  .description('\x1b[32mCLI for core\x1b[37m');
 
+//FIRE UP THE SERVER
 program
   .command('runn baby')
   .action(async () => {
-    console.log('hello, Running System');
-    exec('npx nodemon index.js');
+    exec('node index.js');
+    console.log('\x1b[32mhello Saurabh , server is running\x1b[32m');
+});
 
-    // create a new progress bar instance and use shades_classic theme
+//DATABASE CONNECTION TESTING
+program
+  .command('test db')
+  .action(async () => {
     const bar1 = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
-
-    // start the progress bar with a total value of 200 and start value of 0
     bar1.start(100, 0);
-
-    // simulate a task that takes 2 seconds using a for loop
+    exec('node graphql.js');
     for (let i = 0; i <= 100; i++) {
-      // update the current value in your application
       bar1.update(i);
-      // delay for 10 milliseconds to simulate work being done
-      await new Promise(resolve => setTimeout(resolve, 10));
     }
-
-    // stop the progress bar
     bar1.stop();
-
   });
-
+  
 program.parse(process.argv);
