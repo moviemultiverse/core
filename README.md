@@ -2,9 +2,10 @@
 A platform to store movies at mega large scale
 ## Start Command
 ```bash
-Usage: omya [options] [command]
+Usage 1: omya [options] [command]
+Usage 2: oumya //advanced
 
-CLI for core
+CLI for Core
 
 Options:
   -V, --version   output the version number
@@ -29,6 +30,7 @@ Commands:
 .get('/movie_data') get movie_data from database
 .get('/api') with query param id && fileid (share file with user from service account)
 .get('/login')(general login working...)
+.get('/size)(size of the movie heap)
 ```
 ## DATABASE FOR USERS
 ```SQL

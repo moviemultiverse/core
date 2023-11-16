@@ -268,9 +268,9 @@ const drive = google.drive({ version: 'v3', auth: authh });
   }
 }
 
-
-
-app.listen(3000);
+require('dotenv').config();
+const port =  process.env.PORT; // Default port is 3000 if not provided
+app.listen(port);
 app.get('/createuuid',async (req,res)=>{
    var var_uuid = uuidv4();
    try {
