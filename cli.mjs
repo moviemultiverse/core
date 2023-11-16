@@ -10,7 +10,7 @@ dotenv.config();
 const defaultport = process.env.PORT ; 
 let serverProcess;
 
-const startServer = () => {
+const startServer = async () => {
   console.log('Starting the server...');
   serverProcess = spawn('node', ['index.js']);
 
@@ -23,7 +23,7 @@ const startServer = () => {
   });
 };
 
-const stopServer = () => {
+const stopServer = async () => {
   console.log('Stopping the server...');
   serverProcess.kill('SIGINT'); // Send SIGINT signal to stop the server
 };
@@ -44,24 +44,65 @@ const sizeAction = async () => { // Mark function as async
   }
 };
 
+const getmovies = async () => {
+  console.log('\x1b[31mFetching Data...\x1b[0m');
+  try {
+    const response = await fetch(`http://localhost:${defaultport}/movie_data`);
+    if (response.ok) {
+      const data = await response.json();
+      const uniqueMovieNames = new Set();
+      data.forEach(item => {
+        uniqueMovieNames.add(item.movie_name);
+      });
+
+      const choices = Array.from(uniqueMovieNames).map(name => ({
+        name,
+        value: name,
+      }));
+
+      const { selectedMovies } = await inquirer.prompt({
+        type: 'checkbox',
+        message: 'Select movies:',
+        name: 'selectedMovies',
+        choices,
+      });
+
+      console.log('Selected movies:', selectedMovies);
+    } else {
+      console.error('Failed to fetch data:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error:', error.message);
+  }
+};
+
+
+
 const main = async () => {
   while (true) {
     const { action } = await inquirer.prompt({
       type: 'list',
       name: 'action',
-      message: 'Heyy , what can i do :',
+      loop: true,
+      message: 'Heyy Dear, what can i do :',
       choices: [
+        new inquirer.Separator('servers'),
         {
           name: 'Toggle Server (ON/OFF)',
           value: 'toggleServer',
         },
         {
-          name: 'Size of the movie heap',
+          name: 'Exit',
+          value: 'exit',
+        },
+        new inquirer.Separator('content'),
+        {
+          name: 'Size of the Movies heap',
           value: 'size',
         },
         {
-          name: 'Exit',
-          value: 'exit',
+          name: 'Get Movies',
+          value: 'movies',
         },
       ],
     });
@@ -70,12 +111,15 @@ const main = async () => {
       case 'size':
         await sizeAction();
         break;
+      case 'movies':
+        await getmovies();
+        break;
       case 'toggleServer':
         if (serverProcess) {
-          stopServer();
+         await stopServer();
           serverProcess = null;
         } else {
-          startServer();
+         await startServer();
         }
         break;
       case 'exit':

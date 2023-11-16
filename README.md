@@ -1,9 +1,16 @@
 # The Core 
-A platform to store movies at mega large scale
+A platform server to store movies at mega large scale
+
+## Description
+A platform server to store movies with postgres (graphql) loaded
+Uses JS , Dart , Python 3 as main Building blocks
+
+## Related Repositories
+[blackhole(client) , controller , cronner ]
+
 ## Start Command
 ```bash
-Usage 1: omya [options] [command]
-Usage 2: oumya //advanced
+Usage 1: omya runn baby
 
 CLI for Core
 
@@ -13,8 +20,19 @@ Options:
 
 Commands:
   runn <baby>
+  size
   test <db>
-  help [command]  display help for command
+
+Usage 2: oumya //advanced
+
+Interface:
+  ? Heyy Dear, what can i do : (Use arrow keys)
+  servers
+❯ Toggle Server (ON/OFF) 
+  Exit 
+  content
+  Size of the Movies heap 
+  Get Movies 
 ```
 
 ## Api Public Endpoints
