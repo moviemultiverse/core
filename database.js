@@ -1,11 +1,14 @@
 const { Pool } = require('pg');
+require('dotenv').config();
+
 const pool = new Pool({
-  host: 'satao.db.elephantsql.com',
-  port: 5432,
-  database: 'iywyfbqc',
-  user: 'iywyfbqc',
-  password: 'qAGx55jepOzWXVmB2IZxn-F-rulL3zRR'
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  database: process.env.DB_DATABASE,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD
 });
+
 
 const express = require('express');
 var app = express();
