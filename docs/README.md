@@ -13,6 +13,3 @@ sudo npm install -g
 
 ## WorkFlow
 ![BPMN](BPMN.drawio.svg)
-![BPMN](docs/BPMN.drawio.svg)
-![BPMN](/docs/BPMN.drawio.svg)
-![BPMN](/BPMN.drawio.svg)
