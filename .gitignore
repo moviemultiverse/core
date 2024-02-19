@@ -2,6 +2,13 @@ node_modules/*
 package-lock.json
 graphql/node_modules/*
 graphql/package-lock.json
+graphql/.env
 .vscode/*
 .env
 telecore/.env
+telecore/session_name.session
+telecore/saved_messages.json
+mongodb_aws/node_modules/*
+mongodb_aws/package-lock.json
+mongodb_aws/.env
+extrasnippets/graphql/package-lock.json

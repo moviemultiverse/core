@@ -20,3 +20,8 @@ This api will be used to fetch moviedata for doodstream and streamtape
 
 ```
 added NODE_VERSION = 20.1.0 environment variable to render
+
+psql -h hostname -U username -W -d database -t -A -F "," -c "SELECT * FROM table" > file.csv
+
+
+reformated and stored in file.csv

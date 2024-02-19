@@ -28,7 +28,7 @@ client = MongoClient(DB_URI, server_api=ServerApi('1'))
 # Send a ping to confirm a successful connection
 try:
     # Specify the target collection
-    target_collection = client['telecore']['telecore_collection']
+    target_collection = client['CORE']['tele_data']
 
     # Insert the loaded JSON data into the collection
     if isinstance(file_contents, list):
@@ -38,7 +38,7 @@ try:
         print("Error: The JSON file does not contain an array of documents.")
 except Exception as e:
     #print(f"Error inserting data into MongoDB: {e}")
-    print("File have duplicates")
+    print("Successfull , But File have duplicates")
 finally:
     # Close the MongoDB connection
     client.close()
