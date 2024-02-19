@@ -12,4 +12,4 @@ Uses JS , Dart , Python3 as main Building blocks
 
 ## Documentation
 
-[Docs](https://ss0809.github.io/core/)
+[Docs](https://moviemultiverse.github.io/core/)
