@@ -74,6 +74,59 @@ app.listen(port, () => {
   console.log(` Server ready at http://localhost:${port}`);
 });
 
+
+
+
+
+
+//-----------------------------------FOR TELEGRAM AUTH BOT -------------------------------------------------------
+//const axios = require('axios');
+const TelegramBot = require('node-telegram-bot-api');
+//const { v4: uuidv4 } = require('uuid');
+
+// Replace 'YOUR_TELEGRAM_BOT_TOKEN' with the token you obtained from BotFather
+
+const token = process.env.TOKEN ;
+// Create a new instance of the TelegramBot
+const bot = new TelegramBot(token, { polling: true });
+
+//https://github.com/yagop/node-telegram-bot-api/issues/406#issuecomment-1270573068
+
+//https://t.me/blackhole_movie_bot?start=YT0xMjMmYj1nZGZnZC1nZGZnZGZnZGY
+
+
+//btoa('a=123&b=gdfgd-gdfgdfgdf')
+//convert the string to base64 param
+bot.on('message',(msg) => {
+  const chatId = msg.chat.id;
+  const payload = msg.text.substring(6);
+  if (payload.length) {
+    const url = Buffer.from(payload, 'base64').toString();
+    const params = Object.fromEntries(new URLSearchParams(url).entries());
+    // Result: { a: '123', b: 'gdfgd-gdfgdfgdf' }
+    console.log(params);
+    if (params.a=="123")
+   {
+     console.log("success");
+    bot.sendMessage(
+      chatId,
+      'success'
+    );
+  }else{
+  bot.sendMessage(
+    chatId,
+    'go back cutie'
+  );
+  }}
+  else{
+    bot.sendMessage(
+      chatId,
+      'go back cutie'
+    );
+    }
+});
+
+
 //-----------------------------------FOR DEEPLINKING WITH GITHUB FOR ANDROID-------------------------------------------------------
 app.get('/.well-known/assetlinks.json', (req, res) => {
    res.send('[{\
