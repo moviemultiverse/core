@@ -28,6 +28,7 @@ const bodyParser = require('body-parser');
 const octokit = new Octokit({
   auth: githubToken,
 });
+const { get_telecore_data , search_telecore_data , set_telecore_data} = require('./mongodb/mongo.js');
 const express = require('express');
 const app = express();
 app.use(express.json());
@@ -89,7 +90,6 @@ const TelegramBot = require('node-telegram-bot-api');
 const token = process.env.TOKEN ;
 // Create a new instance of the TelegramBot
 const bot = new TelegramBot(token, { polling: true });
-
 //https://github.com/yagop/node-telegram-bot-api/issues/406#issuecomment-1270573068
 
 //https://t.me/blackhole_movie_bot?start=YT0xMjMmYj1nZGZnZC1nZGZnZGZnZGY
@@ -97,40 +97,61 @@ const bot = new TelegramBot(token, { polling: true });
 
 //btoa('a=123&b=gdfgd-gdfgdfgdf')
 //convert the string to base64 param
-bot.on('message',(msg) => {
-  console.log(msg);
-  const chatId = msg.chat.id;
-  const payload = msg.text.substring(6);
-  if (payload.length) {
-    const url = Buffer.from(payload, 'base64').toString();
-    const params = Object.fromEntries(new URLSearchParams(url).entries());
-    // Result: { a: '123', b: 'gdfgd-gdfgdfgdf' }
-    console.log(params);
-    if (params.a=="123")
-   {
-     console.log("success");
-    bot.sendMessage(
-      chatId,
-      'success'
-    );
-bot.forwardMessage(chatId,'2104037869','731');
-// chatid (uploader to bot) and msgs id
+bot.on('message', async (msg) => {
+  if(msg.from.id != 2104037869){
+  try {
+    if (msg) {
+      console.log(msg);
+      const chatId = msg.chat.id;
+      const payload = msg.text.substring(6);
 
-
-  }else{
-  bot.sendMessage(
-    chatId,
-    'go back cutie'
-  );
-  }}
-  else{
-    bot.sendMessage(
-      chatId,
-      'go back cutie'
-    );
+      if (payload.length) {
+        const url = Buffer.from(payload, 'base64').toString();
+        const params = Object.fromEntries(new URLSearchParams(url).entries());
+        // Result: { a: '123', b: 'gdfgd-gdfgdfgdf' }
+        console.log(params);
+          try {
+            console.log(params.text + "success");
+            bot.sendMessage(chatId, 'success');
+            const data1 = await search_telecore_data(params.text);
+            console.log("data",data1);
+            if(data1.admin=="2104037869")
+            bot.forwardMessage(chatId, '2104037869', data1.message_id);
+            else
+            bot.forwardMessage(chatId, '6270093925', data1.message_id);
+            //dev1 [message id is from dev1<->bot]
+            //bot.forwardMessage(chatId, '6270093925', data1.id);
+          } catch (error) {
+            console.error('Error fetching telecore data:', error);
+            bot.sendMessage(chatId, 'An error occurred while fetching telecore data');
+          }
+      } else {
+        bot.sendMessage(chatId, 'go back cutie');
+      }
+    } else {
+      console.warn('Received message without text:', msg);
     }
+  } catch (error) {
+    console.error('Error in the message handler:', error);
+    bot.sendMessage(msg.chat.id, 'An error occurred while processing your message');
+  }}
 });
 
+bot.on('message', async (msg) => {
+  if(msg.from.id == 2104037869 && msg.document.file_name != undefined && msg.message_id != undefined){
+    console.log(msg.message_id, msg.document.file_name);
+    const message_id = msg.message_id;
+    const file_name = msg.document.file_name ;
+    set_telecore_data([{admin: "2104037869", message_id: message_id ,file_name: file_name}]);
+    }
+  else if(msg.from.id == 6270093925 && msg.document.file_name != undefined && msg.message_id != undefined){
+      console.log(msg.message_id, msg.document.file_name);
+      const message_id = msg.message_id;
+      const file_name = msg.document.file_name ;
+      set_telecore_data([{admin: "6270093925", message_id: message_id ,file_name: file_name}]);
+      }
+  //bot count message_id on inc++ mode for each user
+});
 
 //-----------------------------------FOR DEEPLINKING WITH GITHUB FOR ANDROID-------------------------------------------------------
 app.get('/.well-known/assetlinks.json', (req, res) => {
@@ -301,7 +322,7 @@ if (xGoogResourceState == 'update') {
   }
     console.log('new',jsondetect(stored_json, updated_json));
        updateJsonData(JSON.stringify(updated_json));
-if ( jsondetect(stored_json, updated_json) !== []) {
+if (jsondetect(stored_json, updated_json).length > 0) {
     console.log('name',jsondetect(stored_json, updated_json)[0].name);
     console.log('id',jsondetect(stored_json, updated_json)[0].id);
     console.log('type',jsondetect(stored_json, updated_json)[0].mimeType);

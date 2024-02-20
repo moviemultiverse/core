@@ -25,6 +25,7 @@ const typeDefs = `
     doodstream_code: String
     img_data: JSON  
     is_reported: Int
+    telegram: String
   }
 
   type Query {
