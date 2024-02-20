@@ -74,7 +74,7 @@ app.use("/", main_route);
 app.listen(port, () => {
   console.log(` Server ready at http://localhost:${port}`);
 });
-
+/**************************************************************************************************************************** */
 
 
 
@@ -97,10 +97,22 @@ const bot = new TelegramBot(token, { polling: true });
 
 //btoa('a=123&b=gdfgd-gdfgdfgdf')
 //convert the string to base64 param
+
 bot.on('message', async (msg) => {
-  if(msg.from.id != 2104037869){
+    if(msg.from.id == 2104037869 && msg.document.file_name != undefined && msg.message_id != undefined){
+    console.log(msg.message_id, msg.document.file_name);
+    const message_id = msg.message_id;
+    const file_name = msg.document.file_name ;
+    set_telecore_data([{admin: "2104037869", message_id: message_id ,file_name: file_name}]);
+    }
+  else if(msg.from.id == 6270093925 && msg.document.file_name != undefined && msg.message_id != undefined){
+      console.log(msg.message_id, msg.document.file_name);
+      const message_id = msg.message_id;
+      const file_name = msg.document.file_name ;
+      set_telecore_data([{admin: "6270093925", message_id: message_id ,file_name: file_name}]);
+      }
+  else if(msg.from.id != 2104037869 || msg.from.id != 6270093925){
   try {
-    if (msg) {
       console.log(msg);
       const chatId = msg.chat.id;
       const payload = msg.text.substring(6);
@@ -125,9 +137,6 @@ bot.on('message', async (msg) => {
             console.error('Error fetching telecore data:', error);
             bot.sendMessage(chatId, 'An error occurred while fetching telecore data');
           }
-      } else {
-        bot.sendMessage(chatId, 'go back cutie');
-      }
     } else {
       console.warn('Received message without text:', msg);
     }
@@ -136,7 +145,7 @@ bot.on('message', async (msg) => {
     bot.sendMessage(msg.chat.id, 'An error occurred while processing your message');
   }}
 });
-
+/*
 bot.on('message', async (msg) => {
   if(msg.from.id == 2104037869 && msg.document.file_name != undefined && msg.message_id != undefined){
     console.log(msg.message_id, msg.document.file_name);
@@ -152,6 +161,15 @@ bot.on('message', async (msg) => {
       }
   //bot count message_id on inc++ mode for each user
 });
+*/
+//******************************************************************************************************************************* */
+
+
+
+
+
+
+
 
 //-----------------------------------FOR DEEPLINKING WITH GITHUB FOR ANDROID-------------------------------------------------------
 app.get('/.well-known/assetlinks.json', (req, res) => {

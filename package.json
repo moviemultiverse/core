@@ -44,7 +44,7 @@
     "uuid": "9.0.0"
   },
   "bin": {
-    "coree": "./cli.mjs",
-    "core": "./cli.js"
+    "coree": "./cli/cli.mjs",
+    "core": "./cli/cli.js"
   }
 }
