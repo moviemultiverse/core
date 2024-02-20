@@ -5,8 +5,8 @@ import os
 import json
 
 load_dotenv()
-api_id = os.getenv("api_id")
-api_hash = os.getenv("api_hash")
+api_id = os.getenv("api_id_shah")
+api_hash = os.getenv("api_hash_shah")
 
 client = TelegramClient('session_name', api_id, api_hash)
 
@@ -16,7 +16,7 @@ async def get_saved_messages():
 
     try:
         # Get all saved messages
-        saved_messages = await client.get_messages('me', limit=None)
+        saved_messages = await client.get_messages('blackhole_movie_bot', limit=None)
 
         # Create a list to store message data
         messages_data = []
@@ -24,14 +24,14 @@ async def get_saved_messages():
         # Append information about each saved message to the list
         for message in saved_messages:
             message_data = {
-                "id": message.id,
-                "text": message.text,
+                "Message ID": message.id,
+                "Message Text": message.text,
             }
             if(message.text != None):
                 messages_data.append(message_data)
 
         # Serialize the list to JSON and save it to a file
-        with open("jsonfiles/saved_messages.json", "w", encoding="utf-8") as json_file:
+        with open("jsonfiles/user2.json", "w", encoding="utf-8") as json_file:
             json.dump(messages_data, json_file, ensure_ascii=False, indent=4)
 
     except Exception as e:

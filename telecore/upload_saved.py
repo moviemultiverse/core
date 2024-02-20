@@ -8,7 +8,7 @@ load_dotenv()
 DB_URI = os.getenv("DB_URI")
 
 # Specify the path to your local file
-file_path = 'saved_messages.json'
+file_path = 'jsonfiles/saved_messages.json'
 
 try:
     # Open the file in read mode ('r')

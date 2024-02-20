@@ -86,7 +86,7 @@ const TelegramBot = require('node-telegram-bot-api');
 
 // Replace 'YOUR_TELEGRAM_BOT_TOKEN' with the token you obtained from BotFather
 
-const token = process.env.TOKEN ;
+const token = '5829137130:AAFlWhFjPcBDfTlARBbWMJUEoXeSks4gNq4' ;
 // Create a new instance of the TelegramBot
 const bot = new TelegramBot(token, { polling: true });
 
@@ -98,6 +98,7 @@ const bot = new TelegramBot(token, { polling: true });
 //btoa('a=123&b=gdfgd-gdfgdfgdf')
 //convert the string to base64 param
 bot.on('message',(msg) => {
+  console.log(msg);
   const chatId = msg.chat.id;
   const payload = msg.text.substring(6);
   if (payload.length) {
@@ -112,6 +113,10 @@ bot.on('message',(msg) => {
       chatId,
       'success'
     );
+bot.forwardMessage(chatId,'2104037869','731');
+// chatid (uploader to bot) and msgs id
+
+
   }else{
   bot.sendMessage(
     chatId,
