@@ -17,12 +17,19 @@ const { JWT } = require('google-auth-library');
 const { Octokit } = require("@octokit/rest");
 const credentials = require('./drive-download-389811-b229f2e27ed8.json');
 const githubToken = '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'; 
+require('dotenv').config();
+const http = require('http');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 const octokit = new Octokit({
   auth: githubToken,
 });
+const { get_telecore_data , search_telecore_data , set_telecore_data} = require('./mongodb/mongo.js');
 const express = require('express');
-var app = express();
+const app = express();
 app.use(express.json());
+const port = process.env.PORT || 3000;
+
 
 async function insertuser(authClient, fileId, emailAddress, role) {
   try {
@@ -46,23 +53,47 @@ async function insertuser(authClient, fileId, emailAddress, role) {
   }
 }
 
- 
-
-
-require('dotenv').config();
-const port =  process.env.PORT; // Default port is 3000 if not provided
-app.listen(port);
-
-
 const uuid_route = require("./routes/uuid_route");
 const public_api = require("./routes/public_api");
 const admin = require("./routes/admin");
 const main_route = require("./routes/main");
 
-app.use("/", uuid_route); //CR operation on UUID
-app.use("/", public_api); // all public methods
-app.use("/", admin); // non destructive methods
-app.use("/", main_route); // destructive methods
+
+app.use("/", uuid_route);
+app.use("/", public_api);
+app.use("/", admin);
+app.use("/", main_route);
+
+
+
+
+
+
+//************************************************APOLLO GRAPHQL SERVER********************************************************* */
+const { ApolloServer } = require('@apollo/server');
+const { expressMiddleware } = require('@apollo/server/express4');
+const { typeDefs, resolvers } = require("./controllers/graphql");
+const server = new ApolloServer({ typeDefs, resolvers });
+server.start().then(() => {
+  app.use(expressMiddleware(server));
+});
+/******************************************************************************************************************************* */
+
+
+
+//************************************************TELEGRAM AUTH BOT************************************************************* */
+const { TelecoreBot } = require('./telecore/bot.js');
+(async () => {
+  try {
+    await TelecoreBot();
+  } catch (error) {
+    console.error(error);}
+})();
+//***************************************************************************************************************************** */
+
+
+
+
 
 
 //-----------------------------------FOR DEEPLINKING WITH GITHUB FOR ANDROID-------------------------------------------------------
@@ -74,7 +105,7 @@ app.get('/.well-known/assetlinks.json', (req, res) => {
 }]');
 });
 
-
+/*
 app.get('/', (req, res) => {
   // Set the Access-Control-Allow-Origin header to allow requests from any origin
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -83,7 +114,10 @@ app.get('/', (req, res) => {
   // Respond with the JSON data 'files'
   res.json('Server running successfully');
 });
-
+*/
+app.get('/',(req,res)=>{
+  res.sendFile(__dirname +'/docs/README.md');
+});
 app.get('/login', (req, res) => {
   res.sendFile(__dirname + '/login.html');
 });
@@ -231,7 +265,7 @@ if (xGoogResourceState == 'update') {
   }
     console.log('new',jsondetect(stored_json, updated_json));
        updateJsonData(JSON.stringify(updated_json));
-if ( jsondetect(stored_json, updated_json) !== []) {
+if (jsondetect(stored_json, updated_json).length > 0) {
     console.log('name',jsondetect(stored_json, updated_json)[0].name);
     console.log('id',jsondetect(stored_json, updated_json)[0].id);
     console.log('type',jsondetect(stored_json, updated_json)[0].mimeType);
@@ -253,4 +287,18 @@ else if (xGoogResourceState == 'sync') {
 }
 
   res.json("posted");
+});
+
+
+
+
+
+
+
+
+
+
+
+app.listen(port, () => {
+  console.log(` Server ready at http://localhost:${port}`);
 });

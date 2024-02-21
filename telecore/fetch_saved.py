@@ -24,14 +24,14 @@ async def get_saved_messages():
         # Append information about each saved message to the list
         for message in saved_messages:
             message_data = {
-                "Message ID": message.id,
-                "Message Text": message.text,
+                "id": message.id,
+                "text": message.text,
             }
             if(message.text != None):
                 messages_data.append(message_data)
 
         # Serialize the list to JSON and save it to a file
-        with open("saved_messages.json", "w", encoding="utf-8") as json_file:
+        with open("jsonfiles/saved_messages.json", "w", encoding="utf-8") as json_file:
             json.dump(messages_data, json_file, ensure_ascii=False, indent=4)
 
     except Exception as e:

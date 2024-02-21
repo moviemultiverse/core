@@ -1,13 +1,14 @@
 const axios = require('axios');
 const TelegramBot = require('node-telegram-bot-api');
 const { v4: uuidv4 } = require('uuid');
-
+require('dotenv').config();
 // Replace 'YOUR_TELEGRAM_BOT_TOKEN' with the token you obtained from BotFather
-const token = '5829137130:AAF8i82RvKYq-FzkYLbSAYvXAgnOeiDKDOY';
+const token = process.env.TOKEN ;
 
 // Create a new instance of the TelegramBot
 const bot = new TelegramBot(token, { polling: true });
 
+  
 // Handle incoming messages
 bot.on('message', async (msg) => {
   const chatId = msg.chat.id;
@@ -40,7 +41,7 @@ bot.on('message', async (msg) => {
 });
 
 async function searchMovie(query) {
-  const graphqlEndpoint = 'https://graphql-pyt9.onrender.com'; // Replace with the actual GraphQL API URL
+  const graphqlEndpoint = 'http://localhost:'+process.env.PORT+'/graphql'; // Replace with the actual GraphQL API URL
   const requestBody = {
     query: `
       query ExampleQuery($query: String!) {
