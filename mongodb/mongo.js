@@ -56,8 +56,8 @@ async function set_telecore_data(dataToSave) {
         const db = mongoClient.db('CORE');
         const collection = db.collection('user1_to_bot');
         await collection.insertMany(dataToSave);
-
         console.log('Data saved successfully.');
+        return true;
     } catch (error) {
         console.error(error);
         throw error;

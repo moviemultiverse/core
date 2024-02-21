@@ -81,42 +81,37 @@ app.listen(port, () => {
 
 
 //-----------------------------------FOR TELEGRAM AUTH BOT -------------------------------------------------------
-//const axios = require('axios');
+const { set2redis, get2redis } = require('./redis/redis_data');
 const TelegramBot = require('node-telegram-bot-api');
-//const { v4: uuidv4 } = require('uuid');
-
-// Replace 'YOUR_TELEGRAM_BOT_TOKEN' with the token you obtained from BotFather
-
 const token = process.env.TOKEN ;
-// Create a new instance of the TelegramBot
 const bot = new TelegramBot(token, { polling: true });
 //https://github.com/yagop/node-telegram-bot-api/issues/406#issuecomment-1270573068
-
 //https://t.me/blackhole_movie_bot?start=YT0xMjMmYj1nZGZnZC1nZGZnZGZnZGY
-
-
 //btoa('a=123&b=gdfgd-gdfgdfgdf')
 //convert the string to base64 param
-
 bot.on('message', async (msg) => {
-    if(msg.from.id == 2104037869 && msg.document.file_name != undefined && msg.message_id != undefined){
+  const admin1 = await get2redis("admin1");
+  const admin2 = await get2redis("admin2");
+  console.log(admin2);
+  console.log(msg);
+  const chatId = msg.chat.id;
+  if(msg.from.id == admin1 && msg.document.file_name != undefined && msg.message_id != undefined){
     console.log(msg.message_id, msg.document.file_name);
     const message_id = msg.message_id;
     const file_name = msg.document.file_name ;
-    set_telecore_data([{admin: "2104037869", message_id: message_id ,file_name: file_name}]);
+    if(set_telecore_data([{admin: admin1, message_id: message_id ,file_name: file_name}]))
+    bot.sendMessage(chatId,file_name + " saved successfully");
     }
-  else if(msg.from.id == 6270093925 && msg.document.file_name != undefined && msg.message_id != undefined){
+  else if(msg.from.id == admin2 && msg.document.file_name != undefined && msg.message_id != undefined){
       console.log(msg.message_id, msg.document.file_name);
       const message_id = msg.message_id;
       const file_name = msg.document.file_name ;
-      set_telecore_data([{admin: "6270093925", message_id: message_id ,file_name: file_name}]);
+      if(set_telecore_data([{admin: admin1, message_id: message_id ,file_name: file_name}]))
+      bot.sendMessage(chatId,file_name + " saved successfully");
       }
-  else if(msg.from.id != 2104037869 || msg.from.id != 6270093925){
+  else if((msg.from.id != admin1 || msg.from.id != admin2) && msg.text){
   try {
-      console.log(msg);
-      const chatId = msg.chat.id;
       const payload = msg.text.substring(6);
-
       if (payload.length) {
         const url = Buffer.from(payload, 'base64').toString();
         const params = Object.fromEntries(new URLSearchParams(url).entries());
@@ -127,12 +122,12 @@ bot.on('message', async (msg) => {
             bot.sendMessage(chatId, 'success');
             const data1 = await search_telecore_data(params.text);
             console.log("data",data1);
-            if(data1.admin=="2104037869")
-            bot.forwardMessage(chatId, '2104037869', data1.message_id);
+            if(data1.admin== admin1 )
+            bot.forwardMessage(chatId,  admin1 , data1.message_id);
             else
-            bot.forwardMessage(chatId, '6270093925', data1.message_id);
+            bot.forwardMessage(chatId,  admin2 , data1.message_id);
             //dev1 [message id is from dev1<->bot]
-            //bot.forwardMessage(chatId, '6270093925', data1.id);
+            //bot.forwardMessage(chatId,  admin2 , data1.id);
           } catch (error) {
             console.error('Error fetching telecore data:', error);
             bot.sendMessage(chatId, 'An error occurred while fetching telecore data');
@@ -147,17 +142,17 @@ bot.on('message', async (msg) => {
 });
 /*
 bot.on('message', async (msg) => {
-  if(msg.from.id == 2104037869 && msg.document.file_name != undefined && msg.message_id != undefined){
+  if(msg.from.id == admin1 && msg.document.file_name != undefined && msg.message_id != undefined){
     console.log(msg.message_id, msg.document.file_name);
     const message_id = msg.message_id;
     const file_name = msg.document.file_name ;
-    set_telecore_data([{admin: "2104037869", message_id: message_id ,file_name: file_name}]);
+    set_telecore_data([{admin:  admin1 , message_id: message_id ,file_name: file_name}]);
     }
-  else if(msg.from.id == 6270093925 && msg.document.file_name != undefined && msg.message_id != undefined){
+  else if(msg.from.id == admin2 && msg.document.file_name != undefined && msg.message_id != undefined){
       console.log(msg.message_id, msg.document.file_name);
       const message_id = msg.message_id;
       const file_name = msg.document.file_name ;
-      set_telecore_data([{admin: "6270093925", message_id: message_id ,file_name: file_name}]);
+      set_telecore_data([{admin:  admin2 , message_id: message_id ,file_name: file_name}]);
       }
   //bot count message_id on inc++ mode for each user
 });
