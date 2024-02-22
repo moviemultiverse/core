@@ -1,6 +1,5 @@
 const { Pool } = require('pg');
 require('dotenv').config();
-
 const pool = new Pool({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
@@ -8,7 +7,6 @@ const pool = new Pool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD
 });
-
 const axios = require('axios');
 const { google } = require('googleapis');
 const fs = require('fs');
@@ -24,46 +22,24 @@ const bodyParser = require('body-parser');
 const octokit = new Octokit({
   auth: githubToken,
 });
-const { get_telecore_data , search_telecore_data , set_telecore_data} = require('./mongodb/mongo.js');
+
 const express = require('express');
 const app = express();
 app.use(express.json());
 const port = process.env.PORT || 3000;
 
 
-async function insertuser(authClient, fileId, emailAddress, role) {
-  try {
-    const drive = google.drive({ version: 'v3', auth: authClient });
 
-    const permission = {
-      role: role,
-      type: 'user',
-      emailAddress: emailAddress
-    };
-
-    const response = await drive.permissions.create({
-      fileId: fileId,
-      requestBody: permission,
-      fields: 'id'
-    });
-     console.log(`Permission created with ID: ${response.data.id}`);
-     return response.data.id;
-  } catch (error) {
-    console.error('Error creating permission:', error);
-  }
-}
-
+/*****************************************************ROUTES******************************************************************** */
 const uuid_route = require("./routes/uuid_route");
 const public_api = require("./routes/public_api");
 const admin = require("./routes/admin");
 const main_route = require("./routes/main");
-
-
 app.use("/", uuid_route);
 app.use("/", public_api);
 app.use("/", admin);
 app.use("/", main_route);
-
+/******************************************************************************************************************************* */
 
 
 
@@ -95,8 +71,7 @@ const { TelecoreBot } = require('./telecore/bot.js');
 
 
 
-
-//-----------------------------------FOR DEEPLINKING WITH GITHUB FOR ANDROID-------------------------------------------------------
+//***************************************DEEPLINKING WITH GITHUB FOR ANDROID*************************************************** */
 app.get('/.well-known/assetlinks.json', (req, res) => {
    res.send('[{\
   "relation": ["delegate_permission/common.handle_all_urls"],\
@@ -104,7 +79,13 @@ app.get('/.well-known/assetlinks.json', (req, res) => {
                "sha256_cert_fingerprints": ["2E:19:FA:29:4C:5E:84:96:46:B5:4E:C0:06:FC:46:C7:D9:17:5F:27:81:EB:89:84:47:AC:FB:C3:91:6E:DF:71"] }\
 }]');
 });
+//**************************************************************************************************************************** */
 
+
+
+
+
+//*****************************************STATIC CONTENT HOSTING************************************************************* */
 /*
 app.get('/', (req, res) => {
   // Set the Access-Control-Allow-Origin header to allow requests from any origin
@@ -124,6 +105,9 @@ app.get('/login', (req, res) => {
 app.get('/callback', (req, res) => {
   res.sendFile(__dirname + '/login.html');
 });
+//*************************************************************************************************************************** */
+
+
 
 //TODO get gtod for series is same as atomic movies
 
@@ -144,7 +128,27 @@ async function sendDiscordWebhook(webhookURL, message) {
   }
 }
 
+async function insertuser(authClient, fileId, emailAddress, role) {
+  try {
+    const drive = google.drive({ version: 'v3', auth: authClient });
 
+    const permission = {
+      role: role,
+      type: 'user',
+      emailAddress: emailAddress
+    };
+
+    const response = await drive.permissions.create({
+      fileId: fileId,
+      requestBody: permission,
+      fields: 'id'
+    });
+     console.log(`Permission created with ID: ${response.data.id}`);
+     return response.data.id;
+  } catch (error) {
+    console.error('Error creating permission:', error);
+  }
+}
 
 
 function arrayToObject(array) {
