@@ -2,7 +2,8 @@ const { Pool } = require('pg');
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const uri = process.env.DB_URI;
-
+const { get2redis } = require('../redis/redis_data.js');
+/*
 const pool = new Pool({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
@@ -10,8 +11,14 @@ const pool = new Pool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD
 });
+*/
 
-let mongoClient = new MongoClient(uri);
+const mongoClient = new MongoClient(uri, {
+  serverSelectionTimeoutMS: 5000, // Timeout to select a server
+  socketTimeoutMS: 45000, // Timeout for individual socket operations
+  connectTimeoutMS: 10000, // Timeout for the initial connection
+});
+
 async ()=>{
   await mongoClient.connect();
 }
@@ -63,7 +70,7 @@ const resolvers = {
       }*/
       try {
         const db = mongoClient.db('CORE');
-        const collection = db.collection('sample');
+        const collection = db.collection('movies');
         const query1 = { movie_name: movie_name, is_series: false};
         let telecoreData = await collection.findOne(query1);
         console.log(telecoreData);
@@ -86,7 +93,7 @@ const resolvers = {
       }*/
       try {
         const db = mongoClient.db('CORE');
-        const collection = db.collection('sample');
+        const collection = db.collection('movies');
         const query1 = { movie_name: movie_name };
         let telecoreData = await collection.findOne(query1);
         console.log(telecoreData);
@@ -97,7 +104,7 @@ const resolvers = {
       }    
     },
     series: async (_, { series_name }) => {
-      try {
+      /*try {
         const query = 'SELECT * FROM series WHERE series_name = $1 ';
         const values = [series_name];
         const result = await pool.query(query, values);
@@ -105,6 +112,17 @@ const resolvers = {
       } catch (error) {
         console.error('Error executing query', error);
         throw new Error('Error retrieving movie');
+      }*/
+      try {
+        const db = mongoClient.db('CORE');
+        const collection = db.collection('series');
+        const query1 = { series_name: series_name };
+        let telecoreData = await collection.findOne(query1);
+        console.log(telecoreData);
+        return telecoreData;
+      } catch (error) {
+        console.error(error);
+        throw error;
       }
     },
     allMovieNames: async () => {
@@ -118,7 +136,7 @@ const resolvers = {
        }*/
        try {
          const db = mongoClient.db('CORE');
-         const collection = db.collection('sample');
+         const collection = db.collection('movies');
          const query1 = { is_series: false };
          const projection = {
            _id: 0,
@@ -141,13 +159,25 @@ const resolvers = {
        }  
      },
     allSeriesNames: async () => {
-      try {
+      /*try {
         const query = 'SELECT series_name FROM series ';
         const result = await pool.query(query);
         return result.rows.map(row => row.series_name);
       } catch (error) {
         console.error('Error executing query', error);
         throw new Error('Error retrieving movie names');
+      }*/
+      try {
+        const db = mongoClient.db('CORE');
+        const collection = db.collection('series');
+        const projection = { _id: 0, series_name: 1 };
+        const result = await collection.find({}, projection).toArray();
+        const seriesNames = result.map(item => item.series_name);
+        console.log(seriesNames);
+        return seriesNames;
+      } catch (error) {
+        console.error(error);
+        throw error;
       }
     },
     totalsize: async () => {
@@ -163,7 +193,7 @@ const resolvers = {
       }*/
       try {
         const db = mongoClient.db('CORE');
-        const collection = db.collection('sample');
+        const collection = db.collection('movies');
         const pipeline = [
           {
             $group: {
@@ -192,17 +222,21 @@ const resolvers = {
       }
     },
     version:async () => {
-      try {
+      /*try {
         const query = 'SELECT version FROM blackhole_version';
         const result = await pool.query(query);
         return result.rows[0].version;
       } catch (error) {
         console.error('Error executing query', error);
-        throw new Error('Error retrieving movie names');
+      }*/
+      try {
+        return await get2redis("version");
+      } catch (error) {
+        console.error('Error executing redis query', error);
       }
     },
     movieSearch: async (_, { query }) => {
-      try {
+      try {  // TODO IN MONGODB
         const searchQuery = `%${query.toLowerCase()}%`;
         const sqlQuery = 'SELECT * FROM moviedata WHERE lower(movie_name) LIKE $1';
         const result = await pool.query(sqlQuery, [searchQuery]);
@@ -226,7 +260,7 @@ Mutation: {
     }*/
     try {
       const db = mongoClient.db('CORE');
-      const collection = db.collection('sample');
+      const collection = db.collection('movies');
       const filter = { movie_name: movie_name };
       const update = { $inc: { is_reported: 1 } }; // Increment is_reported by 1
       const result = await collection.updateOne(filter, update);
