@@ -2,6 +2,7 @@ async function TelecoreBot(){
 
 //-----------------------------------FOR TELEGRAM AUTH BOT -------------------------------------------------------
 const { get2redis } = require('../redis/redis_data.js');
+const { get_telecore_data , search_telecore_data , set_telecore_data} = require('../mongodb/mongo.js');
 const TelegramBot = require('node-telegram-bot-api');
 const token = process.env.TOKEN ;
 const bot = new TelegramBot(token, { polling: true });
@@ -12,7 +13,6 @@ const bot = new TelegramBot(token, { polling: true });
 bot.on('message', async (msg) => {
   const admin1 = await get2redis("admin1");
   const admin2 = await get2redis("admin2");
-  console.log(admin2);
   console.log(msg);
   const chatId = msg.chat.id;
   if(msg.from.id == admin1 && msg.document.file_name != undefined && msg.message_id != undefined){

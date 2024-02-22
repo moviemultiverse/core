@@ -1,5 +1,5 @@
 
-## Used resources:
+#### Used Resources Docs
 
 
 > https://developers.google.com/drive/api/quickstart/nodejs
@@ -15,3 +15,11 @@
 > https://github.com/TeemuKoivisto/google-oauth-drive-example
 
 > https://medium.com/@nimk/how-to-download-torrent-files-python-3818194fbf71
+
+> https://docs.aws.amazon.com/lambda/
+
+> https://docs.aws.amazon.com/ec2/
+
+> https://core.telegram.org/bots/api
+
+> https://core.telegram.org/

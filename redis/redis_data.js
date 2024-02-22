@@ -42,8 +42,8 @@ async function get2redis(key) {
 }
 /*
 (async () => {
-  const key = 'admin1';
-  const value = 'value';
+  const key = 'admin2';
+  const value = '6270093925';
   let data;
   (await set2redis(key , value))? data = await get2redis(key): console.log('Error');
   console.log('Value:', data);

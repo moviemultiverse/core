@@ -1,9 +1,27 @@
+## Commands
 
-## Start Command
+#### Linux || WSL
+
 ```bash
-Usage 1: core runn baby
+git clone https://github.com/moviemultiverse/core
+cd core
+git pull origin dev
+git checkout dev
+nano .env -> {add your crendentials}
+npx nodemon index.js
+```
+#### CLI Installation
+```
+chmod +x cli.mjs cli.js
+sudo npm install -g
+```
 
-CLI for Core
+## CLI for Core
+
+#### CLI Basic Usage
+
+```bash
+core runn baby
 
 Options:
   -V, --version   output the version number
@@ -13,8 +31,12 @@ Commands:
   runn <baby>
   size
   test <db>
+```
 
-Usage 2: coree //advanced
+#### CLI Advanced Usage
+
+```bash
+coree 
 
 Interface:
   ? Heyy Dear, what can i do : (Use arrow keys)
@@ -24,4 +46,9 @@ Interface:
   content
   Size of the Movies heap 
   Get Movies 
+```
+#### Shut Down Server 
+
+```bash
+Ctrl + C
 ```

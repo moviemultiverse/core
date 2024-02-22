@@ -77,6 +77,38 @@ const getmovies = async () => {
 };
 
 
+const get_telecore_data = async () => {
+  console.log('\x1b[31mFetching Data...\x1b[0m');
+  try {
+    const response = await fetch(process.env.TELECORE_API_ENDPOINT);
+    if (response.ok) {
+      const data = await response.json();
+      const uniqueMovieNames = new Set();
+      data.forEach(item => {
+        uniqueMovieNames.add(item.file_name);
+      });
+
+      const choices = Array.from(uniqueMovieNames).map(name => ({
+        name,
+        value: name,
+      }));
+
+      const { selectedMovies } = await inquirer.prompt({
+        type: 'checkbox',
+        message: 'Select movies:',
+        name: 'selectedMovies',
+        choices,
+      });
+
+      console.log('Selected movies:', selectedMovies);
+    } else {
+      console.error('Failed to fetch data:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error:', error.message);
+  }
+};
+
 
 const main = async () => {
   while (true) {
@@ -104,6 +136,10 @@ const main = async () => {
           name: 'Get Movies',
           value: 'movies',
         },
+        {
+          name: 'Get Telecore Data',
+          value: 'telecore_data',
+        },        
       ],
     });
 
@@ -111,9 +147,12 @@ const main = async () => {
       case 'size':
         await sizeAction();
         break;
-      case 'movies':
-        await getmovies();
+        case 'movies':
+          await getmovies();
         break;
+        case 'telecore_data':
+          await get_telecore_data();
+          break;        
       case 'toggleServer':
         if (serverProcess) {
          await stopServer();

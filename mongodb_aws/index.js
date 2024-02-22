@@ -1,6 +1,5 @@
-require('dotenv').config();
 const MongoClient = require("mongodb").MongoClient;
-const MONGODB_URI =process.env.DB_URI;
+const MONGODB_URI ='mongodb+srv://user1:bPaSf7MlDhjrCvGe@cluster0.fcjxhuf.mongodb.net/?retryWrites=true&w=majority';
 let cachedDb = null;
 
 async function connectToDatabase() {
@@ -28,8 +27,10 @@ exports.handler = async (event, context) => {
     response = await db.collection("movies").find({}).limit(limit).toArray();
   } else if (event.queryStringParameters.series) {
     response = await db.collection("series").find({}).limit(limit).toArray();
+  } else if (event.queryStringParameters.user1_to_bot) {
+    response = await db.collection("user1_to_bot").find({}).limit(limit).toArray();
   } else {
-    response = "use ? tele_data, movies, or series in queryStringParameters to true";
+    response = "use ? tele_data, movies, or series ,user1_to_bot in queryStringParameters to true";
   }
 
   const responseObject = {
