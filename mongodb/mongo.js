@@ -2,12 +2,10 @@ require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const uri = process.env.DB_URI;
 let mongoClient = new MongoClient(uri);
-async ()=>{
-    await mongoClient.connect();
-  }
 
 async function get_telecore_data() {
     try {
+        await mongoClient.connect();
         const db = mongoClient.db('CORE');
         const collection = db.collection('tele_data');
         let telecoreData = await collection.find().toArray();
@@ -21,9 +19,8 @@ async function get_telecore_data() {
 }
 
 async function search_telecore_data(searchText) {
-    let mongoClient;
-
     try {
+        await mongoClient.connect();
         const db = mongoClient.db('CORE');
         const collection = db.collection('user1_to_bot');
 
@@ -46,9 +43,8 @@ async function search_telecore_data(searchText) {
 
 
 async function set_telecore_data(dataToSave) {
-    let mongoClient;
-
     try {
+        await mongoClient.connect();
         const db = mongoClient.db('CORE');
         const collection = db.collection('user1_to_bot');
         await collection.insertMany(dataToSave);

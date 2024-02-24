@@ -1,7 +1,7 @@
 const { Pool } = require('pg');
 require('dotenv').config();
-const { MongoClient } = require('mongodb');
-const uri = process.env.DB_URI;
+
+
 const { get2redis } = require('../redis/redis_data.js');
 /*
 const pool = new Pool({
@@ -13,21 +13,14 @@ const pool = new Pool({
 });
 */
 
-const mongoClient = new MongoClient(uri, {
-  serverSelectionTimeoutMS: 5000, // Timeout to select a server
-  socketTimeoutMS: 45000, // Timeout for individual socket operations
-  connectTimeoutMS: 10000, // Timeout for the initial connection
-});
 
-async ()=>{
-  await mongoClient.connect();
-}
 const typeDefs = `
   scalar JSON
   scalar JSONObject
   type Series {
     series_name: String!
     moviename_ref: JSON  
+    img_data: String
   }
   type Movie {
     _id: JSONObject
@@ -58,7 +51,7 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    movie: async (_, { movie_name }) => {
+    movie: async (_, { movie_name }, {movies_collection})  => {
      /* try {
         const query = 'SELECT * FROM moviedata WHERE movie_name = $1 AND is_series = false;';
         const values = [movie_name];
@@ -69,10 +62,8 @@ const resolvers = {
         throw new Error('Error retrieving movie');
       }*/
       try {
-        const db = mongoClient.db('CORE');
-        const collection = db.collection('movies');
         const query1 = { movie_name: movie_name, is_series: false};
-        let telecoreData = await collection.findOne(query1);
+        let telecoreData = await movies_collection.findOne(query1);
         console.log(telecoreData);
         return telecoreData;
       } catch (error) {
@@ -80,7 +71,7 @@ const resolvers = {
         throw error;
       }    
     },
-    movieseries: async (_, { movie_name }) => {
+    movieseries: async (_, { movie_name } , {movies_collection}) => {
       /*try {
         const query = 'SELECT * FROM moviedata WHERE movie_name = $1 ;';
         const values = [movie_name];
@@ -92,10 +83,8 @@ const resolvers = {
         throw new Error('Error retrieving movie');
       }*/
       try {
-        const db = mongoClient.db('CORE');
-        const collection = db.collection('movies');
         const query1 = { movie_name: movie_name };
-        let telecoreData = await collection.findOne(query1);
+        let telecoreData = await movies_collection.findOne(query1);
         console.log(telecoreData);
         return telecoreData;
       } catch (error) {
@@ -103,7 +92,7 @@ const resolvers = {
         throw error;
       }    
     },
-    series: async (_, { series_name }) => {
+    series: async (_, { series_name } ,{series_collection}) => {
       /*try {
         const query = 'SELECT * FROM series WHERE series_name = $1 ';
         const values = [series_name];
@@ -114,10 +103,8 @@ const resolvers = {
         throw new Error('Error retrieving movie');
       }*/
       try {
-        const db = mongoClient.db('CORE');
-        const collection = db.collection('series');
         const query1 = { series_name: series_name };
-        let telecoreData = await collection.findOne(query1);
+        let telecoreData = await series_collection.findOne(query1);
         console.log(telecoreData);
         return telecoreData;
       } catch (error) {
@@ -125,7 +112,7 @@ const resolvers = {
         throw error;
       }
     },
-    allMovieNames: async () => {
+    allMovieNames: async (_, __, {movies_collection}) => {
       /* try {
          const query = 'SELECT movie_name FROM moviedata WHERE is_series = false;';
          const result = await pool.query(query);
@@ -135,8 +122,6 @@ const resolvers = {
          throw new Error('Error retrieving movie names');
        }*/
        try {
-         const db = mongoClient.db('CORE');
-         const collection = db.collection('movies');
          const query1 = { is_series: false };
          const projection = {
            _id: 0,
@@ -149,7 +134,7 @@ const resolvers = {
            is_reported: 0,
            telegram: 0,
          };
-         const result = await collection.find(query1).project(projection).toArray();
+         const result = await movies_collection.find(query1).project(projection).toArray();
          const movieNames = result.map(item => item.movie_name);
          console.log(movieNames);
          return movieNames;
@@ -158,7 +143,7 @@ const resolvers = {
          throw error;
        }  
      },
-    allSeriesNames: async () => {
+    allSeriesNames: async (_, __, {series_collection}) => {
       /*try {
         const query = 'SELECT series_name FROM series ';
         const result = await pool.query(query);
@@ -168,10 +153,8 @@ const resolvers = {
         throw new Error('Error retrieving movie names');
       }*/
       try {
-        const db = mongoClient.db('CORE');
-        const collection = db.collection('series');
         const projection = { _id: 0, series_name: 1 };
-        const result = await collection.find({}, projection).toArray();
+        const result = await series_collection.find({}, projection).toArray();
         const seriesNames = result.map(item => item.series_name);
         console.log(seriesNames);
         return seriesNames;
@@ -180,7 +163,7 @@ const resolvers = {
         throw error;
       }
     },
-    totalsize: async () => {
+    totalsize: async (_, __, {movies_collection ,series_collection}) => {
       /*try {
         const query = 'SELECT SUM(size_mb) as total_size FROM moviedata';
         const result = await pool.query(query);
@@ -192,8 +175,6 @@ const resolvers = {
         throw new Error('Error retrieving movie names');
       }*/
       try {
-        const db = mongoClient.db('CORE');
-        const collection = db.collection('movies');
         const pipeline = [
           {
             $group: {
@@ -207,7 +188,7 @@ const resolvers = {
             }
           }
         ];
-        const result = await collection.aggregate(pipeline).toArray();
+        const result = await movies_collection.aggregate(pipeline).toArray();
         if (result.length > 0) {
           const totalSize = result[0].total_size;
           console.log("Total Size (MB):", totalSize);
@@ -248,7 +229,7 @@ const resolvers = {
     },
   },
 Mutation: {
-  report: async (_, { movie_name }) => {
+  report: async (_,{ movie_name } , {movies_collection}) => {
     /*try {
       const query = 'UPDATE moviedata SET is_reported = is_reported + 1 WHERE movie_name = $1 RETURNING *';
       const values = [movie_name];
@@ -259,14 +240,12 @@ Mutation: {
       throw new Error('Error reporting movie');
     }*/
     try {
-      const db = mongoClient.db('CORE');
-      const collection = db.collection('movies');
       const filter = { movie_name: movie_name };
       const update = { $inc: { is_reported: 1 } }; // Increment is_reported by 1
-      const result = await collection.updateOne(filter, update);
+      const result = await movies_collection.updateOne(filter, update);
       if (result.modifiedCount === 1) {
         // Document updated successfully, now fetch the updated document
-        const updatedDocument = await collection.findOne(filter);
+        const updatedDocument = await movies_collection.findOne(filter);
         console.log(updatedDocument);
         return updatedDocument;
       } else {

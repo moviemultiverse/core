@@ -23,3 +23,5 @@
 > https://core.telegram.org/bots/api
 
 > https://core.telegram.org/
+
+> https://www.apollographql.com/docs/apollo-server/data/context/#:~:text=The%20context%20function%20should%20be,e.g.%2C%20expressMiddleware%20or%20startStandaloneServer%20).
