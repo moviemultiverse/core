@@ -7,7 +7,7 @@ async function get_telecore_data() {
     try {
         await mongoClient.connect();
         const db = mongoClient.db('CORE');
-        const collection = db.collection('tele_data');
+        const collection = db.collection('movies');
         let telecoreData = await collection.find().toArray();
         return telecoreData;
     } catch (error) {
@@ -44,21 +44,35 @@ async function search_telecore_data(searchText) {
 
 async function set_telecore_data(dataToSave) {
     try {
-        await mongoClient.connect();
-        const db = mongoClient.db('CORE');
-        const collection = db.collection('user1_to_bot');
-        await collection.insertMany(dataToSave);
-        console.log('Data saved successfully.');
-        return true;
+      await mongoClient.connect();
+      const db = mongoClient.db('CORE');
+      const collection = db.collection('movies');
+      const newData = {
+        "movie_name": dataToSave.file_name,
+        "admin": dataToSave.admin,
+        "message_id": dataToSave.message_id,
+        "size_mb": 0,
+        "drive_code": "null",
+        "streamtape_code": "null",
+        "doodstream_code": "null",
+        "is_series": true,
+        "img_data": [],
+        "is_reported": 0,
+        "telegram": "Breaking.Bad.S03.E07.1080p.mkv"
+      };
+  
+      await collection.insertOne(newData);
+      console.log('Data saved successfully.');
+      return true;
     } catch (error) {
-        console.error(error);
-        throw error;
+      console.error(error);
+      throw error;
     } finally {
-        if (mongoClient) {
-            await mongoClient.close();
-        }
+      if (mongoClient) {
+        await mongoClient.close(); 
+      }
     }
-}
-
+  }
+  
 
 module.exports = { get_telecore_data, search_telecore_data , set_telecore_data};
