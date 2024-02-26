@@ -13,8 +13,8 @@ const fs = require('fs');
 const { v4: uuidv4, validate: isUUID } = require('uuid');
 const { JWT } = require('google-auth-library');
 const { Octokit } = require("@octokit/rest");
-const credentials = require('./drive-download-389811-b229f2e27ed8.json');
 const githubToken = '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'; 
+const credentials = require('./drive-download-389811-ab674586465b.json');
 require('dotenv').config();
 const http = require('http');
 const cors = require('cors');
@@ -49,9 +49,23 @@ app.use("/", main_route);
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
 const { typeDefs, resolvers } = require("./controllers/graphql");
+const { MongoClient } = require('mongodb');
+const uri = process.env.DB_URI;
 const server = new ApolloServer({ typeDefs, resolvers });
+const mongoClient = new MongoClient(uri, {
+  maxPoolSize: 100,
+});
+const db = mongoClient.db('CORE');
+const series_collection = db.collection('series');
+const movies_collection = db.collection('movies');
 server.start().then(() => {
-  app.use(expressMiddleware(server));
+  app.use(expressMiddleware(server, {
+    context: async () => {
+      return {
+       movies_collection ,series_collection
+      };
+    },
+  }));
 });
 /******************************************************************************************************************************* */
 
@@ -61,6 +75,7 @@ server.start().then(() => {
 const { TelecoreBot } = require('./telecore/bot.js');
 (async () => {
   try {
+    console.log('bot started');
     await TelecoreBot();
   } catch (error) {
     console.error(error);}

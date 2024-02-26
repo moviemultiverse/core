@@ -15,7 +15,5 @@ A platform service engineered for the storage of video content integrates Postgr
 Have a look at our Documentation
 [https://moviemultiverse.github.io/core](https://moviemultiverse.github.io/core/)
 
-## How to Contribute 
-
-> fork the repository 
->
+## TODO 
+> identify app user with google analytics
