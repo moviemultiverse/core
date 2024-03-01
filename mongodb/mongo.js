@@ -22,12 +22,12 @@ async function search_telecore_data(searchText) {
     try {
         await mongoClient.connect();
         const db = mongoClient.db('CORE');
-        const collection = db.collection('user1_to_bot');
+        const collection = db.collection('movies');
 
-        const query1 = { admin: "2104037869", file_name: searchText };
+        const query1 = { admin: "2104037869", movie_name: searchText };
         let telecoreData = await collection.findOne(query1);
         if (!telecoreData) {
-            const query2 = { admin: "6270093925", file_name: searchText };
+            const query2 = { admin: "6270093925", movie_name: searchText };
             telecoreData = await collection.findOne(query2);
         }
         return telecoreData;

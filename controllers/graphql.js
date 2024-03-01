@@ -133,6 +133,8 @@ const resolvers = {
            img_data: 0,
            is_reported: 0,
            telegram: 0,
+           admin: 0,
+           message_id: 0
          };
          const result = await movies_collection.find(query1).project(projection).toArray();
          const movieNames = result.map(item => item.movie_name);
