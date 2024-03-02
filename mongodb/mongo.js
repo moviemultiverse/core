@@ -58,7 +58,7 @@ async function set_telecore_data(dataToSave) {
         "is_series": true,
         "img_data": [],
         "is_reported": 0,
-        "telegram": "Breaking.Bad.S03.E07.1080p.mkv"
+        "telegram": dataToSave.file_name
       };
   
       await collection.insertOne(newData);

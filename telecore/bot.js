@@ -26,7 +26,7 @@ bot.on('message', async (msg) => {
       console.log(msg.message_id, msg.document.file_name);
       const message_id = msg.message_id;
       const file_name = msg.document.file_name ;
-      if(set_telecore_data({admin: admin1, message_id: message_id ,file_name: file_name}))
+      if(set_telecore_data({admin: admin2, message_id: message_id ,file_name: file_name}))
       bot.sendMessage(chatId,file_name + " saved successfully");
       }
     //bot count message_id on inc++ mode for each user
