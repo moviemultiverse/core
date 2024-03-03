@@ -4,20 +4,39 @@ const uri = process.env.DB_URI;
 let mongoClient = new MongoClient(uri);
 
 async function get_telecore_data() {
-    try {
-        await mongoClient.connect();
-        const db = mongoClient.db('CORE');
-        const collection = db.collection('movies');
-        let telecoreData = await collection.find().toArray();
-        return telecoreData;
-    } catch (error) {
-        console.error(error);
-        throw error;
-    } finally {
-        await mongoClient.close();
-    }
+  try {
+      await mongoClient.connect();
+      const db = mongoClient.db('CORE');
+      const collection = db.collection('movies');
+      let telecoreData = await collection.find().toArray();
+      return telecoreData;
+  } catch (error) {
+      console.error(error);
+      throw error;
+  } finally {
+      await mongoClient.close();
+  }
 }
+/*
+async function update_data() {
+  try {
+    await mongoClient.connect();
+    const db = mongoClient.db('CORE');
+    const collection = db.collection('movies');
+    let telecoreData = await collection.updateMany(
+      { "img_data": [] },
+      { $set: { "img_data": ["b58aa9ef-8f9b-4cdb-95bb-89a0f2b63e24"] } }
+    );
 
+    return telecoreData;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  } finally {
+    await mongoClient.close();
+  }
+}
+*/
 async function search_telecore_data(searchText) {
     try {
         await mongoClient.connect();
@@ -56,7 +75,7 @@ async function set_telecore_data(dataToSave) {
         "streamtape_code": "null",
         "doodstream_code": "null",
         "is_series": dataToSave.is_series,
-        "img_data": [],
+        "img_data": ["b58aa9ef-8f9b-4cdb-95bb-89a0f2b63e24"],
         "is_reported": 0,
         "telegram": dataToSave.file_name
       };
