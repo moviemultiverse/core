@@ -51,11 +51,11 @@ async function set_telecore_data(dataToSave) {
         "movie_name": dataToSave.file_name,
         "admin": dataToSave.admin,
         "message_id": dataToSave.message_id,
-        "size_mb": 0,
+        "size_mb": dataToSave.size_mb,
         "drive_code": "null",
         "streamtape_code": "null",
         "doodstream_code": "null",
-        "is_series": true,
+        "is_series": dataToSave.is_series,
         "img_data": [],
         "is_reported": 0,
         "telegram": dataToSave.file_name

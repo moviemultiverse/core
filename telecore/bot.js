@@ -10,6 +10,7 @@ const bot = new TelegramBot(token, { polling: true });
 //https://t.me/blackhole_movie_bot?start=YT0xMjMmYj1nZGZnZC1nZGZnZGZnZGY
 //btoa('a=123&b=gdfgd-gdfgdfgdf')
 //convert the string to base64 param
+
 bot.on('message', async (msg) => {
   const admin1 = await get2redis("admin1");
   const admin2 = await get2redis("admin2");
@@ -19,15 +20,21 @@ bot.on('message', async (msg) => {
     console.log(msg.message_id, msg.document.file_name);
     const message_id = msg.message_id;
     const file_name = msg.document.file_name ;
-    if(set_telecore_data({admin: admin1, message_id: message_id ,file_name: file_name}))
-    bot.sendMessage(chatId,file_name + " saved successfully");
+    const file_size = Math.floor(msg.document.file_size / 1024 / 1024);
+    const is_series = (msg.caption == 'true')? true : false;
+    if(set_telecore_data({admin: admin1, message_id: message_id ,file_name: file_name , size_mb: file_size , is_series: is_series}))
+    bot.sendMessage(chatId,file_name + " saved successfully with size : " + file_size + "MB");
+    bot.sendMessage('-1002046361009',file_name + "is added to server");
     }
   else if(msg.from.id == admin2 && msg.document.file_name != undefined && msg.message_id != undefined){
       console.log(msg.message_id, msg.document.file_name);
       const message_id = msg.message_id;
       const file_name = msg.document.file_name ;
-      if(set_telecore_data({admin: admin2, message_id: message_id ,file_name: file_name}))
-      bot.sendMessage(chatId,file_name + " saved successfully");
+      const file_size = Math.floor(msg.document.file_size / 1024 / 1024);
+      const is_series = (msg.caption == 'true')? true : false;
+      if(set_telecore_data({admin: admin2, message_id: message_id ,file_name: file_name , size_mb: file_size , is_series: is_series}))
+      bot.sendMessage(chatId,file_name + " saved successfully with size : " + file_size + "MB");
+      bot.sendMessage('-1002046361009',file_name + "is added to server");
       }
     //bot count message_id on inc++ mode for each user
   else if((msg.from.id != admin1 || msg.from.id != admin2) && msg.text){
