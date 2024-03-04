@@ -3,7 +3,7 @@ name: CI TESTs
 on:
   push:
     branches:
-      - *
+      - '*'
 
 permissions:
   contents: write
