@@ -39,7 +39,7 @@ streamtape_tokens = [
     {'USER': '1354fac33684cb2d5687', 'API_KEY': '9yJx9aeKLofaxQV'},
     {'USER': 'f65b540c475b9b7d4da8', 'API_KEY': '268XaKDBLqTZ2kg'}
 ]
-
+# TODO hide credentials
 # List of doodapi keys
 dood_api_keys = ['275776ox1z3ej7pxm6wci7', '49943w31dwl3crvaz1tui']
 

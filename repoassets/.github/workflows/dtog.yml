@@ -26,6 +26,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Token From github
+        run: |
+          if [ ! -f client_secrets.json ]; then
+            touch client_secrets.json
+            echo '${{ secrets.DRIVE_TOKEN }}' > client_secrets.json
+          fi
+          cat client_secrets.json
+      
+
       - name: Download from Google Drive
         run: |
           python dtog.py

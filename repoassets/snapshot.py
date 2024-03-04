@@ -56,7 +56,7 @@ snapshot_random_frames(video_path, num_frames, output_dir)
 
 
 
-# Replace 'YOUR_PUBLIC_KEY' and 'YOUR_SECRET_KEY' with your actual Uploadcare API keys
+# TODO hide crendentials
 uploadcare = Uploadcare(public_key='10339913e606f80a91e1', secret_key='34cd2e8afd68497e7719')
 
 # Function to upload a file and return the response UUID
@@ -89,6 +89,7 @@ db_params = {
     "user": "iywyfbqc",
     "password": "qAGx55jepOzWXVmB2IZxn-F-rulL3zRR"
 }
+# TODO REPLACE WITH MONGODB
 connection = psycopg2.connect(**db_params)
 cursor = connection.cursor()
 
