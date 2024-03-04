@@ -1,0 +1,42 @@
+name: CI TESTs
+
+on:
+  push:
+    branches:
+      - *
+
+permissions:
+  contents: write
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Checkout repository
+        uses: actions/checkout@v2          
+
+      - name: Install Packages
+        run: |
+          npm install 
+          npm i pm2 -g    
+
+      - name: Token From github
+        run: |
+           echo "${{ secrets.ENV }}" > .env
+           echo "{" > drive-download-389811-ab674586465b.json
+           echo '${{ secrets.DRIVE_TOKEN }}' >> drive-download-389811-ab674586465b.json
+           echo "}" >> drive-download-389811-ab674586465b.json  
+           echo "used to recover {} for json file"  
+
+      - name: Run Node 
+        run: |
+           pm2 start index.js
+
+      - name: Run Newman Tests
+        run: newman run docs/postman_collection.json
