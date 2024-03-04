@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "newman run docs/postman_collection.json"
   },
   "keywords": [],
   "author": "",
@@ -34,12 +35,14 @@
     "inquirer": "^9.2.12",
     "mongodb": "^6.3.0",
     "morgan": "^1.10.0",
+    "newman": "^6.1.1",
     "node-fetch": "3.1.1",
     "node-telegram-bot-api": "^0.61.0",
     "nodemon": "3.0.1",
     "path": "^0.12.7",
     "pg": "^8.11.1",
     "pg-copy-streams": "^6.0.6",
+    "pm2": "^5.3.1",
     "range-parser": "^1.2.1",
     "redis": "^4.6.13",
     "uuid": "9.0.0"
