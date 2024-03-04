@@ -23,7 +23,8 @@ The Movie API provides information about movies and series. It allows users to q
 
 ## Getting Started
 
-To get started, ensure you have the required environment variables set up in a `.env` file. These variables include `DB_URI`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USER`, and `DB_PASSWORD`.
+To get started, ensure you have the required environment variables set up in a `.env` file. These variables include ...
+`DB_URI`,`PORT`,`DB_HOST`,`DB_PORT`,`DB_DATABASE`,`DB_USER`,`DB_PASSWORD`,`api_id`,`api_hash`,`api_id_shah`,`api_hash_shah`,`TOKEN`,`REDIS_AUTH_KEY`,`TELECORE_API_ENDPOINT`,`GITHUB_TOKEN` && `Google_Service_Account`
 
 ## API Endpoints
 
@@ -53,51 +54,3 @@ Get details about a specific movie.
     }
   }
 // TODO
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-* Getting started
-
-  * [Quick start](quickstart.md)
-  
-  * workflow
-   >workflow
-  
-  * size
-   >size
-  
-  * getvidfiles
-   >getvidfiles
-  
-  * getfiles
-   >getfiles
-   
-  * getrepo
-   >getrepo
-  
-  * deletefile
-   >deletefile
-  
-  * artifact
-   >artifact
-  
-  * getmappeddata
-   >getmappeddata

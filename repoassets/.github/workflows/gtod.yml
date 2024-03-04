@@ -1,7 +1,8 @@
-name: upload to Google drive 
+name: upload to Google drive
 on:
   repository_dispatch:
     types: [trigger-workflow-1]
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,23 +16,30 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client psycopg2 pyuploadcare requests
+          pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client psycopg2 pyuploadcare
 
       - name: Checkout repository
-        uses: actions/checkout@v2       
-             
+        uses: actions/checkout@v2  
+
+      - name: Token From github
+        run: |
+          if [ ! -f client_secrets.json ]; then
+            touch client_secrets.json
+            echo '${{ secrets.DRIVE_TOKEN }}' > client_secrets.json
+          fi
+          cat client_secrets.json
+                     
       - name: Set up permissions for the shell script
-        run: chmod +x gtod.sh # Replace with the actual path to your shell script
+        run: chmod +x gtod.sh 
 
       - name: Run the shell script
-        run: ./gtod.sh # Replace with the actual path to your shell script
+        run: ./gtod.sh 
 
       - name: Upload to Google Drive
         run: |
           python gtod.py  
           
       - name: Install dependencies
-
         run: pip install opencv-python-headless
 
       - name: Snapshot random frames from video
@@ -47,10 +55,11 @@ jobs:
           path: |
             snapshots/
             response.txt
+
       - name: snapshot 
         uses: EndBug/add-and-commit@v7
         with:
           author_name: SS08090
           author_email: techicalsolutions68@gmail.com
           message: Auto commit changes
-          add: snapshots/
+          add: snapshots/*

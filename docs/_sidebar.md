@@ -3,8 +3,6 @@
 
 * [Home](/)
 
-* [How To Install](_install.md)
-
 * [APIs](_apis.md)
 
 * [WorkFlow](_workflow.md)
@@ -16,5 +14,7 @@
 * [Database Schema](_databaseschema.md)
 
 * [How To Contribute](_contribute.md)
+
+* [How To Install](_install.md)
 
 * [Resources](_resources.md)

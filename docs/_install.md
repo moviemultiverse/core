@@ -1,7 +1,14 @@
 ## Install
 
+#### Requirements
+```
+--> Google Service Account
+--> Telegram Bot Account
+--> Github Account
+--> Redis Service Account
+--> MongoDB Service Account
+```
 #### Linux || WSL
-
 ```bash
 git clone https://github.com/moviemultiverse/core
 cd core
